@@ -1,0 +1,1556 @@
+{
+  "app": {
+    "name": "وفرة",
+    "logoText": "وفرة / Wafrah",
+    "tagline": "منصة ذكية للحد من الهدر الغذائي",
+    "metaTitle": "وفرة — إدارة الهدر الغذائي للمطاعم والفنادق",
+    "metaDescription": "تحليلات الهدر الغذائي، والتنبؤ بالطلب اليومي، وقياس الوفر المالي بالريال السعودي للمطاعم والفنادق في المملكة العربية السعودية."
+  },
+  "common": {
+    "arabic": "العربية",
+    "english": "English",
+    "switchToArabic": "التبديل إلى العربية",
+    "switchToEnglish": "Switch to English",
+    "languageLabel": "اللغة",
+    "close": "إغلاق",
+    "cancel": "إلغاء",
+    "save": "حفظ التغييرات",
+    "confirm": "تأكيد",
+    "hijriCalendarNote": "يُحتسب التاريخ الهجري وفق تقويم أم القرى وقد يختلف بيوم واحد تبعاً لرؤية الهلال.",
+    "estimateBadge": "تقديري",
+    "currencyCode": "ر.س",
+    "errorTitle": "حدث خطأ غير متوقع",
+    "errorDescription": "تعذر إكمال هذا الطلب حالياً. يرجى المحاولة مرة أخرى.",
+    "retryButton": "إعادة المحاولة"
+  },
+  "nav": {
+    "sidebarLabel": "قائمة إدارة المطعم",
+    "mobileNavLabel": "التنقل الرئيسي للهاتف",
+    "dashboard": "لوحة التحكم",
+    "menu": "قائمة الأصناف",
+    "imports": "استيراد البيانات",
+    "reports": "التقارير",
+    "notifications": "الإشعارات",
+    "staff": "طاقم المطبخ",
+    "help": "المساعدة",
+    "kitchenLog": "سجل المطبخ",
+    "admin": "إدارة المنصة",
+    "designCheck": "فحص التصميم"
+  },
+  "userMenu": {
+    "signedInAs": "مسجل الدخول باسم",
+    "roleLabel": "الدور الوظيفي",
+    "tenantLabel": "رمز الفرع",
+    "logout": "تسجيل الخروج",
+    "switchUser": "تبديل موظف المطبخ",
+    "guest": "معاينة زائر",
+    "signIn": "تسجيل الدخول"
+  },
+  "roles": {
+    "STAFF": "طاقم المطبخ",
+    "MANAGER": "مدير المطعم",
+    "OWNER": "مالك المطعم",
+    "PLATFORM_ADMIN": "مشرف المنصة"
+  },
+  "auth": {
+    "loginTitle": "تسجيل الدخول إلى وفرة",
+    "loginSubtitle": "اختر دورك الوظيفي للوصول إلى مساحة عمل المطعم",
+    "tabs": {
+      "manager": "المدير",
+      "staff": "طاقم المطبخ"
+    },
+    "manager": {
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "manager@shami.sa",
+      "passwordLabel": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "submit": "دخول المدير",
+      "submitting": "جاري تسجيل الدخول..."
+    },
+    "staff": {
+      "restaurantCodeLabel": "رمز المطعم",
+      "restaurantCodePlaceholder": "SHAMI-JED",
+      "usernameLabel": "اسم المستخدم",
+      "usernamePlaceholder": "ahmed",
+      "pinLabel": "رمز الدخول الرقمي (4–6 أرقام)",
+      "pinPlaceholder": "••••",
+      "submit": "فتح سجل المطبخ",
+      "submitting": "جاري الفتح...",
+      "switchUser": "تبديل المستخدم",
+      "rememberedCodeHint": "تم حفظ رمز المطعم على هذا الجهاز اللوحي"
+    },
+    "errors": {
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      "invalidPin": "رمز المطعم أو اسم المستخدم أو رمز الدخول غير صحيح.",
+      "rateLimited": "محاولات غير ناجحة متكررة. تم إيقاف الدخول مؤقتاً؛ يرجى المحاولة لاحقاً.",
+      "tenantSuspended": "تم تعليق حساب هذا المطعم. يرجى التواصل مع دعم وفرة.",
+      "validationFailed": "يرجى التأكد من صحة البيانات المدخلة والمحاولة مرة أخرى.",
+      "sessionExpiredNotice": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى للمتابعة."
+    },
+    "legal": {
+      "privacy": "سياسة الخصوصية",
+      "terms": "شروط الخدمة"
+    }
+  },
+  "waste": {
+    "title": "سجل هدر المطبخ",
+    "description": "محطة سريعة مهيأة لشاشات اللمس لتسجيل الهدر الغذائي في أقل من 10 ثوانٍ",
+    "activeShiftLabel": "الوردية الحالية",
+    "overrideShiftLabel": "تغيير الوردية",
+    "quickEntryTitle": "جاهز لتسجيل الهدر",
+    "quickEntrySubtitle": "اختر الصنف، وأدخل الكمية المهدرة، ثم حدد سبب الهدر بلمسة واحدة.",
+    "startEntryButton": "تسجيل هدر جديد",
+    "todayWasteLabel": "هدر اليوم",
+    "offlineBadge": "غير متصل",
+    "waitingToSync": "{count} سجلات بانتظار المزامنة",
+    "syncErrorNotice": "تعذر مزامنة السجلات المعلقة حالياً. تم حفظها بأمان على جهازك وسيعاد إرسالها تلقائياً.",
+    "syncRetryButton": "إعادة المزامنة الآن",
+    "authExpiredNotice": "انتهت صلاحية الجلسة. تم حفظ سجلاتك المعلقة؛ يرجى تسجيل الدخول للمزامنة.",
+    "signInAgainButton": "تسجيل الدخول",
+    "backToDashboard": "لوحة التحكم",
+    "step1Badge": "الخطوة 1",
+    "step1Title": "اختر الصنف",
+    "searchPlaceholder": "ابحث باسم الصنف أو التصنيف...",
+    "allCategories": "الكل",
+    "recentItemsTitle": "الأصناف الأكثر تسجيلاً لديك",
+    "allItemsTitle": "جميع الأصناف النشطة",
+    "emptyItems": "لا توجد أصناف مطابقة للبحث.",
+    "step2Badge": "الخطوة 2",
+    "step2Title": "أدخل الكمية المهدرة",
+    "changeItem": "تغيير الصنف",
+    "estimatedCostLabel": "التكلفة التقديرية",
+    "clearKey": "مسح",
+    "backspaceKey": "حذف رقم",
+    "step3Badge": "الخطوة 3",
+    "step3Title": "حدد السبب واحفظ",
+    "shiftAutoPrefix": "الوردية:",
+    "editShiftHint": "اضغط للتعديل",
+    "saveButton": "حفظ سجل الهدر",
+    "savedToastTitle": "تم تسجيل {quantity} {unit} من {item}",
+    "undoButton": "تراجع ({seconds}ث)",
+    "undoneToastTitle": "تم التراجع عن سجل الهدر",
+    "errors": {
+      "quantityRequired": "يرجى إدخال كمية أكبر من الصفر.",
+      "quantityExceedsMax": "الحد الأقصى المسموح لوحدة {unit} هو {max}."
+    },
+    "shifts": {
+      "MORNING": "الوردية الصباحية (05:00–14:59)",
+      "EVENING": "الوردية المسائية (15:00–22:59)",
+      "NIGHT": "الوردية الليلية (23:00–04:59)"
+    },
+    "shiftsShort": {
+      "MORNING": "صباحية (05–15)",
+      "EVENING": "مسائية (15–23)",
+      "NIGHT": "ليلية (23–05)"
+    },
+    "reasons": {
+      "EXPIRED": "انتهاء الصلاحية",
+      "OVER_PREPARATION": "فائض تحضير",
+      "ORDER_ERROR": "خطأ في الطلب",
+      "CUSTOMER_RETURN": "مرتجع من العميل",
+      "DAMAGED_IN_PREP": "تلف أثناء التحضير",
+      "OTHER": "سبب آخر"
+    },
+    "units": {
+      "KG": "كجم",
+      "LITER": "لتر",
+      "PORTION": "حصة",
+      "PIECE": "قطعة"
+    }
+  },
+  "insights": {
+    "title": "لوحة تحكم مدير المطعم",
+    "description": "مؤشرات تكلفة الهدر، وتنبيهات الارتفاع غير المعتاد، وتوصيات الشراء والتحضير الأسبوعية",
+    "summaryTitle": "الملخص التشغيلي",
+    "summaryBody": "تابع أنماط الهدر اليومية حسب الوردية، وراجع التنبيهات الذكية، وحسّن كميات التحضير المسبق.",
+    "alerts": {
+      "wasteSpike": "ارتفاع ملحوظ في هدر {itemNameAr} ({itemCode}): بلغت الكمية {observed} {unit} مقارنة بأساس {baseline} {unit} خلال آخر 3 أيام (+{percentageChange}%، أثر +{sarImpact} ر.س، معامل z={zScore}).",
+      "wasteSpikeFromZero": "تسجيل ارتفاع جديد في هدر {itemNameAr} ({itemCode}): بلغت الكمية {observed} {unit} مقارنة بأساس 0 {unit} خلال آخر 3 أيام (أثر +{sarImpact} ر.س، معامل z={zScore}).",
+      "dataGap": "لم تُسجل أي عمليات هدر بتاريخ {date} رغم وجود مبيعات. يرجى التحقق من التزام طاقم المطبخ بالتسجيل.",
+      "topWasteItem": "يمثل صنف {itemNameAr} نسبة {sharePct}% من إجمالي تكلفة الهدر ({sarCost} ر.س خلال آخر 28 يوماً)."
+    },
+    "tiers": {
+      "HIGH": "أثر تكلفة مرتفع (أول 50%)",
+      "MEDIUM": "أثر تكلفة متوسط (30% التالية)",
+      "LOW": "أثر تكلفة منخفض (20% المتبقية)"
+    }
+  },
+  "menu": {
+    "title": "قائمة الأصناف والمواد",
+    "description": "الدليل الموحد لأصناف القائمة والمخزون لتسجيل الهدر والمبيعات والمشتريات",
+    "summaryTitle": "الأصناف المعتمدة",
+    "summaryBody": "إدارة وحدات القياس المعتمدة (كجم، لتر، حصة، قطعة)، وتكلفة الوحدة بالريال، ومعامل تحويل المبيعات.",
+    "addItemButton": "إضافة صنف",
+    "importCsvButton": "استيراد CSV",
+    "searchPlaceholder": "ابحث بالاسم العربي أو الإنجليزي أو التصنيف...",
+    "showInactiveLabel": "إظهار الأصناف غير النشطة",
+    "emptyState": "لا توجد أصناف مطابقة للبحث.",
+    "columns": {
+      "name": "اسم الصنف (عربي / إنجليزي)",
+      "category": "التصنيف",
+      "unit": "الوحدة",
+      "unitCost": "تكلفة الوحدة (ر.س)",
+      "shortageCost": "تكلفة العجز (ر.س)",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "deactivate": "إيقاف التفعيل",
+      "activate": "تفعيل"
+    },
+    "defaultShortageTag": "1.5× تلقائي",
+    "editButton": "تعديل",
+    "dialog": {
+      "addTitle": "إضافة صنف جديد",
+      "editTitle": "تعديل بيانات الصنف",
+      "description": "أدخل اسم الصنف بالعربية أو الإنجليزية، ووحدة القياس المعتمدة، والتكلفة بالريال السعودي.",
+      "nameArLabel": "الاسم بالعربية",
+      "nameArPlaceholder": "مثال: مندي لحم بلدي",
+      "nameEnLabel": "الاسم بالإنجليزية (English Name)",
+      "nameEnPlaceholder": "e.g., Lamb Mandi Rice",
+      "categoryLabel": "التصنيف",
+      "categoryPlaceholder": "مثال: الأطباق الرئيسية",
+      "unitLabel": "وحدة القياس",
+      "unitCostLabel": "تكلفة الوحدة (ر.س)",
+      "unitCostPlaceholder": "45.00",
+      "shortageCostLabel": "تكلفة العجز (ر.س، اختياري)",
+      "shortageCostPlaceholder": "67.50",
+      "shortageCostHelper": "Estimated loss per unit when you run out. Leave empty to use 1.5 × unit cost. (الخسارة التقديرية لكل وحدة عند نفاد الصنف؛ اتركه فارغاً لاستخدام 1.5 × تكلفة الوحدة)",
+      "saveCreate": "إضافة الصنف",
+      "saveUpdate": "حفظ التغييرات",
+      "saving": "جاري الحفظ..."
+    },
+    "csv": {
+      "dialogTitle": "استيراد الأصناف من ملف CSV",
+      "dialogDescription": "الأعمدة المطلوبة: name, nameAr, category, unit, unitCost, shortageCost",
+      "fileLabel": "اختر ملف CSV",
+      "pasteLabel": "أو الصق محتوى CSV مباشرة",
+      "pastePlaceholder": "name,nameAr,category,unit,unitCost,shortageCost\nLamb Mandi,مندي لحم,الأطباق الرئيسية,KG,45.00,67.50",
+      "parseButton": "معاينة الملف",
+      "validCountBadge": "{count} صفوف صالحة",
+      "invalidCountBadge": "{count} صفوف مرفوضة",
+      "validTableTitle": "الصفوف الصالحة الجاهزة للاستيراد",
+      "invalidTableTitle": "الصفوف المرفوضة مع سبب الاستبعاد",
+      "rowColumn": "رقم الصف",
+      "reasonColumn": "السبب",
+      "confirmImport": "تأكيد الاستيراد ({count})",
+      "importing": "جاري الاستيراد...",
+      "successMessage": "تم استيراد {count} صنف بنجاح."
+    },
+    "units": {
+      "KG": "كجم (KG)",
+      "LITER": "لتر (LITER)",
+      "PORTION": "حصة (PORTION)",
+      "PIECE": "قطعة (PIECE)"
+    },
+    "errors": {
+      "nameRequired": "يجب إدخال اسم الصنف بلغة واحدة على الأقل (العربية أو الإنجليزية).",
+      "categoryRequired": "تصنيف الصنف مطلوب.",
+      "invalidUnit": "يجب أن تكون الوحدة KG أو LITER أو PORTION أو PIECE.",
+      "invalidUnitCost": "يجب أن تكون تكلفة الوحدة أكبر من 0 ر.س.",
+      "invalidShortageCost": "يجب أن تكون تكلفة العجز 0 ر.س أو أكثر.",
+      "emptyFile": "ملف CSV فارغ.",
+      "missingRequiredColumns": "الأعمدة الأساسية مفقودة (name/nameAr, category, unit, unitCost).",
+      "actionFailed": "تعذر حفظ بيانات الصنف. يرجى التحقق من المدخلات."
+    }
+  },
+  "sales": {
+    "title": "استيراد بيانات المبيعات والمشتريات",
+    "description": "رفع سجلات المبيعات اليومية وفواتير المشتريات لتعزيز دقة التنبؤ بالطلب",
+    "summaryTitle": "مركز استيراد البيانات",
+    "summaryBody": "التحقق من السجلات ومطابقة الأصناف بالرمز أو الاسم العربي والإنجليزي مع المعاينة قبل الاعتماد.",
+    "types": {
+      "SALES": "المبيعات",
+      "PURCHASES": "المشتريات"
+    },
+    "templates": {
+      "title": "نماذج ملفات CSV الجاهزة",
+      "downloadEn": "تنزيل النموذج الإنجليزي (CSV)",
+      "downloadAr": "تنزيل النموذج العربي (CSV)"
+    },
+    "upload": {
+      "stepTitle": "1. رفع ملف CSV أو XLSX",
+      "stepDescription": "يدعم الترميز العربي UTF-8 BOM، واكتشاف الفواصل تلقائياً، والعناوين العربية والإنجليزية، وصيغ التاريخ القياسية وأرقام Excel التسلسلية.",
+      "fileLabel": "اختر ملف CSV أو XLSX",
+      "orPaste": "أو الصق محتوى CSV مباشرة",
+      "pastePlaceholder": "التاريخ,اسم الصنف,الكمية المباعة,قناة البيع\n2026-11-01,أرز بسمتي مندي,42,صالة",
+      "parseFile": "تحليل ومعاينة",
+      "parsing": "جاري التحليل...",
+      "reset": "رفع ملف آخر",
+      "detectedInfo": "الصيغة: {format} · تم رصد {rows} صف"
+    },
+    "mapping": {
+      "title": "2. مطابقة الأعمدة",
+      "description": "اربط أعمدة ملفك بحقول وفرة. يتم حفظ اختيارك تلقائياً لهذا المطعم.",
+      "savedBadge": "تم تطبيق التعيين المحفوظ",
+      "unmappedOption": "غير مربوط",
+      "requiredTag": "إلزامي",
+      "optionalTag": "اختياري",
+      "fields": {
+        "date": "تاريخ العملية",
+        "item": "الصنف (الاسم أو الرمز)",
+        "quantity": "الكمية",
+        "channel": "قناة البيع (اختياري)",
+        "cost": "التكلفة بالريال (اختياري)"
+      }
+    },
+    "unmatched": {
+      "title": "3. أصناف غير مطابقة ({count})",
+      "description": "اربط أسماء الأصناف غير المعروفة بأصناف القائمة المعتمدة، أو اختر تخطي صفوفها.",
+      "skipOption": "تخطي (استبعاد الصفوف)",
+      "rowCountBadge": "{count} صف",
+      "selectItemPlaceholder": "اختر الصنف أو التخطي..."
+    },
+    "preview": {
+      "title": "4. معاينة التحقق قبل الاعتماد",
+      "validBadge": "{count} صالحة",
+      "rejectedBadge": "{count} مرفوضة",
+      "duplicatesBadge": "{count} تكرارات مرصودة",
+      "overLimitAlert": "تجاوزت نسبة الصفوف المرفوضة 50% ({rejected} من أصل {total}). يرجى تصحيح الملف أو ضبط مطابقة الأعمدة والأصناف قبل الاستيراد.",
+      "missingColumnsAlert": "يرجى تعيين جميع الأعمدة الإلزامية (التاريخ، الصنف، الكمية) لعرض المعاينة.",
+      "duplicateHint": "تم رصد {inDb} سجل موجود مسبقاً (سيُحدَّث بأمان على المفتاح الفريد) و{inFile} تكرارات داخل نفس الملف.",
+      "validTab": "الصفوف الصالحة ({count})",
+      "rejectedTab": "الصفوف المرفوضة ({count})",
+      "downloadRejected": "تنزيل الصفوف المرفوضة (CSV)",
+      "confirmButton": "اعتماد الاستيراد ({count})",
+      "confirming": "جاري الاستيراد...",
+      "successToast": "تم استيراد {imported} صف بنجاح ({duplicates} تحديث/تكرار).",
+      "existingUpdateBadge": "تحديث سجل قائم",
+      "fileDuplicateBadge": "تكرار داخل الملف",
+      "readyBadge": "سجل جديد",
+      "columns": {
+        "row": "الصف",
+        "date": "التاريخ",
+        "item": "الصنف",
+        "quantity": "الكمية",
+        "channel": "القناة",
+        "cost": "التكلفة (ر.س)",
+        "status": "الحالة",
+        "reasons": "أسباب الرفض"
+      }
+    },
+    "reasons": {
+      "missingDate": "التاريخ مفقود",
+      "badDate": "تاريخ غير صالح",
+      "missingItem": "الصنف مفقود",
+      "unknownItem": "صنف غير معروف",
+      "missingQuantity": "الكمية مفقودة",
+      "invalidQuantity": "كمية غير صالحة",
+      "negativeQuantity": "كمية سالبة",
+      "invalidChannel": "قناة بيع غير معروفة",
+      "invalidCost": "تكلفة غير صالحة",
+      "negativeCost": "تكلفة سالبة"
+    },
+    "channels": {
+      "DINE_IN": "صالة",
+      "DELIVERY": "توصيل",
+      "TAKEAWAY": "استلام",
+      "UNSPECIFIED": "غير محدد"
+    },
+    "history": {
+      "title": "سجل عمليات الاستيراد",
+      "empty": "لا توجد عمليات استيراد مسجلة لهذا الفرع بعد.",
+      "fileName": "اسم الملف",
+      "type": "النوع",
+      "imported": "المستوردة",
+      "rejected": "المرفوضة",
+      "duplicates": "التكرارات",
+      "who": "بواسطة",
+      "when": "التاريخ والوقت"
+    },
+    "errors": {
+      "parseFailed": "تعذر قراءة الملف المرفق. يرجى التأكد من صيغة CSV أو XLSX.",
+      "confirmFailed": "تعذر إتمام الاستيراد. يرجى مراجعة المعاينة والمحاولة مجدداً.",
+      "fileTooLarge": "حجم الملف يتجاوز الحد الأقصى المسموح به (5 ميجابايت).",
+      "sessionExpired": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى ثم إعادة المحاولة."
+    }
+  },
+  "reports": {
+    "title": "تقارير الوفر الشهري بالريال السعودي",
+    "description": "مقارنة تكلفة الهدر الحالية بخط الأساس للمطعم وحساب التوفير التقديري بالريال",
+    "summaryTitle": "الأثر المالي الشهري",
+    "summaryBody": "قياس أداء الحد من الهدر مقارنة بفترة خط الأساس مع توضيح منهجية الاحتساب.",
+    "baseline": {
+      "title": "إعداد فترة خط الأساس",
+      "description": "افتراضياً يعتمد الوفر على أول 14 يوماً من تسجيل الهدر. يمكن تعديل التواريخ أو استعادة الضبط التلقائي.",
+      "autoWindowNote": "تلقائي: أول 14 يوماً ({start} إلى {end})",
+      "customWindowNote": "مخصّص: من {start} إلى {end}",
+      "calibratingNote": "جاري المعايرة: يتبقى {days} يوماً لإتمام خط الأساس (14 يوماً)",
+      "startLabel": "بداية خط الأساس",
+      "endLabel": "نهاية خط الأساس",
+      "saveButton": "حفظ فترة الأساس",
+      "savingButton": "جاري الحفظ...",
+      "resetButton": "استعادة أول 14 يوماً",
+      "savedToast": "تم تحديث فترة خط الأساس بنجاح",
+      "resetToast": "تمت استعادة فترة خط الأساس التلقائية",
+      "errorToast": "تعذر تحديث فترة خط الأساس",
+      "invalidRangeError": "يرجى تحديد تاريخ بداية ونهاية صالحين بحيث لا تتجاوز المدة 365 يوماً"
+    },
+    "list": {
+      "monthsHeading": "الأشهر المتاحة",
+      "empty": "لا توجد بيانات هدر أو مبيعات مسجلة لإنشاء تقارير شهرية بعد.",
+      "openReport": "فتح التقرير الشهري",
+      "downloadCsv": "تنزيل CSV",
+      "entriesCount": "{count} سجل هدر",
+      "wasteTotalLabel": "إجمالي تكلفة الهدر",
+      "volumeMethodBadge": "تقدير معدّل بحجم المبيعات",
+      "rawMethodBadge": "تقدير بالمعدل الأسبوعي",
+      "statusBadges": {
+        "SAVED": "وفر تقديري",
+        "INCREASED": "زيادة في الهدر",
+        "FLAT": "دون تغيير",
+        "CALIBRATING": "قيد المعايرة"
+      }
+    },
+    "detail": {
+      "backToReports": "العودة إلى التقارير",
+      "printPdf": "طباعة / حفظ كملف PDF",
+      "downloadCsv": "تصدير CSV يومي",
+      "reportHeading": "التقرير الشهري للوفر وهدر الطعام",
+      "generatedAt": "تاريخ الإصدار: {date}",
+      "hijriRange": "الفترة الهجرية: {range}",
+      "branchCode": "رمز الفرع: {code}",
+      "estimateBadge": "تقدير",
+      "hero": {
+        "savedTitle": "الوفر الشهري التقديري",
+        "increasedTitle": "زيادة في تكلفة الهدر",
+        "increasedSentence": "ارتفع الهدر بمقدار {amount} مقارنة بخط الأساس",
+        "flatTitle": "دون تغيير مقارنة بخط الأساس",
+        "flatSentence": "تساوت تكلفة الهدر الفعلية مع المتوقع عند خط الأساس",
+        "calibratingTitle": "فترة خط الأساس قيد المعايرة",
+        "calibratingSentence": "قيد المعايرة: يتبقى {days} يوماً لإكمال خط الأساس البالغ 14 يوماً.",
+        "estimateDisclaimer": "هذا الرقم تقديري ويستند إلى سجلات الهدر المطبخية وحجم المبيعات المستورد.",
+        "vsExpectedLabel": "مقارنة بالمتوقع عند خط الأساس"
+      },
+      "howCalculated": {
+        "title": "كيف حسبنا هذا الرقم؟",
+        "methodLabel": "منهجية الاحتساب",
+        "methods": {
+          "VOLUME_ADJUSTED": "معدّل بحجم المبيعات (ر.س لكل وحدة مباعة)",
+          "RAW_WEEKLY": "مقارنة المعدل الأسبوعي (بدون مبيعات مكتملة للفترتين)"
+        },
+        "formulaVolume": "المعادلة: (ر.س/وحدة في الأساس − ر.س/وحدة حالياً) × الوحدات المباعة حالياً",
+        "formulaRaw": "المعادلة: (متوسط الهدر الأسبوعي للأساس − الأسبوعي الحالي) × عدد أسابيع الفترة",
+        "zeroBaselineNote": "تكلفة الهدر في فترة الأساس كانت 0 ر.س، لذا لا يُحتسب أي وفر مقابل أساس صفري.",
+        "noSalesFallbackNote": "لا تتوفر مبيعات لإحدى الفترتين أو كلتيهما، لذا استُخدمت مقارنة المعدل الأسبوعي الخام.",
+        "columns": {
+          "metric": "المؤشر",
+          "baseline": "فترة خط الأساس",
+          "current": "فترة التقرير"
+        },
+        "rows": {
+          "periodDates": "الفترة",
+          "daysWeeks": "المدة",
+          "daysWeeksValue": "{days} يوم ({weeks} أسبوع)",
+          "totalWaste": "إجمالي تكلفة الهدر",
+          "weeklyWaste": "متوسط الهدر الأسبوعي",
+          "unitsSold": "الوحدات المباعة",
+          "sarPerUnit": "تكلفة الهدر لكل وحدة مباعة",
+          "expectedWaste": "الهدر المتوقع عند معدل الأساس",
+          "rawWeeklyResult": "المقارنة بالمعدل الأسبوعي (للمرجعية)",
+          "notAvailable": "غير متوفر"
+        }
+      },
+      "sections": {
+        "wasteVsBaseline": {
+          "title": "مقارنة تكلفة الهدر بخط الأساس",
+          "baselineWeekly": "الأسبوعي في خط الأساس",
+          "currentWeekly": "الأسبوعي في هذا الشهر",
+          "expectedTotal": "المتوقع للفترة",
+          "actualTotal": "الفعلي للفترة",
+          "variance": "الفرق عن المتوقع"
+        },
+        "topItems": {
+          "title": "أعلى 5 أصناف هدراً",
+          "empty": "لا توجد أصناف مسجلة بالهدر خلال هذا الشهر.",
+          "columns": {
+            "item": "الصنف",
+            "qty": "الكمية",
+            "cost": "التكلفة",
+            "share": "النسبة",
+            "entries": "السجلات"
+          }
+        },
+        "topReasons": {
+          "title": "أبرز أسباب الهدر",
+          "empty": "لا توجد أسباب مسجلة خلال هذا الشهر.",
+          "columns": {
+            "reason": "السبب",
+            "cost": "التكلفة",
+            "share": "النسبة",
+            "entries": "السجلات"
+          }
+        },
+        "alerts": {
+          "title": "التنبيهات المرصودة خلال الشهر",
+          "empty": "لم تُرصد تنبيهات خلال هذا الشهر.",
+          "columns": {
+            "severity": "الأهمية",
+            "message": "تفاصيل التنبيه",
+            "date": "التاريخ",
+            "status": "الحالة"
+          },
+          "statusLabels": {
+            "UNREAD": "غير مقروء",
+            "READ": "مقروء",
+            "DISMISSED": "متجاهَل"
+          }
+        },
+        "adherence": {
+          "title": "الالتزام بتوصيات التحضير والمشتريات",
+          "description": "مقارنة الكميات الموصى بها بالمشتريات الفعلية لنفس اليوم والصنف (بهامش ±{tol}%).",
+          "pairedDays": "أيام-أصناف مقترنة",
+          "followed": "تم الالتزام بها",
+          "ignored": "تم تجاوزها / تجاهلها",
+          "adherenceRate": "نسبة الالتزام"
+        },
+        "actions": {
+          "title": "3 إجراءات مقترحة للشهر القادم",
+          "subtitle": "توصيات عملية مستخلصة آلياً من أنماط الهدر والأصناف والورديات هذا الشهر",
+          "empty": "أضف سجلات هدر كافية لتوليد توصيات تشغيلية مخصصة."
+        }
+      }
+    },
+    "suggestedActions": {
+      "itemPeakReduction": "خفّض تحضير «{item}» يوم {weekday} بمقدار {suggestedCut} {unit} (ارتفع الهدر بنسبة {pctChange}% عن خط الأساس).",
+      "itemTopShareReduction": "راجع تحضير «{item}» يوم {weekday} وقلّل الكمية بحوالي {suggestedCut} {unit} (أعلى صنف تكلفةً هذا الشهر بمبلغ {sarCost} ر.س).",
+      "shiftHotspot": "ركّز على مراجعة التحضير والتسليم في {shift} يوم {weekday} — أعلى بؤرة هدر ({sarCost} ر.س عبر {entryCount} سجل).",
+      "dominantReasonOverPrep": "اعتمد التحضير على دفعات أصغر: فرط التحضير شكّل {sharePct}% من إجمالي الهدر ({sarCost} ر.س عبر {entryCount} سجل).",
+      "dominantReasonExpired": "طبّق ملصقات الصلاحية (الأقدم أولاً FIFO) وخفّض مخزون التشغيل: انتهاء الصلاحية سبّب {sharePct}% من الهدر ({sarCost} ر.س).",
+      "dominantReasonOrderError": "راجع مطابقة الطلبات عند الكاشير ومحطة التسليم: أخطاء الطلبات شكّلت {sharePct}% من الهدر ({sarCost} ر.س).",
+      "dominantReasonDamaged": "افحص مناولة المحطات ودرجات التبريد: التلف أثناء التحضير سبّب {sharePct}% من الهدر ({sarCost} ر.س).",
+      "dominantReasonCustomerReturn": "راجع حرارة التقديم ومعايير الجودة للأطباق المرتجعة: مرتجعات العملاء شكّلت {sharePct}% من الهدر ({sarCost} ر.س).",
+      "dominantReasonOther": "وضّح تفاصيل سبب «أخرى» في اجتماعات الورديات ({sharePct}%، {sarCost} ر.س) لتحويلها إلى إجراءات قابلة للمتابعة.",
+      "loggingGap": "تأكد من إغلاق قائمة فحص الهدر آخر الوردية: وُجدت {daysCount} أيام مبيعات دون أي سجل هدر.",
+      "sustainReduction": "حافظ على مستويات التحضير الحالية وضوابط الحصص لاستمرار الوفر التقديري البالغ {amountSar} ر.س شهرياً."
+    },
+    "csv": {
+      "headers": {
+        "date": "التاريخ",
+        "wasteEntries": "عدد سجلات الهدر",
+        "wasteQtySum": "إجمالي كمية الهدر",
+        "wasteSar": "تكلفة الهدر (ر.س)",
+        "unitsSold": "الوحدات المباعة",
+        "wasteSarPerUnit": "تكلفة الهدر لكل وحدة مباعة (ر.س)",
+        "purchasesSar": "تكلفة المشتريات (ر.س)"
+      }
+    }
+  },
+  "admin": {
+    "title": "إدارة منصة وفرة",
+    "description": "تهيئة المطاعم الجديدة، تشخيص الدعم الفني، ومراقبة صحة المنصة",
+    "summaryTitle": "نظرة عامة على المطاعم المشتركة",
+    "summaryBody": "إدارة حسابات المطاعم والاشتراكات وصحة المنصة دون الدخول بصفة المدير.",
+    "tabs": {
+      "customers": "العملاء",
+      "adoption": "التبني والنشاط",
+      "feedback": "الملاحظات",
+      "health": "صحة المنصة",
+      "leads": "طلبات التجربة"
+    },
+    "stats": {
+      "totalTenants": "المطاعم",
+      "activeTenants": "اشتراكات نشطة",
+      "suspendedTenants": "حسابات معلقة",
+      "entriesLast7Days": "سجلات الهدر (7 أيام)",
+      "flaggedWape": "تنبيهات WAPE > 40%"
+    },
+    "actions": {
+      "createRestaurant": "إضافة مطعم جديد",
+      "refresh": "تحديث",
+      "editSubscription": "تعديل الاشتراك",
+      "suspend": "تعليق",
+      "reactivate": "إعادة تفعيل",
+      "diagnostics": "التشخيص",
+      "copyPassword": "نسخ كلمة المرور",
+      "copied": "تم النسخ",
+      "close": "إغلاق",
+      "save": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "creating": "جاري الإنشاء...",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "table": {
+      "searchPlaceholder": "ابحث باسم المطعم أو الرمز أو المدينة...",
+      "restaurant": "المطعم",
+      "city": "المدينة",
+      "plan": "الباقة",
+      "status": "الحالة",
+      "renewsAt": "تاريخ التجديد",
+      "users": "المستخدمون",
+      "lastActivity": "آخر نشاط",
+      "entries7d": "سجلات (7 أيام)",
+      "actions": "الإجراءات",
+      "never": "لا يوجد نشاط بعد",
+      "none": "—",
+      "empty": "لا توجد مطاعم مطابقة."
+    },
+    "adoption": {
+      "title": "التبني اليومي والمتابعة",
+      "subtitle": "معدل تسجيل الهدر من الخادم خلال آخر 14 يوماً وآخر تسجيل دخول لكل مطعم.",
+      "flaggedOnly": "المحتاجون للمتابعة فقط (لا سجلات خلال 3 أيام)",
+      "flaggedCount": "{count} مطعم يحتاج للمتابعة",
+      "allGood": "جميع المطاعم النشطة سجلت هدراً خلال آخر 3 أيام.",
+      "flagBadge": "لا سجلات منذ 3 أيام",
+      "okBadge": "نشط",
+      "suspendedBadge": "معلق",
+      "columns": {
+        "restaurant": "المطعم",
+        "sparkline": "النشاط (14 يوماً)",
+        "entries14d": "سجلات 14 يوماً",
+        "lastEntry": "آخر سجل",
+        "lastLogin": "آخر دخول"
+      },
+      "never": "أبداً",
+      "empty": "لا توجد مطاعم مطابقة.",
+      "sparklineAria": "{name}: {total} سجل خلال 14 يوماً"
+    },
+    "feedback": {
+      "title": "ملاحظات مستخدمي التجربة",
+      "subtitle": "التقييمات والملاحظات المرسلة عبر زر الملاحظات داخل التطبيق.",
+      "filterRestaurant": "المطعم",
+      "allRestaurants": "جميع المطاعم",
+      "platformWide": "إدارة المنصة",
+      "filterRating": "التقييم",
+      "allRatings": "كل التقييمات",
+      "lowRatings": "3 نجوم فأقل",
+      "exactStars": "{stars} نجوم",
+      "exactOneStar": "نجمة واحدة",
+      "searchPlaceholder": "ابحث في النص أو المستخدم أو الصفحة...",
+      "pageLabel": "الصفحة",
+      "empty": "لا توجد ملاحظات تطابق الفلاتر المختارة.",
+      "totalShown": "عرض {count} من أصل {total}"
+    },
+    "plans": {
+      "SMALL": "صغيرة",
+      "MEDIUM": "متوسطة",
+      "CHAIN": "سلاسل مطاعم"
+    },
+    "statuses": {
+      "TRIAL": "تجريبي",
+      "ACTIVE": "نشط",
+      "PAST_DUE": "متأخر السداد",
+      "CANCELLED": "ملغي",
+      "SUSPENDED": "معلق"
+    },
+    "createDialog": {
+      "title": "إنشاء مطعم وحساب المدير الأول",
+      "subtitle": "ينشئ رمز دخول فريد للفرع واشتراكاً مفعلاً وحساب المدير الأول بكلمة مرور مؤقتة تظهر مرة واحدة مع إرسال رسالة الترحيب.",
+      "nameEnLabel": "اسم المطعم (بالإنجليزية)",
+      "nameEnPlaceholder": "مثال: Najd Village Kitchen",
+      "nameArLabel": "اسم المطعم (بالعربية)",
+      "nameArPlaceholder": "مثال: مطبخ القرية النجدية",
+      "cityLabel": "المدينة",
+      "cityPlaceholder": "الرياض",
+      "typeLabel": "نوع المنشأة",
+      "typePlaceholder": "مطعم عائلي / مطبخ فندقي",
+      "planLabel": "باقة الاشتراك",
+      "managerNameLabel": "اسم المدير الأول",
+      "managerNamePlaceholder": "خالد العتيبي",
+      "managerEmailLabel": "البريد الإلكتروني للمدير",
+      "managerEmailPlaceholder": "manager@najdkitchen.sa",
+      "managerLocaleLabel": "لغة التطبيق ورسائل الترحيب المفضلة",
+      "localeAr": "العربية",
+      "localeEn": "English",
+      "credentialsTitle": "تم إنشاء المطعم — احفظ كلمة المرور المؤقتة الآن",
+      "credentialsWarning": "تظهر كلمة المرور المؤقتة مرة واحدة فقط. شاركها بأمان مع مدير المطعم مع رمز الدخول الخاص بالفرع.",
+      "generatedCode": "رمز دخول الفرع",
+      "managerLoginEmail": "بريد دخول المدير",
+      "temporaryPassword": "كلمة المرور المؤقتة (تظهر مرة واحدة)",
+      "welcomeEmailSent": "تم إرسال/تسجيل بريد الترحيب بنجاح.",
+      "welcomeEmailFailed": "تم إنشاء المطعم ولكن تعذر إرسال بريد الترحيب؛ شارك بيانات الدخول يدوياً."
+    },
+    "editSubDialog": {
+      "title": "تعديل الاشتراك",
+      "subtitle": "تعديل الباقة وحالة الاشتراك وتاريخ التجديد يدوياً لـ {name}.",
+      "planLabel": "الباقة",
+      "statusLabel": "حالة الاشتراك",
+      "renewsAtLabel": "تاريخ التجديد (اختياري)",
+      "clearDate": "مسح التاريخ"
+    },
+    "diagnostics": {
+      "title": "تشخيص الدعم الفني (للقراءة فقط)",
+      "privacyBanner": "تم تفعيل حاجز الخصوصية: الدخول بصفة المدير معطّل. تعرض هذه اللوحة الأعداد الإجمالية وسجلات الاستيراد والتنبيهات فقط دون تفاصيل البيانات التشغيلية.",
+      "loading": "جاري تحميل بيانات التشخيص...",
+      "loadError": "تعذر تحميل بيانات التشخيص.",
+      "countsTitle": "الأعداد الإجمالية للمنشأة",
+      "usersCount": "المستخدمون (النشطون / الإجمالي)",
+      "menuItemsCount": "الأصناف (النشطة / الإجمالي)",
+      "wasteCount": "سجلات الهدر",
+      "salesCount": "سجلات المبيعات",
+      "purchasesCount": "سجلات المشتريات",
+      "forecastsCount": "نتائج التوقعات",
+      "alertsCount": "التنبيهات (غير المقروءة / الإجمالي)",
+      "importsTitle": "أحدث عمليات الاستيراد",
+      "importsEmpty": "لا توجد عمليات استيراد مسجلة بعد.",
+      "importFile": "الملف",
+      "importType": "النوع",
+      "importRows": "مستورد / مرفوض / مكرر",
+      "importDate": "تاريخ الرفع",
+      "alertsTitle": "بيانات أحدث التنبيهات",
+      "alertsEmpty": "لا توجد تنبيهات مسجلة بعد.",
+      "alertKey": "مفتاح التنبيه",
+      "alertSeverity": "الشدة",
+      "alertStatus": "الحالة",
+      "alertCreated": "الإنشاء / الإشعار"
+    },
+    "health": {
+      "dailyTitle": "سجلات الهدر اليومية على المنصة (آخر 14 يوماً)",
+      "dailySubtitle": "عدد سجلات الهدر المجمعة يومياً عبر جميع المنشآت بتوقيت الرياض.",
+      "date": "التاريخ",
+      "entriesCount": "السجلات",
+      "activeTenants": "منشآت نشطة",
+      "cronTitle": "حالة المهام المجدولة (AuditLog)",
+      "cronSubtitle": "آخر وقت تشغيل ونتيجة مسجلة لكل مهمة مجدولة.",
+      "cronJobs": {
+        "daily": "التحليلات اليومية والتوقعات والتنبيهات الحرجة",
+        "weekly": "ملخص التحضير الأسبوعي",
+        "monthly": "إشعارات التقرير الشهري",
+        "forecast": "تقييم دقة التوقعات"
+      },
+      "cronStatus": {
+        "OK": "ناجح",
+        "PARTIAL": "فشل جزئي",
+        "FAILED": "فاشل",
+        "NEVER_RUN": "لم يُشغّل بعد"
+      },
+      "cronLastRun": "آخر تشغيل",
+      "cronTenants": "المنشآت",
+      "cronEmails": "الرسائل",
+      "wapeTitle": "دقة التوقعات حسب المنشأة (متوسط WAPE)",
+      "wapeSubtitle": "متوسط نسبة الخطأ المرجحة (WAPE) للتوقعات المقيّمة. تُميّز المنشآت الأعلى من {threshold}% بشارة تنبيه.",
+      "wapeEmpty": "لا توجد تقييمات توقع مسجلة بعد.",
+      "wapeNoData": "غير مقيّم",
+      "wapeOk": "ضمن النطاق",
+      "wapeFlagged": "انحراف مرتفع (> {threshold}%)",
+      "evaluationsCount": "التقييمات",
+      "latestEvaluation": "آخر تقييم"
+    },
+    "toasts": {
+      "created": "تم إنشاء المطعم وحساب المدير بنجاح.",
+      "subscriptionUpdated": "تم تحديث بيانات الاشتراك.",
+      "suspended": "تم تعليق المطعم. لن يتمكن مستخدموه من تسجيل الدخول.",
+      "reactivated": "تمت إعادة تفعيل المطعم.",
+      "deleted": "تم حذف المطعم وجميع بياناته نهائياً.",
+      "actionFailed": "تعذر تنفيذ إجراء الإدارة."
+    },
+    "deleteDialog": {
+      "title": "الحذف النهائي لبيانات المطعم",
+      "subtitle": "سيؤدي هذا الإجراء إلى محو {name} وجميع حسابات المستخدمين والأصناف وسجلات الهدر والمبيعات والمشتريات والتوقعات والتنبيهات وسجل التدقيق الخاص به نهائياً.",
+      "warning": "إجراء حذف لا يمكن التراجع عنه وفق متطلبات الخصوصية: سيتم مسح كافة البيانات التشغيلية وحسابات الموظفين الخاصة بهذا المطعم.",
+      "confirmLabel": "اكتب «{name}» لتأكيد الحذف النهائي"
+    },
+    "leads": {
+      "title": "طلبات الانضمام للتجربة",
+      "subtitle": "متابعة طلبات المطاعم والفنادق المتقدمة للتجربة الأولى.",
+      "countLabel": "{count} طلبات",
+      "newBadge": "{count} جديد",
+      "exportCsv": "تصدير CSV",
+      "searchPlaceholder": "ابحث بالاسم أو المطعم أو الجوال أو البريد...",
+      "statusFilterLabel": "الحالة",
+      "cityFilterLabel": "المدينة",
+      "allStatuses": "جميع الحالات",
+      "allCities": "جميع المدن",
+      "empty": "لا توجد طلبات مطابقة للتصفية الحالية.",
+      "saveNotes": "حفظ الملاحظات",
+      "saving": "جاري الحفظ...",
+      "updatedToast": "تم تحديث الطلب.",
+      "updateErrorToast": "تعذر تحديث الطلب.",
+      "notesPlaceholder": "ملاحظات المكالمة أو موعد المتابعة أو الملاءمة...",
+      "noEmail": "بدون بريد",
+      "consentRecorded": "موافق",
+      "columns": {
+        "createdAt": "التاريخ",
+        "contact": "مقدم الطلب",
+        "business": "المنشأة",
+        "city": "المدينة",
+        "branches": "الفروع",
+        "posSystem": "الكاشير",
+        "source": "الحملة / UTM",
+        "status": "الحالة",
+        "notes": "الملاحظات"
+      },
+      "statuses": {
+        "NEW": "جديد",
+        "CONTACTED": "تم التواصل",
+        "PILOT": "قيد التجربة",
+        "NOT_FIT": "غير مناسب"
+      },
+      "cities": {
+        "MAKKAH": "مكة المكرمة",
+        "JEDDAH": "جدة",
+        "OTHER": "مدينة أخرى"
+      },
+      "posSystems": {
+        "FOODICS": "فودكس",
+        "MARN": "مرن",
+        "OTHER": "نظام آخر",
+        "NONE": "لا يوجد"
+      }
+    }
+  },
+  "designCheck": {
+    "badge": "فحص بيئة التطوير",
+    "title": "فحص نظام التصميم والاتجاه العربي (RTL) في وفرة",
+    "subtitle": "معاينة تفاعلية للألوان المعتمدة، والخطوط، وخصائص التخطيط المنطقية، وأزرار المطبخ الكبيرة (48 بكسل فأكثر)، وتنسيق الأرقام والتواريخ.",
+    "paletteTitle": "لوحة الألوان المعتمدة للعلامة التجارية",
+    "paletteDescription": "متغيرات CSS مربوطة مباشرة بسمات Tailwind ومكونات shadcn/ui",
+    "colors": {
+      "darkTeal": "الأخضر الداكن الأساسي",
+      "midTeal": "الأخضر المتوسط المساند",
+      "gold": "الذهبي المميز",
+      "lightTint": "الخلفية الفاتحة",
+      "text": "لون النص الأساسي"
+    },
+    "formattingTitle": "تنسيق الأرقام والعملة والتاريخ الهجري والميلادي",
+    "formattingDescription": "تنسيق قياسي بالأرقام الغربية (0–9) بتوقيت الرياض وعملة الريال السعودي",
+    "kpiWasteCostLabel": "تكلفة الهدر الأسبوعية",
+    "kpiSavingsLabel": "الوفر الشهري التقديري",
+    "kpiQuantityLabel": "إجمالي الوزن المهدر",
+    "kpiDateLabel": "تاريخ العمل (ميلادي + هجري أم القرى)",
+    "buttonsTitle": "الأزرار والشارات والأيقونات الاتجاهية",
+    "buttonsDescription": "أزرار الإدارة القياسية وأزرار شاشات المطبخ (48 بكسل+) مع انعكاس الأسهم في العربية",
+    "btnPrimary": "إجراء أساسي",
+    "btnSecondary": "إجراء مساند",
+    "btnOutline": "إجراء بإطار",
+    "btnGhost": "إجراء خفيف",
+    "btnDestructive": "حذف السجل",
+    "btnDirectional": "الانتقال إلى التقرير",
+    "btnKitchenTouch": "زر شاشة المطبخ (48 بكسل+)",
+    "badgeDefault": "فرع نشط",
+    "badgeSecondary": "الوردية المسائية",
+    "badgeAccent": "أولوية عالية",
+    "badgeOutline": "فرع مكة المكرمة",
+    "badgeDestructive": "ارتفاع حاد",
+    "inputsTitle": "حقول الإدخال والقوائم المنسدلة",
+    "inputsDescription": "حقول النصوص والكميات وقوائم الاختيار بمحاذاة منطقية",
+    "itemSearchLabel": "اسم الصنف أو الرمز",
+    "itemSearchPlaceholder": "مثال: MANDI-LAMB أو مندي لحم",
+    "quantityInputLabel": "الكمية المهدرة (كجم)",
+    "quantityInputPlaceholder": "2.50",
+    "reasonSelectLabel": "سبب الهدر",
+    "reasonSelectPlaceholder": "اختر سبب الهدر",
+    "tableTitle": "أحدث سجلات الهدر في المطبخ",
+    "tableDescription": "جدول نموذجي للتحقق من محاذاة الأعمدة والأرقام في الاتجاهين العربي والإنجليزي",
+    "colCode": "الرمز",
+    "colItem": "الصنف",
+    "colShift": "الوردية",
+    "colReason": "سبب الهدر",
+    "colQuantity": "الكمية",
+    "colCost": "تكلفة الهدر",
+    "colDate": "تاريخ التسجيل",
+    "sampleItems": {
+      "mandi": "أرز مندي لحم بلدي",
+      "kabsa": "كبسة دجاج مشوي",
+      "hummus": "حمص شامي طازج",
+      "kunafa": "كنافة نابلسية بالجبن"
+    },
+    "dialogSectionTitle": "التحقق من النوافذ المنبثقة (Dialog)",
+    "dialogSectionDescription": "اختبار النافذة المنبثقة ومحاذاة العنوان والأزرار في الاتجاهين",
+    "openDialogButton": "فتح نافذة تأكيد الهدر",
+    "dialogTitle": "تأكيد تسجيل الهدر الغذائي",
+    "dialogDescription": "يرجى مراجعة تفاصيل عملية الهدر أدناه قبل اعتمادها في سجل المطعم.",
+    "dialogConfirm": "اعتماد وحفظ السجل"
+  },
+  "dashboard": {
+    "title": "لوحة تحكم مدير المطعم",
+    "subtitle": "تحليل تكلفة الهدر والأنماط وتوصيات التحضير والشراء الأسبوعية",
+    "rangeSelectorLabel": "الفترة الزمنية",
+    "ranges": {
+      "7": "آخر 7 أيام",
+      "30": "آخر 30 يوماً",
+      "90": "آخر 90 يوماً"
+    },
+    "kpis": {
+      "wasteCostTitle": "إجمالي تكلفة الهدر",
+      "wasteCostSub": "مقارنة بالفترة السابقة ({days} يوماً)",
+      "wastePctPurchasesTitle": "الهدر كنسبة من المشتريات",
+      "wastePctPurchasesSub": "مقارنة بالفترة السابقة",
+      "importPurchasesPrompt": "استورد المشتريات لعرض هذه النسبة",
+      "importPurchasesLink": "الانتقال للاستيراد",
+      "entriesCountTitle": "عدد سجلات الهدر",
+      "entriesCountSub": "مقارنة بالفترة السابقة ({days} يوماً)",
+      "topReasonTitle": "أعلى سبب للهدر",
+      "topReasonShare": "{pct}% من تكلفة الهدر",
+      "noDataYet": "لا توجد بيانات بعد",
+      "newChange": "جديد",
+      "ptsDelta": "{pts} نقطة"
+    },
+    "trend": {
+      "title": "اتجاه الهدر اليومي",
+      "description": "التكلفة اليومية بالريال السعودي مع المتوسط المتحرك لـ 7 أيام",
+      "dailySeries": "الهدر اليومي (ر.س)",
+      "movingAvg7d": "المتوسط المتحرك (7 أيام)",
+      "empty": "لا توجد سجلات هدر في هذه الفترة."
+    },
+    "itemsChart": {
+      "title": "أكثر 8 أصناف هدراً",
+      "description": "مرتبة حسب التكلفة بالريال ومصنفة وفق الأثر التراكمي",
+      "empty": "لا توجد أصناف مهدورة في هذه الفترة.",
+      "tierHigh": "مرتفع (أول 50%)",
+      "tierMedium": "متوسط (30% التالية)",
+      "tierLow": "منخفض (20% المتبقية)"
+    },
+    "heatmap": {
+      "title": "خريطة الهدر: اليوم × الوردية",
+      "description": "توزيع تكلفة الهدر بالريال السعودي بتوقيت الرياض",
+      "weekdayHeader": "اليوم",
+      "legendLow": "أقل",
+      "legendHigh": "أعلى",
+      "cellAria": "{weekday}، {shift}: {cost}، {count} سجل",
+      "shifts": {
+        "MORNING": "الصباحية",
+        "EVENING": "المسائية",
+        "NIGHT": "الليلية"
+      }
+    },
+    "reasons": {
+      "title": "الأسباب المصنفة للهدر",
+      "description": "ترتيب أسباب الهدر حسب التكلفة والنسبة",
+      "entriesCount": "{count} سجل",
+      "empty": "لا توجد أسباب مسجلة في هذه الفترة."
+    },
+    "alerts": {
+      "title": "التنبيهات الذكية",
+      "description": "التنبيهات الحرجة أولاً استناداً إلى التحليل الليلي",
+      "unreadCount": "{count} غير مقروء",
+      "markRead": "تحديد كمقروء",
+      "dismiss": "إخفاء",
+      "readBadge": "مقروء",
+      "unreadBadge": "جديد",
+      "severity": {
+        "CRITICAL": "حرج",
+        "WARNING": "تحذير",
+        "INFO": "معلومة"
+      },
+      "empty": "لا توجد تنبيهات نشطة حالياً.",
+      "updatedRead": "تم تحديد التنبيه كمقروء",
+      "updatedDismissed": "تم إخفاء التنبيه",
+      "updateError": "تعذر تحديث حالة التنبيه"
+    },
+    "recommendations": {
+      "title": "توصيات التحضير والشراء الأسبوعية",
+      "description": "كميات موصى بها للأيام السبعة القادمة مع نطاق التوقع وتوضيح العوامل",
+      "allDays": "جميع الأيام السبعة",
+      "columns": {
+        "item": "الصنف",
+        "day": "اليوم",
+        "recommended": "الكمية الموصى بها",
+        "range": "النطاق المحتمل",
+        "why": "التوضيح"
+      },
+      "whyButton": "لماذا؟",
+      "insufficientData": "لا توجد بيانات كافية بعد (يتطلب 14 يوماً من المبيعات)",
+      "daysProgress": "المتوفر: {count} / 14 يوماً",
+      "whyFields": {
+        "weekdayMean": "متوسط اليوم الأسبوعي",
+        "eventMultiplier": "معامل الموسم / الحدث",
+        "trend": "اتجاه الطلب (14 / 28 يوماً)",
+        "safetyMargin": "هامش الأمان",
+        "criticalRatio": "النسبة الحرجة (Newsvendor)",
+        "noEvent": "عادي (1.0×)"
+      },
+      "emptyItems": "أضف أصناف القائمة ثم شغّل التوقعات لعرض التوصيات."
+    },
+    "checklist": {
+      "title": "مرحباً بك في وفرة — قائمة تجهيز المطعم",
+      "description": "أكمل هذه الخطوات الخمس لبدء تشغيل وفرة بالكامل وتفعيل الرؤى اليومية:",
+      "progressSummary": "{completed} من {total} خطوات مكتملة",
+      "stepMenuTitle": "1. إضافة أصناف القائمة وتكاليفها",
+      "stepMenuCta": "إدارة القائمة",
+      "stepStaffTitle": "2. دعوة طاقم المطبخ وإصدار رمز PIN",
+      "stepStaffCta": "إدارة الطاقم",
+      "stepImportsTitle": "3. استيراد سجل المبيعات التاريخي",
+      "stepImportsCta": "استيراد CSV",
+      "stepWasteTitle": "4. تسجيل أول عملية هدر في المطبخ",
+      "stepWasteCta": "شاشة تسجيل الهدر",
+      "stepInsightsTitle": "5. جاهزية أولى الرؤى والتوصيات",
+      "stepInsightsCta": "متابعة اللوحة",
+      "stepInsightsPending": "تظهر تلقائياً بعد التشغيل اليومي",
+      "completed": "مكتمل",
+      "pending": "متبقي"
+    },
+    "weekdays": {
+      "0": "الأحد",
+      "1": "الإثنين",
+      "2": "الثلاثاء",
+      "3": "الأربعاء",
+      "4": "الخميس",
+      "5": "الجمعة",
+      "6": "السبت"
+    }
+  },
+  "notifications": {
+    "settings": {
+      "title": "إعدادات إشعارات البريد الإلكتروني",
+      "description": "اختر التنبيهات والتقارير الدورية التي ترغب في استلامها عبر البريد الإلكتروني لفرعك.",
+      "badge": "التنبيهات التلقائية",
+      "saveButton": "حفظ التفضيلات",
+      "savingButton": "جاري الحفظ...",
+      "savedToast": "تم حفظ تفضيلات الإشعارات بنجاح",
+      "errorToast": "تعذر حفظ تفضيلات الإشعارات",
+      "emailAddressLabel": "البريد المستلم للإشعارات",
+      "noEmailWarning": "لا يوجد بريد إلكتروني مسجل لهذا الحساب؛ لن تُرسل رسائل حتى يتم إضافة بريد.",
+      "items": {
+        "criticalAlerts": {
+          "title": "تنبيهات الهدر الحرجة",
+          "description": "إرسال رسالة فورية عند رصد ارتفاع حرج غير معتاد في الهدر (نفس التنبيه لا يُرسل مرتين)."
+        },
+        "weeklySummary": {
+          "title": "ملخص توصيات التحضير الأسبوعي",
+          "description": "ملخص أسبوعي بالكميات الموصى بشرائها وتحضيرها خلال الأيام السبعة القادمة."
+        },
+        "monthlyReport": {
+          "title": "تقرير الوفر الشهري بالريال",
+          "description": "رسالة في اليوم الأول من كل شهر تتضمن ملخص الوفر التقديري ورابط التقرير التفصيلي."
+        }
+      }
+    },
+    "emails": {
+      "brandHeader": "وفرة / Wafrah",
+      "brandTagline": "منصة ذكية للحد من الهدر الغذائي",
+      "footerNote": "وصلتك هذه الرسالة وفق تفضيلات الإشعارات الخاصة بحسابك في وفرة.",
+      "managePreferencesLabel": "إدارة تفضيلات الإشعارات",
+      "criticalAlert": {
+        "subject": "تنبيه حرج للهدر — {restaurant} ({date})",
+        "title": "رُصد ارتفاع حرج في هدر الطعام",
+        "intro": "أظهرت التحليلات اليومية لفرع «{restaurant}» وجود {count} تنبيه حرج يتطلب المراجعة الفورية:",
+        "severityTag": "حرج",
+        "ctaLabel": "فتح لوحة التحكم والتنبيهات"
+      },
+      "weeklySummary": {
+        "subject": "توصيات التحضير الأسبوعية جاهزة — {restaurant}",
+        "title": "توصيات التحضير والمشتريات للأيام السبعة القادمة",
+        "intro": "اكتملت التوقعات الأسبوعية لفرع «{restaurant}» للفترة {horizon} بإجمالي {itemCount} صنف.",
+        "wasteSummaryLabel": "تكلفة الهدر خلال آخر 7 أيام: {wasteSar}",
+        "tableHeaders": {
+          "item": "الصنف",
+          "recommendedTotal": "الموصى به (7 أيام)",
+          "dailyAvg": "المتوسط اليومي"
+        },
+        "noItemsNote": "ستظهر توصيات الأصناف فور اكتمال 14 يوماً من سجل المبيعات.",
+        "ctaLabel": "استعراض التوصيات في لوحة التحكم"
+      },
+      "monthlyReport": {
+        "subject": "تقرير الوفر الشهري جاهز ({month}) — {restaurant}",
+        "title": "تقرير الوفر الشهري وهدر الطعام",
+        "intro": "أصبح التقرير الشهري لفرع «{restaurant}» لشهر {month} جاهزاً للمراجعة والطباعة.",
+        "estimateTag": "تقديري",
+        "savedHeadline": "الوفر الشهري التقديري: {amount}",
+        "increasedHeadline": "ارتفع الهدر بمقدار {amount} مقارنة بخط الأساس",
+        "flatHeadline": "دون تغيير مقارنة بخط الأساس",
+        "calibratingHeadline": "خط الأساس قيد المعايرة (يتبقى {days} يوماً)",
+        "wasteTotalLabel": "إجمالي تكلفة الهدر للشهر: {wasteSar}",
+        "ctaLabel": "فتح التقرير الشهري"
+      },
+      "welcome": {
+        "subject": "مرحباً بك في وفرة — تم إنشاء حسابك لفرع {restaurant}",
+        "title": "تم تفعيل حسابك في منصة وفرة",
+        "greeting": "مرحباً {name}،",
+        "intro": "تم إعداد حسابك بنجاح للوصول إلى مساحة عمل مطعمك لمتابعة هدر الطعام وتوصيات التحضير والوفر المالي.",
+        "branchLabel": "الفرع",
+        "roleLabel": "الدور الوظيفي",
+        "ctaLabel": "تسجيل الدخول إلى وفرة"
+      },
+      "leadConfirmation": {
+        "subject": "تم استلام طلبك لتجربة وفرة — {businessName}",
+        "title": "تم استلام طلب الانضمام للتجربة",
+        "greeting": "مرحباً {name}،",
+        "intro": "شكراً لتسجيل {businessName} في التجربة الأولى لمنصة وفرة.",
+        "followUp": "سيتواصل معك فريق وفرة عبر واتساب أو الهاتف خلال يوم عمل واحد لتأكيد جاهزية التشغيل وتحديد موعد البدء.",
+        "summaryTitle": "ملخص طلبك",
+        "cityLabel": "المدينة",
+        "branchesLabel": "عدد الفروع",
+        "posLabel": "نظام الكاشير الحالي",
+        "whatsappCta": "تواصل معنا عبر واتساب",
+        "footerNote": "تصلك هذه الرسالة تأكيداً لطلبك المسجل في صفحة تجربة وفرة."
+      },
+      "leadFounder": {
+        "subject": "طلب تجربة جديد: {businessName} ({city}) — {branches} فروع",
+        "title": "طلب جديد للتجربة الأولى",
+        "intro": "تم تسجيل طلب جديد من نموذج التجربة على الموقع.",
+        "openAdminCta": "مراجعة الطلب في لوحة الإدارة",
+        "fields": {
+          "leadId": "رقم الطلب",
+          "name": "الاسم",
+          "role": "الدور الوظيفي",
+          "businessName": "المطعم / الفندق",
+          "city": "المدينة",
+          "phone": "الجوال / واتساب",
+          "email": "البريد الإلكتروني",
+          "branches": "عدد الفروع",
+          "posSystem": "نظام الكاشير",
+          "locale": "لغة النموذج",
+          "consent": "تأكيد الموافقة",
+          "utm": "بيانات الحملة UTM",
+          "submittedAt": "تاريخ الإرسال"
+        }
+      }
+    }
+  },
+  "dataPrivacy": {
+    "exportCard": {
+      "title": "تصدير بيانات المطعم (PDPL)",
+      "description": "تنزيل نسخة كاملة من بيانات مطعمك المخزنة في وفرة كملفات CSV مضغوطة في أرشيف ZIP.",
+      "contentsNote": "يشمل ملف المطعم، قائمة المستخدمين (دون كلمات المرور أو رموز PIN)، الأصناف، سجلات الهدر، المبيعات والمشتريات، التوقعات، التنبيهات، تفضيلات الإشعارات، الاشتراك، سجل الاستيراد، وسجلات التدقيق الخاصة بالمطعم.",
+      "downloadButton": "تصدير بيانات المطعم (ZIP)",
+      "downloading": "جاري تجهيز ملف ZIP...",
+      "downloadSuccess": "تم تنزيل أرشيف بيانات المطعم.",
+      "downloadError": "تعذر تصدير بيانات المطعم."
+    }
+  },
+  "legalPage": {
+    "backToLogin": "العودة لتسجيل الدخول",
+    "viewPrivacy": "سياسة الخصوصية",
+    "viewTerms": "شروط الخدمة"
+  },
+  "privacy": {
+    "title": "سياسة الخصوصية",
+    "lastUpdated": "الحالة: بانتظار المراجعة القانونية",
+    "placeholder": "TO BE REPLACED BY LEGAL TEXT — سيتم استبدال هذا النص بالصياغة القانونية المعتمدة"
+  },
+  "terms": {
+    "title": "شروط الخدمة",
+    "lastUpdated": "الحالة: بانتظار المراجعة القانونية",
+    "placeholder": "TO BE REPLACED BY LEGAL TEXT — سيتم استبدال هذا النص بالصياغة القانونية المعتمدة"
+  },
+  "settingsNav": {
+    "title": "الإعدادات",
+    "staff": "طاقم المطبخ",
+    "notifications": "الإشعارات والتنبيهات"
+  },
+  "feedback": {
+    "triggerLabel": "ملاحظات",
+    "dialogTitle": "إرسال ملاحظات التجربة",
+    "dialogSubtitle": "شاركنا تقييمك السريع أو أي ملاحظة حول صفحة {page}.",
+    "ratingLabel": "كيف تقيم تجربتك هنا؟",
+    "starLabel": "{star} من 5",
+    "messageLabel": "ملاحظاتك",
+    "messagePlaceholder": "ما الذي أعجبك أو ما الصعوبة التي واجهت فريقك؟",
+    "submit": "إرسال الملاحظة",
+    "submitting": "جاري الإرسال...",
+    "cancel": "إلغاء",
+    "successToast": "شكراً لك — تم إرسال ملاحظتك بنجاح.",
+    "errorToast": "تعذر إرسال الملاحظة، يرجى المحاولة مرة أخرى.",
+    "selectRatingError": "يرجى اختيار تقييم من 1 إلى 5.",
+    "emptyMessageError": "يرجى كتابة ملاحظة قصيرة."
+  },
+  "staff": {
+    "title": "طاقم المطبخ وبطاقة البدء السريع",
+    "subtitle": "أنشئ حسابات لطاقم المطبخ برمز PIN من 4 أرقام، وأعد تعيين الرمز أو اطبع بطاقة الدخول للتابلت.",
+    "addCardTitle": "إضافة فرد جديد لطاقم المطبخ",
+    "addCardDescription": "سيتم توليد رمز PIN عشوائي من 4 أرقام وعرضه مرة واحدة فقط لمشاركته.",
+    "nameLabel": "الاسم الكامل",
+    "namePlaceholder": "مثال: طارق الدوسري",
+    "usernameLabel": "اسم المستخدم",
+    "usernamePlaceholder": "tariq",
+    "usernameHint": "أحرف إنجليزية صغيرة أو أرقام أو نقاط أو شرطات فقط.",
+    "localeLabel": "لغة التابلت",
+    "localeAr": "العربية",
+    "localeEn": "English",
+    "createButton": "إنشاء حساب الموظف",
+    "creatingButton": "جاري الإنشاء...",
+    "directoryTitle": "قائمة طاقم المطبخ",
+    "directoryCount": "{active} نشط من أصل {total}",
+    "emptyDirectory": "لم تتم إضافة أي موظف مطبخ بعد. أضف أول حساب من النموذج أعلاه.",
+    "colName": "الاسم",
+    "colUsername": "اسم المستخدم",
+    "colStatus": "الحالة",
+    "colLastLogin": "آخر دخول",
+    "colActions": "الإجراءات",
+    "statusActive": "نشط",
+    "statusInactive": "معطل",
+    "neverLoggedIn": "لم يسجل بعد",
+    "resetPinButton": "تغيير PIN",
+    "deactivateButton": "تعطيل",
+    "reactivateButton": "تفعيل",
+    "updatingAction": "جاري التحديث...",
+    "pinModalCreatedTitle": "تم إنشاء الحساب — احفظ رمز PIN الآن",
+    "pinModalResetTitle": "تم إصدار رمز PIN جديد",
+    "pinModalWarning": "لأسباب أمنية، يظهر رمز الدخول هذا مرة واحدة فقط ولا يمكن استعراضه لاحقاً. دوّنه أو سلّمه مباشرة للموظف.",
+    "pinLabel": "رمز الدخول (4 أرقام)",
+    "copyPin": "نسخ الرمز واسم المستخدم",
+    "copied": "تم النسخ",
+    "closePinModal": "تم",
+    "createdToast": "تم إنشاء حساب الموظف.",
+    "pinResetToast": "تم إصدار رمز PIN جديد.",
+    "deactivatedToast": "تم تعطيل حساب الموظف.",
+    "reactivatedToast": "تمت إعادة تفعيل حساب الموظف.",
+    "errorToast": "تعذر إتمام الطلب.",
+    "quickStartTitle": "بطاقة البدء السريع لتابلت المطبخ",
+    "quickStartSubtitle": "اطبع هذه البطاقة وثبتها بجانب محطة التحضير في المطبخ.",
+    "printCardButton": "طباعة بطاقة البدء السريع",
+    "copyLoginUrlButton": "نسخ رابط الدخول",
+    "qrAlt": "رمز QR لفتح شاشة دخول المطبخ مع تعبئة رمز المطعم تلقائياً",
+    "cardHeaderTitle": "وفرة — سجل هدر المطبخ / Wafrah — Kitchen Waste Log",
+    "cardRestaurantCodeLabel": "رمز المطعم / Restaurant Code",
+    "cardLoginUrlLabel": "رابط الدخول / Login Link",
+    "cardStep1": "١. امسح رمز QR أو افتح الرابط على تابلت المطبخ / 1. Scan QR or open the link on the kitchen tablet",
+    "cardStep2": "٢. أدخل رمز المطعم + اسم المستخدم + رمز PIN من 4 أرقام / 2. Enter Restaurant Code + Username + 4-digit PIN",
+    "cardStep3": "٣. اختر الصنف ← السبب ← حفظ في 3 نقرات (يعمل بدون إنترنت) / 3. Pick item -> reason -> save in 3 taps (works offline)"
+  },
+  "help": {
+    "title": "دليل المساعدة والتشغيل",
+    "subtitle": "إجابات سريعة لأسئلة طاقم المطبخ ومديري المطاعم.",
+    "backToApp": "العودة إلى مساحة العمل",
+    "q1Title": "كيف يسجل طاقم المطبخ الهدر؟",
+    "q1Body": "سجل الدخول من تبويب طاقم المطبخ برمز المطعم واسم المستخدم ورمز PIN من 4 أرقام. اختر الصنف والسبب وعدّل الكمية عند الحاجة ثم اضغط تسجيل الهدر. يمكنك التراجع فوراً عند الخطأ.",
+    "q2Title": "كيف يعمل التسجيل بدون إنترنت؟",
+    "q2Body": "إذا انقطع الاتصال في المطبخ، تُحفظ السجلات بأمان في متصفح الجهاز مع علامة (بانتظار المزامنة). وعند عودة الإنترنت، يرفعها النظام تلقائياً دون أي تكرار.",
+    "q3Title": "كيف تُحسب التقديرات والوفورات؟",
+    "q3Body": "يحسب وفرة تكلفة الهدر بالريال بناءً على تكلفة الوحدة المدخلة في القائمة، ويقارن متوسط الهدر قبل وبعد التوصيات. هذه الأرقام تقديرات تشغيلية وليست بيانات محاسبية مدققة.",
+    "q4Title": "بمن نتواصل للدعم الفني؟",
+    "q4Unconfigured": "لم يتم تعيين بيانات التواصل للدعم في البيئة الحالية. يرجى التواصل مع مسؤول التشغيل الذي سلّمكم الحساب.",
+    "contactNameLabel": "مسؤول الدعم",
+    "contactEmailLabel": "البريد الإلكتروني",
+    "contactPhoneLabel": "الهاتف",
+    "contactWhatsappLabel": "واتساب",
+    "openWhatsapp": "تواصل عبر واتساب"
+  },
+  "landing": {
+    "meta": {
+      "title": "وفرة — نظام ذكي لإدارة هدر الطعام في المطاعم والفنادق بالسعودية",
+      "description": "سجّل هدر المطبخ في 10 ثوانٍ حتى بدون إنترنت، واحصل على توصيات شراء وتحضير أسبوعية وتقرير توفير تقديري بالريال. التجربة الأولى في مكة وجدة.",
+      "ogImageAlt": "وفرة — منصة تسجيل هدر المطبخ وتقدير التوفير بالريال للمطاعم والفنادق في السعودية"
+    },
+    "header": {
+      "brandName": "وفرة",
+      "pilotTag": "تجربة مكة وجدة",
+      "signIn": "تسجيل الدخول",
+      "goToWorkspace": "الذهاب إلى النظام",
+      "requestPilot": "احجز مكانك في التجربة",
+      "shortCta": "احجز مكانك",
+      "switchLanguage": "English",
+      "switchLanguageLabel": "Switch to English",
+      "skipToContent": "انتقل إلى المحتوى الرئيسي",
+      "navLabel": "أقسام الصفحة",
+      "navProblem": "المشكلة",
+      "navHowItWorks": "كيف يعمل",
+      "navFeatures": "المزايا",
+      "navCalculator": "حاسبة التوفير",
+      "navPricing": "الأسعار",
+      "navFaq": "الأسئلة الشائعة"
+    },
+    "hero": {
+      "eyebrow": "التجربة الأولى • مكة وجدة",
+      "title": "لا ترمِ أرباحك في القمامة",
+      "subtitle": "وفرة نظام ذكي يسجّل هدر الطعام في 10 ثوانٍ، ويخبرك كم تشتري وتحضّر كل أسبوع، ويعرض لك التوفير التقديري بالريال.",
+      "primaryCta": "احجز مكانك في التجربة",
+      "secondaryCta": "تواصل عبر واتساب",
+      "note": "مقاعد محدودة في التجربة الأولى بمكة وجدة",
+      "previewBadge": "نموذج توضيحي • أرقام تقديرية",
+      "previewHeading": "ملخص هدر المطبخ الأسبوعي",
+      "previewMetricLabel": "أثر خفض الهدر الشهري التقديري",
+      "previewMetricValue": "بالريال — تفصيل حسب الصنف والوردية",
+      "mock": {
+        "frameRegionLabel": "معاينة شاشات وفرة ببيانات تجريبية",
+        "urlLabel": "app.wafrah.sa/dashboard",
+        "demoBadge": "بيانات تجريبية",
+        "dashboardTitle": "ملخص الهدر الأسبوعي",
+        "kpiWasteLabel": "هدر آخر 7 أيام",
+        "kpiWasteValue": "1,620 ر.س",
+        "kpiDeltaValue": "⁦-16%⁩ مقارنة بالأسبوع السابق",
+        "kpiShareLabel": "نسبة من المشتريات",
+        "kpiShareValue": "4.8%",
+        "kpiTopDriverLabel": "أعلى سبب",
+        "kpiTopDriverValue": "دجاج مشوي • المساء",
+        "chartTitle": "منحنى الهدر لـ 4 أسابيع (ر.س — تجريبي)",
+        "chartWeek1": "أ1",
+        "chartWeek2": "أ2",
+        "chartWeek3": "أ3",
+        "chartWeek4": "أ4",
+        "phoneFrameLabel": "معاينة شاشة تسجيل المطبخ على الجوال",
+        "phoneTitle": "تسجيل المطبخ",
+        "phoneShiftBadge": "المساء",
+        "phoneOfflineReady": "يعمل دون إنترنت",
+        "phoneItemLabel": "دجاج مشوي",
+        "phoneQty1": "0.5 كجم",
+        "phoneQty2": "1.5 كجم",
+        "phoneQty3": "3.0 كجم",
+        "phoneReason1": "فائض تحضير",
+        "phoneReason2": "تلف",
+        "phoneSubmit": "حفظ السجل"
+      }
+    },
+    "problem": {
+      "heading": "الهدر يأكل هامش ربحك بصمت",
+      "stat1": {
+        "figure": "47 مليار ريال",
+        "description": "خسائر هدر الطعام سنوياً في السعودية",
+        "fullLine": "47 مليار ريال — خسائر هدر الطعام سنوياً في السعودية",
+        "sourceRef": "[1]"
+      },
+      "stat2": {
+        "figure": "26%",
+        "description": "متوسط هدر المطاعم من مشترياتها",
+        "fullLine": "26% — متوسط هدر المطاعم من مشترياتها",
+        "sourceRef": "[2]"
+      },
+      "callout": {
+        "text": "ربع فاتورة المشتريات تُرمى دون أن يلاحظ أحد"
+      }
+    },
+    "howItWorks": {
+      "heading": "كيف يعمل وفرة",
+      "subheading": "ثلاث خطوات واضحة من مطبخك إلى قرارات الشراء والتحضير.",
+      "step1": {
+        "number": "1",
+        "title": "سجّل",
+        "description": "طاقم المطبخ يسجّل الهدر في ثوانٍ من الجوال أو التابلت، حتى بدون إنترنت."
+      },
+      "step2": {
+        "number": "2",
+        "title": "افهم",
+        "description": "ينبّهك النظام عند ارتفاع غير طبيعي ويكشف أي صنف ويوم ووردية يسببان الهدر."
+      },
+      "step3": {
+        "number": "3",
+        "title": "قرّر",
+        "description": "توصية أسبوعية بكميات الشراء والتحضير مع شرح السبب، وتقرير شهري بالتوفير التقديري."
+      }
+    },
+    "features": {
+      "heading": "مصمّم لواقع المطابخ في السعودية",
+      "subheading": "أدوات عملية لإدارة المطعم والمطبخ بدون تعقيد أو أجهزة جديدة.",
+      "cards": {
+        "offlineLogging": {
+          "title": "تسجيل سريع يعمل دون إنترنت",
+          "description": "يسجّل طاقم المطبخ الصنف والكمية وسبب الهدر في ثوانٍ من أي جوال أو تابلت، وتُرفع السجلات تلقائياً بمجرد عودة الاتصال."
+        },
+        "spikeAlerts": {
+          "title": "تنبيهات ذكية للارتفاعات",
+          "description": "يقارن هدر كل صنف بمعدله المعتاد في نفس اليوم من الأسبوع وينبّهك مبكراً عند حدوث قفزة غير طبيعية."
+        },
+        "weeklyRecommendations": {
+          "title": "توصيات أسبوعية مع التوضيح",
+          "description": "يقترح كميات الشراء والتحضير للأسبوع القادم بناءً على حركة المبيعات وتكلفة النقص والهدر، مع شرح واضح للسبب."
+        },
+        "monthlyReport": {
+          "title": "تقرير توفير شهري تقديري قابل للطباعة بالعربية",
+          "description": "يعرض التوفير التقديري بالريال مقارنة بفترة الأساس ويكشف أعلى الأصناف والورديات والأسباب تكلفة في تقرير جاهز للطباعة."
+        },
+        "bilingual": {
+          "title": "بالعربية أولاً ويدعم الإنجليزية",
+          "description": "واجهة عربية واضحة من اليمين لليسار تناسب بيئة العمل في السعودية، مع إمكانية التحويل للإنجليزية للإدارة أو الطاقم عند الحاجة."
+        },
+        "csvPosImport": {
+          "title": "استيراد المبيعات من أي نظام نقاط بيع عبر CSV",
+          "description": "استورد ملفات المبيعات والمشتريات من أي نظام كاشير عبر CSV اليوم مع مطابقة الأصناف بالعربية والإنجليزية؛ والربط المباشر مع فودكس ضمن خارطة الطريق."
+        }
+      }
+    },
+    "calculator": {
+      "heading": "احسب التوفير الشهري التقديري لمطعمك",
+      "subheading": "أدخل قيمة مشتريات مطعمك الشهرية لترى تقديراً توضيحياً لتكلفة الهدر الحالية والتوفير المحتمل والباقة المناسبة.",
+      "estimateBadge": "حساب تقديري",
+      "purchasesLabel": "مشتريات المواد الغذائية الشهرية (ريال)",
+      "purchasesHint": "التكلفة الشهرية التقريبية للمواد الغذائية والمكونات (من 5,000 إلى 250,000 ريال عبر المؤشر، أو أدخل أي مبلغ).",
+      "purchasesRangeLabel": "مؤشر مشتريات المواد الغذائية الشهرية",
+      "wastePctLabel": "نسبة الهدر الحالية (من المشتريات)",
+      "wastePctHint": "المتوسط في السعودية، عدّلها حسب مطبخك",
+      "reductionPctLabel": "نسبة خفض الهدر المتوقعة (%)",
+      "reductionPctHint": "افتراض يمكنك تعديله",
+      "reductionMinLabel": "5%",
+      "reductionMaxLabel": "30%",
+      "clampedNotice": "تم ضبط المدخلات لتبقى ضمن الحدود الواقعية غير السالبة.",
+      "resultsRegionLabel": "نتائج التوفير الشهري والسنوي التقديرية",
+      "monthlyWasteResultLabel": "تكلفة الهدر الشهرية التقديرية",
+      "monthlySavingsResultLabel": "التوفير الشهري التقديري",
+      "annualSavingsResultLabel": "التوفير السنوي التقديري",
+      "planComparisonTitle": "مقارنة الباقة المناسبة حسب حجم المشتريات",
+      "recommendedPlanLabel": "الباقة المناسبة",
+      "planFeeLabel": "سعر الباقة",
+      "netAfterPlanLabel": "التوفير الشهري التقديري بعد خصم قيمة الباقة",
+      "belowPlanFeeNote": "بهذه المدخلات، يقل التوفير الشهري التقديري عن قيمة الباقة البالغة {price} ريال.",
+      "tierThresholds": {
+        "small": "أقل من 40,000 ريال شهرياً",
+        "medium": "من 40,000 إلى 120,000 ريال شهرياً",
+        "enterprise": "أكثر من 120,000 ريال شهرياً"
+      },
+      "sarAmount": "{amount} ريال",
+      "sarPerMonth": "{amount} ريال / شهرياً",
+      "sarPerYear": "{amount} ريال / سنوياً",
+      "sarUnit": "ريال",
+      "disclaimer": "تقدير توضيحي بناءً على مدخلاتك وليس ضماناً للنتائج. تُقاس النتائج الفعلية مقارنة بفترة الأساس الخاصة بمطعمك خلال التجربة.",
+      "cta": "احجز مكانك في التجربة"
+    },
+    "pricing": {
+      "heading": "اشتراك شهري بسيط",
+      "subheading": "باقات واضحة تناسب حجم مطعمك أو منشأتك بعد انتهاء فترة التجربة.",
+      "pilotOfferBadge": "التجربة الأولى: فترة تجريبية مجانية لأول 15 مطعماً",
+      "pilotOfferNote": "تشمل مرافقة عملية في مكة وجدة لإعداد قائمة الأصناف وحسابات الطاقم، ولا يبدأ أي التزام مالي إلا بموافقتك.",
+      "periodLabel": "ريال شهرياً",
+      "vatNote": "",
+      "cta": "احجز مكانك في التجربة",
+      "tiers": {
+        "small": {
+          "name": "مطعم صغير",
+          "price": "400",
+          "summary": "للمطاعم المستقلة ذات المطبخ الواحد التي تبدأ ضبط الهدر اليومي.",
+          "features": {
+            "item1": "تسجيل سريع لهدر المطبخ حتى بدون إنترنت",
+            "item2": "تنبيهات ذكية عند ارتفاع هدر الأصناف",
+            "item3": "استيراد المبيعات والمشتريات عبر CSV",
+            "item4": "تقرير توفير شهري تقديري قابل للطباعة بالعربية"
+          }
+        },
+        "medium": {
+          "name": "مطعم متوسط",
+          "price": "700",
+          "summary": "للمطاعم ذات الحركة العالية والورديات المتعددة والقوائم الأكبر.",
+          "features": {
+            "item1": "كل مزايا باقة مطعم صغير",
+            "item2": "توصيات أسبوعية للشراء والتحضير مع شرح السبب",
+            "item3": "تخصيص أوقات الورديات ومواسم الطلب مثل رمضان",
+            "item4": "تهيئة مباشرة للطاقم والقائمة خلال التجربة"
+          }
+        },
+        "enterprise": {
+          "name": "فندق / سلسلة",
+          "price": "1,200",
+          "summary": "للفنادق والمطابخ المركزية والمجموعات متعددة الأقسام أو الفروع.",
+          "features": {
+            "item1": "كل مزايا باقة مطعم متوسط",
+            "item2": "استيعاب عدد أكبر من الأصناف وحسابات الطاقم",
+            "item3": "مراجعة مخصصة لملفات الاستيراد ومطابقة الأصناف",
+            "item4": "قناة تواصل مباشرة مع المؤسس أثناء التفعيل"
+          }
+        }
+      }
+    },
+    "faq": {
+      "heading": "الأسئلة الشائعة",
+      "q1": {
+        "question": "هل يرتبط وفرة مع فودكس أو نظام الكاشير لدي؟",
+        "answer": "يمكنك استيراد تقارير المبيعات والمشتريات من أي نظام كاشير — بما في ذلك فودكس أو مرن — عبر ملف CSV اليوم مع مطابقة الأصناف بالعربية والإنجليزية. والربط المباشر مع فودكس موجود ضمن خارطة الطريق."
+      },
+      "q2": {
+        "question": "كيف يعمل التسجيل إذا انقطع الإنترنت في المطبخ؟",
+        "answer": "يعمل تسجيل الهدر بدون إنترنت مباشرة عبر المتصفح على الجوال أو التابلت. تُحفظ السجلات على الجهاز وتُرفع تلقائياً إلى النظام فور عودة الاتصال."
+      },
+      "q3": {
+        "question": "كيف يحسب النظام قيمة التوفير التقديري بالريال؟",
+        "answer": "يعرض وفرة التوفير دائماً كرقم تقديري بمقارنة تكلفة الهدر الأسبوعية بفترة الأساس الأولى (عادة أول 14 يوماً، مع إمكانية التعديل حسب تغير المبيعات)، ويوضح طريقة الحساب والأساس داخل كل تقرير شهري."
+      },
+      "q4": {
+        "question": "هل نحتاج أجهزة خاصة أو تدريباً طويلاً للطاقم؟",
+        "answer": "لا تحتاج أجهزة إضافية؛ يكفي أي جوال أو تابلت موجود في المطبخ. يدخل الطاقم بسرعة عبر رمز المطعم واسم المستخدم ورمز PIN من 4 إلى 6 أرقام."
+      },
+      "q5": {
+        "question": "كيف تُحفظ خصوصية بيانات مطعمنا؟",
+        "answer": "تُعزل بيانات كل مطعم بالكامل داخل حسابه الخاص مع صلاحيات محددة لكل دور وظيفي. يمكنك الاطلاع على تفاصيل التعامل مع البيانات في صفحة سياسة الخصوصية."
+      },
+      "q6": {
+        "question": "ما التزامنا بعد انتهاء الفترة التجريبية؟",
+        "answer": "لا يوجد التزام طويل الأمد عند تقديم الطلب. يتم الاتفاق معك مباشرة على مدة التجربة وتفاصيل التفعيل وخيارات الاستمرار بعدها عند تأكيد مقعدك في التجربة الأولى."
+      }
+    },
+    "leadForm": {
+      "heading": "احجز مكانك في التجربة الأولى",
+      "subheading": "التجربة متاحة لأول 15 مطعماً وفندقاً في مكة وجدة. اترك بياناتك وسنتواصل معك مباشرة.",
+      "fields": {
+        "name": {
+          "label": "الاسم الكامل",
+          "placeholder": "مثال: فيصل الحربي"
+        },
+        "restaurantName": {
+          "label": "اسم المطعم أو الفندق",
+          "placeholder": "مثال: مطبخ البلد"
+        },
+        "city": {
+          "label": "المدينة",
+          "options": {
+            "makkah": "مكة المكرمة",
+            "jeddah": "جدة",
+            "other": "مدينة أخرى"
+          }
+        },
+        "role": {
+          "label": "دورك الوظيفي",
+          "placeholder": "مثال: مالك، مدير مطعم، مدير تشغيل"
+        },
+        "phone": {
+          "label": "رقم الجوال / واتساب",
+          "placeholder": "05XXXXXXXX"
+        },
+        "email": {
+          "label": "البريد الإلكتروني (اختياري)",
+          "placeholder": "name@restaurant.sa"
+        },
+        "branchesCount": {
+          "label": "عدد الفروع",
+          "placeholder": "1"
+        },
+        "currentPos": {
+          "label": "نظام الكاشير الحالي",
+          "options": {
+            "foodics": "فودكس (Foodics)",
+            "marn": "مرن (Marn)",
+            "other": "نظام آخر",
+            "none": "لا يوجد حالياً"
+          }
+        },
+        "consent": {
+          "labelPrefix": "أوافق على التواصل معي بخصوص التجربة الأولى وفق ما ورد في ",
+          "privacyLinkText": "سياسة الخصوصية",
+          "labelSuffix": "."
+        },
+        "cityOther": {
+          "label": "اسم المدينة",
+          "placeholder": "مثال: الرياض، الدمام"
+        }
+      },
+      "submit": "احجز مكانك في التجربة",
+      "submitting": "جاري إرسال الطلب...",
+      "successTitle": "تم استلام طلبك، سنتواصل معك خلال يوم عمل",
+      "successDescription": "إذا كنت تفضل المحادثة الفورية، يمكنك التواصل معنا مباشرة عبر واتساب.",
+      "whatsappFallbackCta": "تواصل عبر واتساب",
+      "errors": {
+        "requiredField": "يرجى تعبئة هذا الحقل.",
+        "invalidPhone": "يرجى إدخال رقم جوال أو واتساب صحيح.",
+        "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح.",
+        "invalidBranches": "يرجى إدخال فرع واحد على الأقل.",
+        "consentRequired": "يرجى تأكيد الموافقة على التواصل معك بخصوص التجربة.",
+        "submitFailed": "تعذر إرسال الطلب حالياً. حاول مرة أخرى أو تواصل معنا عبر واتساب.",
+        "cityOtherRequired": "يرجى كتابة اسم المدينة.",
+        "submittedTooFast": "يرجى مراجعة البيانات ثم إعادة الإرسال بعد لحظة.",
+        "tooManyRequests": "تم إرسال عدة طلبات خلال وقت قصير. يرجى المحاولة لاحقاً أو التواصل عبر واتساب."
+      }
+    },
+    "sources": {
+      "heading": "المصادر",
+      "placeholderNotice": "تُقرأ مراجع الإحصائيات من سجل المصادر في الإعدادات وتبقى قيد التوثيق حتى إدخال الروابط الرسمية المعتمدة.",
+      "referenceLabel": "مصدر {number}",
+      "pendingVerificationBadge": "قيد التحقق",
+      "openSourceLink": "فتح المصدر"
+    },
+    "finalCta": {
+      "badge": "التجربة الأولى • حد أقصى 15 مطعماً",
+      "highlight1": "فترة تجريبية مجانية لأول 15 مطعماً في مكة وجدة",
+      "highlight2": "مرافقة في إعداد الأصناف ورموز دخول طاقم المطبخ",
+      "highlight3": "استيراد المبيعات من أي نظام كاشير عبر CSV اليوم"
+    },
+    "stickyBar": {
+      "ariaLabel": "إجراءات سريعة للتجربة"
+    },
+    "whatsapp": {
+      "prefilledMessage": "مرحباً، أرغب بمعرفة المزيد عن تجربة وفرة لمطعمي"
+    },
+    "footer": {
+      "tagline": "تتبّع عملي لهدر الطعام وتوصيات أسبوعية للشراء والتحضير مع تقدير التوفير بالريال للمطاعم والفنادق بالسعودية.",
+      "pilotRegions": "نطاق التجربة الأولى: مكة المكرمة وجدة",
+      "linksTitle": "النظام والسياسات",
+      "contactTitle": "التواصل المباشر",
+      "privacy": "سياسة الخصوصية",
+      "terms": "الشروط والأحكام",
+      "help": "المساعدة",
+      "signIn": "تسجيل الدخول",
+      "whatsapp": "واتساب",
+      "emailLabel": "البريد الإلكتروني",
+      "copyright": "© {year} وفرة (Wafrah). جميع الحقوق محفوظة."
+    }
+  }
+}

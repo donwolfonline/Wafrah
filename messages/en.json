@@ -1,0 +1,1556 @@
+{
+  "app": {
+    "name": "Wafrah",
+    "logoText": "وفرة / Wafrah",
+    "tagline": "AI-Powered Food Waste Management",
+    "metaTitle": "Wafrah — Food Waste Management",
+    "metaDescription": "Food waste analytics, demand forecasting, and SAR savings tracking for restaurants and hotels in Saudi Arabia."
+  },
+  "common": {
+    "arabic": "العربية",
+    "english": "English",
+    "switchToArabic": "التبديل إلى العربية",
+    "switchToEnglish": "Switch to English",
+    "languageLabel": "Language",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save changes",
+    "confirm": "Confirm",
+    "hijriCalendarNote": "Hijri dates are derived via the Umm al-Qura calendar and may vary by ±1 day based on moon sighting.",
+    "estimateBadge": "ESTIMATE",
+    "currencyCode": "SAR",
+    "errorTitle": "Something went wrong",
+    "errorDescription": "We could not complete this request right now. Please try again.",
+    "retryButton": "Try again"
+  },
+  "nav": {
+    "sidebarLabel": "Restaurant navigation",
+    "mobileNavLabel": "Primary mobile navigation",
+    "dashboard": "Dashboard",
+    "menu": "Menu",
+    "imports": "Imports",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "staff": "Kitchen Staff",
+    "help": "Help",
+    "kitchenLog": "Kitchen Log",
+    "admin": "Platform Admin",
+    "designCheck": "Design Check"
+  },
+  "userMenu": {
+    "signedInAs": "Signed in as",
+    "roleLabel": "Role",
+    "tenantLabel": "Branch Code",
+    "logout": "Sign out",
+    "switchUser": "Switch staff user",
+    "guest": "Guest Preview",
+    "signIn": "Sign in"
+  },
+  "roles": {
+    "STAFF": "Kitchen Staff",
+    "MANAGER": "Restaurant Manager",
+    "OWNER": "Restaurant Owner",
+    "PLATFORM_ADMIN": "Platform Admin"
+  },
+  "auth": {
+    "loginTitle": "Sign in to Wafrah",
+    "loginSubtitle": "Select your role to access your restaurant workspace",
+    "tabs": {
+      "manager": "Manager",
+      "staff": "Kitchen staff"
+    },
+    "manager": {
+      "emailLabel": "Email address",
+      "emailPlaceholder": "manager@shami.sa",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign in as Manager",
+      "submitting": "Signing in..."
+    },
+    "staff": {
+      "restaurantCodeLabel": "Restaurant code",
+      "restaurantCodePlaceholder": "SHAMI-JED",
+      "usernameLabel": "Staff username",
+      "usernamePlaceholder": "ahmed",
+      "pinLabel": "4–6 digit PIN",
+      "pinPlaceholder": "••••",
+      "submit": "Unlock Kitchen Log",
+      "submitting": "Unlocking...",
+      "switchUser": "Switch user",
+      "rememberedCodeHint": "Restaurant code saved on this tablet"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password.",
+      "invalidPin": "Invalid restaurant code, username, or PIN.",
+      "rateLimited": "Too many failed login attempts. Account is temporarily locked; please try again later.",
+      "tenantSuspended": "This restaurant account is suspended. Please contact Wafrah support.",
+      "validationFailed": "Please check your input and try again.",
+      "sessionExpiredNotice": "Your session has expired. Please sign in again to continue."
+    },
+    "legal": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    }
+  },
+  "waste": {
+    "title": "Kitchen Waste Log",
+    "description": "Fast touch-optimized station for recording kitchen food waste in under 10 seconds",
+    "activeShiftLabel": "Active shift",
+    "overrideShiftLabel": "Change shift",
+    "quickEntryTitle": "Ready to log waste",
+    "quickEntrySubtitle": "Select an item, enter the wasted quantity, and tap a reason.",
+    "startEntryButton": "Log Waste Entry",
+    "todayWasteLabel": "Today's Waste",
+    "offlineBadge": "Offline",
+    "waitingToSync": "{count} entries waiting to sync",
+    "syncErrorNotice": "Unable to sync pending entries right now. Your entries are saved safely on this device.",
+    "syncRetryButton": "Retry sync",
+    "authExpiredNotice": "Your session expired. Pending entries are preserved on this device; sign in to sync them.",
+    "signInAgainButton": "Sign in",
+    "backToDashboard": "Dashboard",
+    "step1Badge": "Step 1",
+    "step1Title": "Select Menu Item",
+    "searchPlaceholder": "Search item name or category...",
+    "allCategories": "All",
+    "recentItemsTitle": "Recent Items (Most Logged by You)",
+    "allItemsTitle": "Active Menu Items",
+    "emptyItems": "No matching menu items found.",
+    "step2Badge": "Step 2",
+    "step2Title": "Enter Wasted Quantity",
+    "changeItem": "Change item",
+    "estimatedCostLabel": "Estimated impact",
+    "clearKey": "Clear",
+    "backspaceKey": "Delete digit",
+    "step3Badge": "Step 3",
+    "step3Title": "Select Reason & Save",
+    "shiftAutoPrefix": "Shift:",
+    "editShiftHint": "Tap to change",
+    "saveButton": "Save Waste Entry",
+    "savedToastTitle": "Logged {quantity} {unit} of {item}",
+    "undoButton": "Undo ({seconds}s)",
+    "undoneToastTitle": "Waste entry undone",
+    "errors": {
+      "quantityRequired": "Enter a quantity greater than 0.",
+      "quantityExceedsMax": "Maximum allowed for {unit} is {max}."
+    },
+    "shifts": {
+      "MORNING": "Morning Shift (05:00–14:59)",
+      "EVENING": "Evening Shift (15:00–22:59)",
+      "NIGHT": "Night Shift (23:00–04:59)"
+    },
+    "shiftsShort": {
+      "MORNING": "Morning (05–15)",
+      "EVENING": "Evening (15–23)",
+      "NIGHT": "Night (23–05)"
+    },
+    "reasons": {
+      "EXPIRED": "Expired",
+      "OVER_PREPARATION": "Over-preparation",
+      "ORDER_ERROR": "Order error",
+      "CUSTOMER_RETURN": "Customer return",
+      "DAMAGED_IN_PREP": "Damaged in prep",
+      "OTHER": "Other"
+    },
+    "units": {
+      "KG": "kg",
+      "LITER": "L",
+      "PORTION": "portion",
+      "PIECE": "piece"
+    }
+  },
+  "insights": {
+    "title": "Restaurant Manager Dashboard",
+    "description": "Waste cost KPIs, anomaly alerts, and weekly purchase & prep recommendations",
+    "summaryTitle": "Operational Overview",
+    "summaryBody": "Track daily waste patterns across shifts, review robust z-score spike alerts, and optimize prep quantities.",
+    "alerts": {
+      "wasteSpike": "Waste spike on {itemName} ({itemCode}): {observed} {unit} vs {baseline} {unit} baseline in the last 3 days (+{percentageChange}%, +{sarImpact} SAR impact, z={zScore}).",
+      "wasteSpikeFromZero": "New waste spike on {itemName} ({itemCode}): {observed} {unit} vs 0 {unit} baseline in the last 3 days (+{sarImpact} SAR impact, z={zScore}).",
+      "dataGap": "No waste logs recorded on {date} despite recorded sales. Confirm kitchen logging is active.",
+      "topWasteItem": "{itemName} accounts for {sharePct}% of total waste cost ({sarCost} SAR over the last 28 days)."
+    },
+    "tiers": {
+      "HIGH": "High Cost Impact (Top 50%)",
+      "MEDIUM": "Medium Cost Impact (Next 30%)",
+      "LOW": "Low Cost Impact (Remaining 20%)"
+    }
+  },
+  "menu": {
+    "title": "Menu & Item Catalog",
+    "description": "Unified catalog of menu and inventory items for waste logging, sales, and purchases",
+    "summaryTitle": "Active Catalog Items",
+    "summaryBody": "Configure canonical units (KG, LITER, PORTION, PIECE), unit cost in SAR, and sales unit conversion factors.",
+    "addItemButton": "Add Item",
+    "importCsvButton": "Import CSV",
+    "searchPlaceholder": "Search by Arabic/English name or category...",
+    "showInactiveLabel": "Show inactive items",
+    "emptyState": "No menu items match your filter.",
+    "columns": {
+      "name": "Item Name (AR / EN)",
+      "category": "Category",
+      "unit": "Unit",
+      "unitCost": "Unit Cost (SAR)",
+      "shortageCost": "Shortage Cost (SAR)",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "deactivate": "Deactivate",
+      "activate": "Activate"
+    },
+    "defaultShortageTag": "1.5× default",
+    "editButton": "Edit",
+    "dialog": {
+      "addTitle": "Add Menu Item",
+      "editTitle": "Edit Menu Item",
+      "description": "Provide the item name in Arabic or English, its canonical unit, and cost in SAR.",
+      "nameArLabel": "Arabic Name (الاسم بالعربية)",
+      "nameArPlaceholder": "e.g., مندي لحم بلدي",
+      "nameEnLabel": "English Name",
+      "nameEnPlaceholder": "e.g., Lamb Mandi Rice",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "e.g., Main Courses",
+      "unitLabel": "Unit",
+      "unitCostLabel": "Unit Cost (SAR)",
+      "unitCostPlaceholder": "45.00",
+      "shortageCostLabel": "Shortage Cost (SAR, optional)",
+      "shortageCostPlaceholder": "67.50",
+      "shortageCostHelper": "Estimated loss per unit when you run out. Leave empty to use 1.5 × unit cost.",
+      "saveCreate": "Add Item",
+      "saveUpdate": "Save Changes",
+      "saving": "Saving..."
+    },
+    "csv": {
+      "dialogTitle": "Import Menu Items from CSV",
+      "dialogDescription": "Expected columns: name, nameAr, category, unit, unitCost, shortageCost",
+      "fileLabel": "Upload CSV file",
+      "pasteLabel": "Or paste CSV content",
+      "pastePlaceholder": "name,nameAr,category,unit,unitCost,shortageCost\nLamb Mandi,مندي لحم,Mains,KG,45.00,67.50",
+      "parseButton": "Preview CSV",
+      "validCountBadge": "{count} valid rows",
+      "invalidCountBadge": "{count} invalid rows",
+      "validTableTitle": "Valid Rows Ready to Import",
+      "invalidTableTitle": "Rejected Rows (Will Be Skipped)",
+      "rowColumn": "Row #",
+      "reasonColumn": "Reason",
+      "confirmImport": "Confirm Import ({count})",
+      "importing": "Importing...",
+      "successMessage": "Successfully imported {count} menu items."
+    },
+    "units": {
+      "KG": "KG (Kilogram)",
+      "LITER": "LITER (Liter)",
+      "PORTION": "PORTION (Portion)",
+      "PIECE": "PIECE (Piece)"
+    },
+    "errors": {
+      "nameRequired": "Item name is required in at least one language (Arabic or English).",
+      "categoryRequired": "Category is required.",
+      "invalidUnit": "Unit must be KG, LITER, PORTION, or PIECE.",
+      "invalidUnitCost": "Unit cost must be greater than 0 SAR.",
+      "invalidShortageCost": "Shortage cost must be 0 SAR or greater.",
+      "emptyFile": "The CSV file is empty.",
+      "missingRequiredColumns": "Missing required columns (name/nameAr, category, unit, unitCost).",
+      "actionFailed": "Could not save menu item. Please check your input."
+    }
+  },
+  "sales": {
+    "title": "Sales & Purchases Data Imports",
+    "description": "Upload daily or weekly POS sales and supplier purchase spreadsheets",
+    "summaryTitle": "Data Import Center",
+    "summaryBody": "Validate rows, match items by code or Arabic/English name, and preview before idempotent import.",
+    "types": {
+      "SALES": "Sales",
+      "PURCHASES": "Purchases"
+    },
+    "templates": {
+      "title": "Download CSV Templates",
+      "downloadEn": "English Template (CSV)",
+      "downloadAr": "Arabic Template (CSV)"
+    },
+    "upload": {
+      "stepTitle": "1. Upload CSV or XLSX File",
+      "stepDescription": "Supports UTF-8 BOM, comma/semicolon/tab delimiters, Arabic or English headers, YYYY-MM-DD / DD/MM/YYYY / Excel date serials.",
+      "fileLabel": "Choose CSV or XLSX file",
+      "orPaste": "Or paste CSV content directly",
+      "pastePlaceholder": "date,itemName,quantitySold,channel\n2026-11-01,Rice,42,DINE_IN",
+      "parseFile": "Analyze & Preview",
+      "parsing": "Analyzing...",
+      "reset": "Upload Another File",
+      "detectedInfo": "Format: {format} · {rows} rows detected"
+    },
+    "mapping": {
+      "title": "2. Column Mapping",
+      "description": "Map columns from your file to Wafrah fields. Your mapping is remembered for this restaurant.",
+      "savedBadge": "Saved mapping applied",
+      "unmappedOption": "Not mapped",
+      "requiredTag": "Required",
+      "optionalTag": "Optional",
+      "fields": {
+        "date": "Business Date",
+        "item": "Menu Item (Name or Code)",
+        "quantity": "Quantity",
+        "channel": "Sales Channel (optional)",
+        "cost": "Cost in SAR (optional)"
+      }
+    },
+    "unmatched": {
+      "title": "3. Unmatched Item Names ({count})",
+      "description": "Match unrecognized item names to an existing menu item, or skip their rows.",
+      "skipOption": "Skip (reject rows)",
+      "rowCountBadge": "{count} rows",
+      "selectItemPlaceholder": "Select menu item or skip..."
+    },
+    "preview": {
+      "title": "4. Validation Preview",
+      "validBadge": "{count} valid",
+      "rejectedBadge": "{count} rejected",
+      "duplicatesBadge": "{count} duplicates detected",
+      "overLimitAlert": "More than 50% of rows are invalid ({rejected} of {total}). Please fix the file or adjust mappings before importing.",
+      "missingColumnsAlert": "Map all required fields (Date, Item, Quantity) to preview rows.",
+      "duplicateHint": "Detected {inDb} existing records (will update safely on unique key) and {inFile} duplicate keys within this file.",
+      "validTab": "Valid Rows ({count})",
+      "rejectedTab": "Rejected Rows ({count})",
+      "downloadRejected": "Download Rejected CSV",
+      "confirmButton": "Confirm Import ({count})",
+      "confirming": "Importing...",
+      "successToast": "Imported {imported} rows successfully ({duplicates} updates/duplicates).",
+      "existingUpdateBadge": "Updates existing",
+      "fileDuplicateBadge": "Duplicate in file",
+      "readyBadge": "New record",
+      "columns": {
+        "row": "Row #",
+        "date": "Date",
+        "item": "Menu Item",
+        "quantity": "Quantity",
+        "channel": "Channel",
+        "cost": "Cost (SAR)",
+        "status": "Status",
+        "reasons": "Rejection Reasons"
+      }
+    },
+    "reasons": {
+      "missingDate": "Missing date",
+      "badDate": "Invalid date",
+      "missingItem": "Missing item",
+      "unknownItem": "Unknown item",
+      "missingQuantity": "Missing quantity",
+      "invalidQuantity": "Invalid quantity",
+      "negativeQuantity": "Negative quantity",
+      "invalidChannel": "Unknown channel",
+      "invalidCost": "Invalid cost",
+      "negativeCost": "Negative cost"
+    },
+    "channels": {
+      "DINE_IN": "Dine-in",
+      "DELIVERY": "Delivery",
+      "TAKEAWAY": "Takeaway",
+      "UNSPECIFIED": "Unspecified"
+    },
+    "history": {
+      "title": "Import History",
+      "empty": "No data imports recorded yet for this branch.",
+      "fileName": "File",
+      "type": "Type",
+      "imported": "Imported",
+      "rejected": "Rejected",
+      "duplicates": "Duplicates",
+      "who": "Uploaded By",
+      "when": "When"
+    },
+    "errors": {
+      "parseFailed": "Could not parse the uploaded file. Please verify CSV or XLSX formatting.",
+      "confirmFailed": "Import failed. Please check the preview and try again.",
+      "fileTooLarge": "The uploaded file exceeds the 5 MB size limit.",
+      "sessionExpired": "Your session has expired. Please sign in again and retry."
+    }
+  },
+  "reports": {
+    "title": "Monthly SAR Savings Reports",
+    "description": "Volume-adjusted and baseline waste cost comparison in Saudi Riyals (SAR)",
+    "summaryTitle": "Monthly Financial Impact",
+    "summaryBody": "Compare current waste performance against your restaurant's baseline period with transparent calculation details.",
+    "baseline": {
+      "title": "Baseline Period Settings",
+      "description": "Defaults to the first 14 days of kitchen waste logging. Adjust custom dates or reset to auto.",
+      "autoWindowNote": "Auto: First 14 days ({start} to {end})",
+      "customWindowNote": "Custom: {start} to {end}",
+      "calibratingNote": "Calibrating: {days} days left to complete 14-day baseline",
+      "startLabel": "Baseline Start",
+      "endLabel": "Baseline End",
+      "saveButton": "Save Baseline",
+      "savingButton": "Saving...",
+      "resetButton": "Reset to First 14 Days",
+      "savedToast": "Baseline period updated",
+      "resetToast": "Baseline reset to automatic first 14 days",
+      "errorToast": "Could not update baseline period",
+      "invalidRangeError": "Select valid start and end dates within 365 days"
+    },
+    "list": {
+      "monthsHeading": "Available Monthly Reports",
+      "empty": "No waste or sales history yet to generate monthly reports.",
+      "openReport": "Open Monthly Report",
+      "downloadCsv": "Download CSV",
+      "entriesCount": "{count} waste entries",
+      "wasteTotalLabel": "Total Waste Cost",
+      "volumeMethodBadge": "Volume-adjusted estimate",
+      "rawMethodBadge": "Weekly pace estimate",
+      "statusBadges": {
+        "SAVED": "Estimated Savings",
+        "INCREASED": "Waste Increased",
+        "FLAT": "No Change",
+        "CALIBRATING": "Calibrating"
+      }
+    },
+    "detail": {
+      "backToReports": "Back to Reports",
+      "printPdf": "Print / Save as PDF",
+      "downloadCsv": "Download Daily CSV",
+      "reportHeading": "Monthly Food Waste & Savings Report",
+      "generatedAt": "Generated: {date}",
+      "hijriRange": "Hijri dates: {range}",
+      "branchCode": "Branch code: {code}",
+      "estimateBadge": "ESTIMATE",
+      "hero": {
+        "savedTitle": "Estimated Monthly Savings",
+        "increasedTitle": "Waste Cost Increased",
+        "increasedSentence": "Waste increased by {amount} compared to baseline",
+        "flatTitle": "No Net Change vs. Baseline",
+        "flatSentence": "Actual waste cost matched the baseline expectation",
+        "calibratingTitle": "Baseline Calibrating",
+        "calibratingSentence": "Calibrating: {days} days left to complete the 14-day baseline period.",
+        "estimateDisclaimer": "This figure is an estimate based on logged kitchen waste and imported sales volume.",
+        "vsExpectedLabel": "vs. baseline expectation"
+      },
+      "howCalculated": {
+        "title": "How we calculated this",
+        "methodLabel": "Method used",
+        "methods": {
+          "VOLUME_ADJUSTED": "Volume-adjusted (SAR per unit sold)",
+          "RAW_WEEKLY": "Weekly waste pace (full sales unavailable)"
+        },
+        "formulaVolume": "Formula: (Baseline SAR/unit − Current SAR/unit) × Current Units Sold",
+        "formulaRaw": "Formula: (Baseline Weekly Waste − Current Weekly Waste) × Current Weeks",
+        "zeroBaselineNote": "Baseline waste cost was 0 SAR, so reductions cannot be claimed against a zero baseline.",
+        "noSalesFallbackNote": "Sales data was missing in one or both periods, so weekly waste pace comparison was used instead.",
+        "columns": {
+          "metric": "Metric",
+          "baseline": "Baseline Period",
+          "current": "Report Month"
+        },
+        "rows": {
+          "periodDates": "Date Window",
+          "daysWeeks": "Duration",
+          "daysWeeksValue": "{days} days ({weeks} wks)",
+          "totalWaste": "Total Waste Cost",
+          "weeklyWaste": "Avg Weekly Waste Cost",
+          "unitsSold": "Units Sold",
+          "sarPerUnit": "Waste Cost per Unit Sold",
+          "expectedWaste": "Expected Waste at Baseline Rate",
+          "rawWeeklyResult": "Raw Weekly Comparison (reference)",
+          "notAvailable": "N/A"
+        }
+      },
+      "sections": {
+        "wasteVsBaseline": {
+          "title": "Waste Cost vs. Baseline",
+          "baselineWeekly": "Baseline Weekly Avg",
+          "currentWeekly": "Current Weekly Avg",
+          "expectedTotal": "Expected Total",
+          "actualTotal": "Actual Total",
+          "variance": "Variance vs. Expected"
+        },
+        "topItems": {
+          "title": "Top 5 Wasted Items",
+          "empty": "No wasted items recorded in this month.",
+          "columns": {
+            "item": "Item",
+            "qty": "Qty",
+            "cost": "Cost",
+            "share": "Share",
+            "entries": "Entries"
+          }
+        },
+        "topReasons": {
+          "title": "Top Waste Reasons",
+          "empty": "No waste reasons logged in this month.",
+          "columns": {
+            "reason": "Reason",
+            "cost": "Cost",
+            "share": "Share",
+            "entries": "Entries"
+          }
+        },
+        "alerts": {
+          "title": "Alerts Raised This Month",
+          "empty": "No automated alerts were raised in this month.",
+          "columns": {
+            "severity": "Severity",
+            "message": "Alert Details",
+            "date": "Date",
+            "status": "Status"
+          },
+          "statusLabels": {
+            "UNREAD": "Unread",
+            "READ": "Read",
+            "DISMISSED": "Dismissed"
+          }
+        },
+        "adherence": {
+          "title": "Recommendations Followed vs. Ignored",
+          "description": "Comparison of forecast purchase/prep recommendations vs. actual purchases on paired days (±{tol}% tolerance).",
+          "pairedDays": "Paired Item-Days",
+          "followed": "Followed",
+          "ignored": "Ignored",
+          "adherenceRate": "Adherence Rate"
+        },
+        "actions": {
+          "title": "3 Plain-Language Suggested Actions",
+          "subtitle": "Deterministic operational actions derived from this month's item spikes, reasons, and shift hotspots",
+          "empty": "Log more waste entries to generate tailored kitchen actions."
+        }
+      }
+    },
+    "suggestedActions": {
+      "itemPeakReduction": "Reduce prep of {item} on {weekday} by {suggestedCut} {unit} (waste rose +{pctChange}% vs. baseline).",
+      "itemTopShareReduction": "Trim prep of {item} on {weekday} by ~{suggestedCut} {unit} (highest cost item at {sarCost} SAR this month).",
+      "shiftHotspot": "Review prep & handoff on {weekday} {shift} — top waste hotspot ({sarCost} SAR across {entryCount} entries).",
+      "dominantReasonOverPrep": "Stage cooking in smaller batches: over-preparation caused {sharePct}% of waste ({sarCost} SAR across {entryCount} entries).",
+      "dominantReasonExpired": "Enforce FIFO date labeling and leaner par stock: expiry drove {sharePct}% of waste ({sarCost} SAR across {entryCount} entries).",
+      "dominantReasonOrderError": "Double-check POS tickets at the pass: order errors accounted for {sharePct}% of waste ({sarCost} SAR).",
+      "dominantReasonDamaged": "Inspect station handling and cold-chain storage: prep damage caused {sharePct}% of waste ({sarCost} SAR).",
+      "dominantReasonCustomerReturn": "Audit serving temperature and quality checks on top dishes: customer returns were {sharePct}% ({sarCost} SAR).",
+      "dominantReasonOther": "Break down \"Other\" waste reasons in shift briefings ({sharePct}%, {sarCost} SAR) so root causes are actionable.",
+      "loggingGap": "Audit end-of-shift checklists: {daysCount} sales days this month had zero logged waste entries.",
+      "sustainReduction": "Maintain current par levels and portion controls to sustain this month's estimated {amountSar} SAR reduction."
+    },
+    "csv": {
+      "headers": {
+        "date": "Date",
+        "wasteEntries": "Waste Entries",
+        "wasteQtySum": "Waste Quantity Sum",
+        "wasteSar": "Waste Cost (SAR)",
+        "unitsSold": "Units Sold",
+        "wasteSarPerUnit": "Waste SAR per Unit Sold",
+        "purchasesSar": "Purchases Cost (SAR)"
+      }
+    }
+  },
+  "admin": {
+    "title": "Wafrah Platform Admin",
+    "description": "Multi-tenant restaurant onboarding, support diagnostics, and platform health monitoring",
+    "summaryTitle": "Pilot Restaurants Overview",
+    "summaryBody": "Manage hospitality tenants, subscriptions, and platform health without tenant impersonation.",
+    "tabs": {
+      "customers": "Customers",
+      "adoption": "Adoption",
+      "feedback": "Feedback",
+      "health": "Platform Health",
+      "leads": "Leads"
+    },
+    "stats": {
+      "totalTenants": "Restaurants",
+      "activeTenants": "Active Subscriptions",
+      "suspendedTenants": "Suspended",
+      "entriesLast7Days": "Entries (7 Days)",
+      "flaggedWape": "WAPE > 40% Alerts"
+    },
+    "actions": {
+      "createRestaurant": "New Restaurant",
+      "refresh": "Refresh",
+      "editSubscription": "Edit Plan",
+      "suspend": "Suspend",
+      "reactivate": "Reactivate",
+      "diagnostics": "Diagnostics",
+      "copyPassword": "Copy Password",
+      "copied": "Copied",
+      "close": "Close",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "creating": "Creating...",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "table": {
+      "searchPlaceholder": "Search by name, code, or city...",
+      "restaurant": "Restaurant",
+      "city": "City",
+      "plan": "Plan",
+      "status": "Status",
+      "renewsAt": "Renews At",
+      "users": "Users",
+      "lastActivity": "Last Activity",
+      "entries7d": "Entries (7d)",
+      "actions": "Actions",
+      "never": "No activity yet",
+      "none": "—",
+      "empty": "No restaurants found."
+    },
+    "adoption": {
+      "title": "Daily Adoption & Follow-Up",
+      "subtitle": "Server-side waste entry cadence over the last 14 days and latest user sign-in per restaurant.",
+      "flaggedOnly": "Flagged only (no entries in 3d)",
+      "flaggedCount": "{count} restaurants flagged for follow-up",
+      "allGood": "All active restaurants logged waste in the last 3 days.",
+      "flagBadge": "No entries in 3d",
+      "okBadge": "Active",
+      "suspendedBadge": "Suspended",
+      "columns": {
+        "restaurant": "Restaurant",
+        "sparkline": "14-Day Cadence",
+        "entries14d": "14d Entries",
+        "lastEntry": "Last Entry",
+        "lastLogin": "Last Login"
+      },
+      "never": "Never",
+      "empty": "No matching restaurants.",
+      "sparklineAria": "{name}: {total} entries in 14 days"
+    },
+    "feedback": {
+      "title": "Pilot User Feedback",
+      "subtitle": "Ratings and comments submitted from the floating Feedback dialog.",
+      "filterRestaurant": "Restaurant",
+      "allRestaurants": "All restaurants",
+      "platformWide": "Platform Admin",
+      "filterRating": "Rating",
+      "allRatings": "All ratings",
+      "lowRatings": "3 stars & below",
+      "exactStars": "{stars} stars",
+      "exactOneStar": "1 star",
+      "searchPlaceholder": "Search message, user, or page...",
+      "pageLabel": "Page",
+      "empty": "No feedback matches the selected filters.",
+      "totalShown": "Showing {count} of {total} entries"
+    },
+    "plans": {
+      "SMALL": "Small",
+      "MEDIUM": "Medium",
+      "CHAIN": "Chain"
+    },
+    "statuses": {
+      "TRIAL": "Trial",
+      "ACTIVE": "Active",
+      "PAST_DUE": "Past Due",
+      "CANCELLED": "Cancelled",
+      "SUSPENDED": "Suspended"
+    },
+    "createDialog": {
+      "title": "Create Restaurant & First Manager",
+      "subtitle": "Generates a unique branch login code, provisions an active subscription, creates the first manager with a one-time temporary password, and sends a welcome email.",
+      "nameEnLabel": "Restaurant Name (English)",
+      "nameEnPlaceholder": "e.g. Najd Village Kitchen",
+      "nameArLabel": "Restaurant Name (Arabic)",
+      "nameArPlaceholder": "مثال: مطبخ القرية النجدية",
+      "cityLabel": "City",
+      "cityPlaceholder": "Riyadh",
+      "typeLabel": "Hospitality Type",
+      "typePlaceholder": "Casual Dining / Hotel Kitchen",
+      "planLabel": "Subscription Plan",
+      "managerNameLabel": "First Manager Name",
+      "managerNamePlaceholder": "Khalid Al-Otaibi",
+      "managerEmailLabel": "Manager Email",
+      "managerEmailPlaceholder": "manager@najdkitchen.sa",
+      "managerLocaleLabel": "Preferred Email & App Language",
+      "localeAr": "Arabic (العربية)",
+      "localeEn": "English",
+      "credentialsTitle": "Restaurant Created — Save Temporary Password Now",
+      "credentialsWarning": "This temporary password is shown only once. Share it securely with the restaurant manager alongside their login code.",
+      "generatedCode": "Branch Login Code",
+      "managerLoginEmail": "Manager Login Email",
+      "temporaryPassword": "One-Time Temporary Password",
+      "welcomeEmailSent": "Welcome email queued/logged successfully.",
+      "welcomeEmailFailed": "Restaurant created, but welcome email delivery failed; share credentials manually."
+    },
+    "editSubDialog": {
+      "title": "Edit Subscription",
+      "subtitle": "Manually adjust plan tier, status, and renewal date for {name}.",
+      "planLabel": "Plan",
+      "statusLabel": "Subscription Status",
+      "renewsAtLabel": "Renewal Date (optional)",
+      "clearDate": "Clear date"
+    },
+    "diagnostics": {
+      "title": "Read-Only Support Diagnostics",
+      "privacyBanner": "Privacy boundary enforced: manager impersonation is disabled. Only aggregate counts, import summaries, and alert metadata are visible.",
+      "loading": "Loading read-only diagnostics...",
+      "loadError": "Failed to load diagnostics.",
+      "countsTitle": "Tenant Aggregate Counts",
+      "usersCount": "Users (Active / Total)",
+      "menuItemsCount": "Menu Items (Active / Total)",
+      "wasteCount": "Waste Entries",
+      "salesCount": "Sales Records",
+      "purchasesCount": "Purchase Records",
+      "forecastsCount": "Forecast Results",
+      "alertsCount": "Alerts (Unread / Total)",
+      "importsTitle": "Recent Imports",
+      "importsEmpty": "No CSV imports recorded yet.",
+      "importFile": "File",
+      "importType": "Type",
+      "importRows": "Imported / Rejected / Dup",
+      "importDate": "Uploaded At",
+      "alertsTitle": "Recent Alerts Metadata",
+      "alertsEmpty": "No alerts recorded yet.",
+      "alertKey": "Alert Key",
+      "alertSeverity": "Severity",
+      "alertStatus": "Status",
+      "alertCreated": "Created / Notified"
+    },
+    "health": {
+      "dailyTitle": "Platform Waste Entries (Last 14 Days)",
+      "dailySubtitle": "Daily logged waste entries aggregated across all tenants in Asia/Riyadh time.",
+      "date": "Date",
+      "entriesCount": "Entries",
+      "activeTenants": "Active Tenants",
+      "cronTitle": "Scheduled Jobs (AuditLog)",
+      "cronSubtitle": "Latest recorded execution time and outcome for each scheduled job.",
+      "cronJobs": {
+        "daily": "Daily Insights, Forecast & Critical Alerts",
+        "weekly": "Weekly Prep Summary Emails",
+        "monthly": "Monthly Report Notifications",
+        "forecast": "Forecast Accuracy Evaluation"
+      },
+      "cronStatus": {
+        "OK": "Succeeded",
+        "PARTIAL": "Partial Failure",
+        "FAILED": "Failed",
+        "NEVER_RUN": "Never Run"
+      },
+      "cronLastRun": "Last Run",
+      "cronTenants": "Tenants",
+      "cronEmails": "Emails",
+      "wapeTitle": "Forecast Accuracy by Tenant (Average WAPE)",
+      "wapeSubtitle": "Weighted Absolute Percentage Error across evaluated forecasts. Tenants above {threshold}% are flagged.",
+      "wapeEmpty": "No forecast evaluations recorded yet.",
+      "wapeNoData": "Not evaluated",
+      "wapeOk": "Within Target",
+      "wapeFlagged": "High WAPE (> {threshold}%)",
+      "evaluationsCount": "Runs",
+      "latestEvaluation": "Last Evaluated"
+    },
+    "toasts": {
+      "created": "Restaurant and manager account created.",
+      "subscriptionUpdated": "Subscription updated.",
+      "suspended": "Restaurant suspended. Users can no longer sign in.",
+      "reactivated": "Restaurant reactivated.",
+      "deleted": "Restaurant and all tenant records permanently deleted.",
+      "actionFailed": "Unable to complete admin action."
+    },
+    "deleteDialog": {
+      "title": "Permanently Delete Restaurant Data",
+      "subtitle": "This permanently erases {name} and all its users, menu items, waste logs, sales, purchases, forecasts, alerts, and tenant audit logs.",
+      "warning": "Irreversible PDPL deletion: all operational records and staff accounts for this tenant will be permanently removed.",
+      "confirmLabel": "Type \"{name}\" to confirm permanent deletion"
+    },
+    "leads": {
+      "title": "Pilot sign-up leads",
+      "subtitle": "Follow up with Makkah, Jeddah, and other pilot applicants.",
+      "countLabel": "{count} leads",
+      "newBadge": "{count} new",
+      "exportCsv": "Export CSV",
+      "searchPlaceholder": "Search name, business, phone, or email...",
+      "statusFilterLabel": "Status",
+      "cityFilterLabel": "City",
+      "allStatuses": "All statuses",
+      "allCities": "All cities",
+      "empty": "No pilot leads match your current filters.",
+      "saveNotes": "Save notes",
+      "saving": "Saving...",
+      "updatedToast": "Lead updated.",
+      "updateErrorToast": "Unable to update lead.",
+      "notesPlaceholder": "Call notes, follow-up date, fit summary...",
+      "noEmail": "No email",
+      "consentRecorded": "Consent",
+      "columns": {
+        "createdAt": "Submitted",
+        "contact": "Contact",
+        "business": "Business",
+        "city": "City",
+        "branches": "Branches",
+        "posSystem": "POS",
+        "source": "Campaign / UTM",
+        "status": "Status",
+        "notes": "Notes"
+      },
+      "statuses": {
+        "NEW": "New",
+        "CONTACTED": "Contacted",
+        "PILOT": "Pilot",
+        "NOT_FIT": "Not Fit"
+      },
+      "cities": {
+        "MAKKAH": "Makkah",
+        "JEDDAH": "Jeddah",
+        "OTHER": "Other"
+      },
+      "posSystems": {
+        "FOODICS": "Foodics",
+        "MARN": "Marn",
+        "OTHER": "Other",
+        "NONE": "None"
+      }
+    }
+  },
+  "designCheck": {
+    "badge": "Development Verification",
+    "title": "Wafrah Design System & RTL / i18n Check",
+    "subtitle": "Interactive verification of brand colors, typography, logical RTL/LTR layout, 48px kitchen touch targets, and Intl formatting.",
+    "paletteTitle": "Brand Color Palette",
+    "paletteDescription": "CSS variables mapped into Tailwind and shadcn/ui tokens",
+    "colors": {
+      "darkTeal": "Primary Dark Teal",
+      "midTeal": "Secondary Mid Teal",
+      "gold": "Accent Gold",
+      "lightTint": "Surface Light Tint",
+      "text": "Foreground Charcoal"
+    },
+    "formattingTitle": "Intl Formatting (Western Digits 0–9 & Hijri Calendar)",
+    "formattingDescription": "Formatted with ar-SA / en-US in Asia/Riyadh timezone using Decimal values",
+    "kpiWasteCostLabel": "Weekly Waste Cost",
+    "kpiSavingsLabel": "Estimated Monthly Savings",
+    "kpiQuantityLabel": "Total Wasted Weight",
+    "kpiDateLabel": "Business Date (Gregorian + Umm al-Qura Hijri)",
+    "buttonsTitle": "Buttons, Badges & Directional Icons",
+    "buttonsDescription": "Standard manager controls and 48px+ kitchen touch targets with RTL-flipping arrows",
+    "btnPrimary": "Primary Action",
+    "btnSecondary": "Secondary Action",
+    "btnOutline": "Outline Action",
+    "btnGhost": "Ghost Action",
+    "btnDestructive": "Delete Entry",
+    "btnDirectional": "Continue to Report",
+    "btnKitchenTouch": "Kitchen Touch Target (48px+)",
+    "badgeDefault": "Active Pilot",
+    "badgeSecondary": "Evening Shift",
+    "badgeAccent": "High Priority",
+    "badgeOutline": "Makkah Branch",
+    "badgeDestructive": "Critical Spike",
+    "inputsTitle": "Form Controls & Kitchen Inputs",
+    "inputsDescription": "Inputs, labels, and select dropdowns aligned with logical properties",
+    "itemSearchLabel": "Menu item name or code",
+    "itemSearchPlaceholder": "e.g., MANDI-LAMB or Chicken Kabsa",
+    "quantityInputLabel": "Wasted quantity (KG)",
+    "quantityInputPlaceholder": "2.50",
+    "reasonSelectLabel": "Waste reason",
+    "reasonSelectPlaceholder": "Select reason",
+    "tableTitle": "Recent Kitchen Waste Entries",
+    "tableDescription": "Sample multi-column table verifying logical start/end alignment in RTL and LTR",
+    "colCode": "Code",
+    "colItem": "Menu Item",
+    "colShift": "Shift",
+    "colReason": "Reason",
+    "colQuantity": "Quantity",
+    "colCost": "Waste Cost",
+    "colDate": "Logged Date",
+    "sampleItems": {
+      "mandi": "Lamb Mandi Rice",
+      "kabsa": "Grilled Chicken Kabsa",
+      "hummus": "Fresh Mezzah Hummus",
+      "kunafa": "Nabulsi Cheese Kunafa"
+    },
+    "dialogSectionTitle": "Dialog Modal Verification",
+    "dialogSectionDescription": "Test modal overlay, focus trap, and RTL/LTR header and footer alignment",
+    "openDialogButton": "Open Sample Waste Dialog",
+    "dialogTitle": "Confirm Waste Log Entry",
+    "dialogDescription": "Review the waste entry details below before saving to your restaurant log.",
+    "dialogConfirm": "Save Waste Entry"
+  },
+  "dashboard": {
+    "title": "Manager Dashboard",
+    "subtitle": "Waste cost analytics, anomaly alerts, and weekly prep & purchase recommendations",
+    "rangeSelectorLabel": "Date range",
+    "ranges": {
+      "7": "Last 7 days",
+      "30": "Last 30 days",
+      "90": "Last 90 days"
+    },
+    "kpis": {
+      "wasteCostTitle": "Total Waste Cost",
+      "wasteCostSub": "vs prior {days}-day period",
+      "wastePctPurchasesTitle": "Waste % of Purchases",
+      "wastePctPurchasesSub": "vs prior period",
+      "importPurchasesPrompt": "Import purchases to see this",
+      "importPurchasesLink": "Go to Imports",
+      "entriesCountTitle": "Waste Entries",
+      "entriesCountSub": "vs prior {days}-day period",
+      "topReasonTitle": "Top Waste Reason",
+      "topReasonShare": "{pct}% of waste cost",
+      "noDataYet": "No data yet",
+      "newChange": "New",
+      "ptsDelta": "{pts} pts"
+    },
+    "trend": {
+      "title": "Daily Waste Trend",
+      "description": "Daily waste cost (SAR) with 7-day moving average",
+      "dailySeries": "Daily Waste (SAR)",
+      "movingAvg7d": "7-Day Moving Avg",
+      "empty": "No waste entries recorded in this range."
+    },
+    "itemsChart": {
+      "title": "Top 8 Items by Waste Cost",
+      "description": "Ranked by SAR cost and colored by cumulative cost impact tier",
+      "empty": "No wasted items in this range.",
+      "tierHigh": "High (First 50%)",
+      "tierMedium": "Medium (Next 30%)",
+      "tierLow": "Low (Remaining 20%)"
+    },
+    "heatmap": {
+      "title": "Waste Heatmap: Weekday × Shift",
+      "description": "SAR waste cost distribution by weekday and shift (Asia/Riyadh)",
+      "weekdayHeader": "Day",
+      "legendLow": "Lower",
+      "legendHigh": "Higher",
+      "cellAria": "{weekday}, {shift}: {cost}, {count} entries",
+      "shifts": {
+        "MORNING": "Morning",
+        "EVENING": "Evening",
+        "NIGHT": "Night"
+      }
+    },
+    "reasons": {
+      "title": "Waste by Reason",
+      "description": "Ranked by SAR cost and share",
+      "entriesCount": "{count} entries",
+      "empty": "No reasons recorded in this range."
+    },
+    "alerts": {
+      "title": "Smart Alerts",
+      "description": "Critical alerts first from automated pattern detection",
+      "unreadCount": "{count} unread",
+      "markRead": "Mark as read",
+      "dismiss": "Dismiss",
+      "readBadge": "Read",
+      "unreadBadge": "Unread",
+      "severity": {
+        "CRITICAL": "Critical",
+        "WARNING": "Warning",
+        "INFO": "Info"
+      },
+      "empty": "No active alerts right now.",
+      "updatedRead": "Alert marked as read",
+      "updatedDismissed": "Alert dismissed",
+      "updateError": "Could not update alert status"
+    },
+    "recommendations": {
+      "title": "Weekly Prep & Purchase Recommendations",
+      "description": "Recommended quantities for the next 7 days with likely range and explanation breakdown",
+      "allDays": "All 7 days",
+      "columns": {
+        "item": "Item",
+        "day": "Day",
+        "recommended": "Recommended",
+        "range": "Likely range",
+        "why": "Explanation"
+      },
+      "whyButton": "Why?",
+      "insufficientData": "Not enough data yet (needs 14 days of sales)",
+      "daysProgress": "Available: {count} / 14 days",
+      "whyFields": {
+        "weekdayMean": "Weekday average",
+        "eventMultiplier": "Event multiplier",
+        "trend": "Trend factor",
+        "safetyMargin": "Safety margin",
+        "criticalRatio": "Critical ratio",
+        "noEvent": "None (1.0×)"
+      },
+      "emptyItems": "Add menu items and run forecasting to view weekly recommendations."
+    },
+    "checklist": {
+      "title": "Welcome to Wafrah — Restaurant Onboarding",
+      "description": "Complete these five steps to activate daily waste tracking and prep insights:",
+      "progressSummary": "{completed} of {total} steps done",
+      "stepMenuTitle": "1. Add menu items and unit costs",
+      "stepMenuCta": "Go to Menu",
+      "stepStaffTitle": "2. Invite kitchen staff and issue PINs",
+      "stepStaffCta": "Manage Staff",
+      "stepImportsTitle": "3. Import historical sales",
+      "stepImportsCta": "Go to Imports",
+      "stepWasteTitle": "4. Log your first kitchen waste entry",
+      "stepWasteCta": "Open Kitchen Log",
+      "stepInsightsTitle": "5. First daily insights ready",
+      "stepInsightsCta": "View Insights",
+      "stepInsightsPending": "Generated after daily job",
+      "completed": "Done",
+      "pending": "Pending"
+    },
+    "weekdays": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat"
+    }
+  },
+  "notifications": {
+    "settings": {
+      "title": "Email Notification Settings",
+      "description": "Choose which automated alerts and periodic summaries you want to receive for your branch.",
+      "badge": "Automated Emails",
+      "saveButton": "Save Preferences",
+      "savingButton": "Saving...",
+      "savedToast": "Notification preferences saved",
+      "errorToast": "Could not save notification preferences",
+      "emailAddressLabel": "Delivery email address",
+      "noEmailWarning": "No email address is configured on this user account; notifications will stay paused until one is set.",
+      "items": {
+        "criticalAlerts": {
+          "title": "Critical Waste Alerts",
+          "description": "Immediate email notification when critical waste spikes are detected (deduplicated — never sent twice)."
+        },
+        "weeklySummary": {
+          "title": "Weekly Prep Summary",
+          "description": "Weekly digest of recommended 7-day prep & purchase quantities."
+        },
+        "monthlyReport": {
+          "title": "Monthly SAR Savings Report",
+          "description": "Monthly summary sent on the 1st with your estimated SAR savings and report link."
+        }
+      }
+    },
+    "emails": {
+      "brandHeader": "Wafrah / وفرة",
+      "brandTagline": "AI-Powered Food Waste Management",
+      "footerNote": "You received this email based on your Wafrah notification preferences.",
+      "managePreferencesLabel": "Manage notification preferences",
+      "criticalAlert": {
+        "subject": "Critical Waste Alert — {restaurant} ({date})",
+        "title": "Critical Food Waste Spike Detected",
+        "intro": "Daily monitoring for {restaurant} flagged {count} critical waste alert(s) needing immediate review:",
+        "severityTag": "CRITICAL",
+        "ctaLabel": "Open Dashboard & Alerts"
+      },
+      "weeklySummary": {
+        "subject": "Weekly Prep Recommendations Ready — {restaurant}",
+        "title": "Your 7-Day Prep & Purchase Recommendations",
+        "intro": "Weekly demand forecasts for {restaurant} ({horizon}) are ready across {itemCount} menu items.",
+        "wasteSummaryLabel": "Last 7 days waste cost: {wasteSar}",
+        "tableHeaders": {
+          "item": "Item",
+          "recommendedTotal": "7-Day Recommended",
+          "dailyAvg": "Daily Avg"
+        },
+        "noItemsNote": "Item recommendations will appear automatically once 14 days of sales history are available.",
+        "ctaLabel": "View Recommendations on Dashboard"
+      },
+      "monthlyReport": {
+        "subject": "Monthly Savings Report Ready ({month}) — {restaurant}",
+        "title": "Monthly Food Waste & Savings Report",
+        "intro": "Your monthly report for {restaurant} covering {month} is ready to view and print.",
+        "estimateTag": "ESTIMATE",
+        "savedHeadline": "Estimated Monthly Savings: {amount}",
+        "increasedHeadline": "Waste increased by {amount} compared to baseline",
+        "flatHeadline": "No net change compared to baseline",
+        "calibratingHeadline": "Baseline calibrating ({days} days remaining)",
+        "wasteTotalLabel": "Total waste cost for month: {wasteSar}",
+        "ctaLabel": "Open Monthly Report"
+      },
+      "welcome": {
+        "subject": "Welcome to Wafrah — Account Ready for {restaurant}",
+        "title": "Your Wafrah Account Is Ready",
+        "greeting": "Hello {name},",
+        "intro": "Your account has been created to access your restaurant's food waste logs, forecasts, and SAR savings reports.",
+        "branchLabel": "Branch",
+        "roleLabel": "Role",
+        "ctaLabel": "Sign In to Wafrah"
+      },
+      "leadConfirmation": {
+        "subject": "We received your Wafrah pilot request — {businessName}",
+        "title": "Pilot Request Received",
+        "greeting": "Hello {name},",
+        "intro": "Thank you for requesting a spot in the Wafrah founding pilot for {businessName}.",
+        "followUp": "A member of the Wafrah team will reach out via WhatsApp or phone within one business day to confirm pilot fit and schedule onboarding.",
+        "summaryTitle": "Summary of your request",
+        "cityLabel": "City",
+        "branchesLabel": "Branches",
+        "posLabel": "Current POS",
+        "whatsappCta": "Chat with us on WhatsApp",
+        "footerNote": "You received this confirmation because you requested a pilot spot on Wafrah."
+      },
+      "leadFounder": {
+        "subject": "New Wafrah Pilot Lead: {businessName} ({city}) — {branches} branch(es)",
+        "title": "New Pilot Sign-Up Lead",
+        "intro": "A restaurant or hotel submitted the pilot request form.",
+        "openAdminCta": "Review in Platform Admin",
+        "fields": {
+          "leadId": "Lead ID",
+          "name": "Contact Name",
+          "role": "Role",
+          "businessName": "Restaurant / Hotel",
+          "city": "City",
+          "phone": "Mobile / WhatsApp",
+          "email": "Email",
+          "branches": "Branches",
+          "posSystem": "Current POS",
+          "locale": "Form Locale",
+          "consent": "Consent Recorded",
+          "utm": "UTM Attribution",
+          "submittedAt": "Submitted At"
+        }
+      }
+    }
+  },
+  "dataPrivacy": {
+    "exportCard": {
+      "title": "Restaurant Data Export (PDPL)",
+      "description": "Download a complete archive of your restaurant's data stored in Wafrah as CSV spreadsheets inside a ZIP file.",
+      "contentsNote": "Includes restaurant profile, non-credential user list, menu catalog, waste entries, sales & purchase records, forecasts, alerts, notification preferences, subscription, import history, and tenant audit logs.",
+      "downloadButton": "Export Restaurant Data (ZIP)",
+      "downloading": "Preparing ZIP archive...",
+      "downloadSuccess": "Restaurant data archive downloaded.",
+      "downloadError": "Could not export restaurant data."
+    }
+  },
+  "legalPage": {
+    "backToLogin": "Back to Sign In",
+    "viewPrivacy": "Privacy Policy",
+    "viewTerms": "Terms of Service"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Status: Pending legal review",
+    "placeholder": "TO BE REPLACED BY LEGAL TEXT"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Status: Pending legal review",
+    "placeholder": "TO BE REPLACED BY LEGAL TEXT"
+  },
+  "settingsNav": {
+    "title": "Settings",
+    "staff": "Kitchen Staff",
+    "notifications": "Notifications & Alerts"
+  },
+  "feedback": {
+    "triggerLabel": "Feedback",
+    "dialogTitle": "Send Pilot Feedback",
+    "dialogSubtitle": "Share a quick rating or issue from {page}.",
+    "ratingLabel": "How is Wafrah working here?",
+    "starLabel": "{star} out of 5",
+    "messageLabel": "Your feedback",
+    "messagePlaceholder": "What worked well, or what slowed your team down?",
+    "submit": "Send Feedback",
+    "submitting": "Sending...",
+    "cancel": "Cancel",
+    "successToast": "Thank you — your feedback was recorded.",
+    "errorToast": "Could not send feedback. Please try again.",
+    "selectRatingError": "Please select a 1–5 rating.",
+    "emptyMessageError": "Please enter a short message."
+  },
+  "staff": {
+    "title": "Kitchen Staff & Quick-Start Card",
+    "subtitle": "Create kitchen accounts with 4-digit PINs, reset forgotten PINs, and print a tablet login card.",
+    "addCardTitle": "Add Kitchen Staff Member",
+    "addCardDescription": "A random 4-digit PIN will be generated and shown once for you to share.",
+    "nameLabel": "Staff Name",
+    "namePlaceholder": "e.g. Tariq Al-Dosari",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "tariq",
+    "usernameHint": "Lowercase letters, numbers, dots, or hyphens only.",
+    "localeLabel": "Tablet Language",
+    "localeAr": "العربية",
+    "localeEn": "English",
+    "createButton": "Create Staff Account",
+    "creatingButton": "Creating...",
+    "directoryTitle": "Staff Directory",
+    "directoryCount": "{active} active of {total}",
+    "emptyDirectory": "No kitchen staff added yet. Create your first account above.",
+    "colName": "Name",
+    "colUsername": "Username",
+    "colStatus": "Status",
+    "colLastLogin": "Last Sign-In",
+    "colActions": "Actions",
+    "statusActive": "Active",
+    "statusInactive": "Deactivated",
+    "neverLoggedIn": "Never",
+    "resetPinButton": "Reset PIN",
+    "deactivateButton": "Deactivate",
+    "reactivateButton": "Reactivate",
+    "updatingAction": "Updating...",
+    "pinModalCreatedTitle": "Staff Account Created — Save PIN Now",
+    "pinModalResetTitle": "New 4-Digit PIN Generated",
+    "pinModalWarning": "For kitchen security, this 4-digit PIN is shown only once and cannot be viewed again later. Write it down or share it directly with the staff member.",
+    "pinLabel": "4-Digit PIN",
+    "copyPin": "Copy PIN & Username",
+    "copied": "Copied",
+    "closePinModal": "Done",
+    "createdToast": "Staff account created.",
+    "pinResetToast": "New PIN generated.",
+    "deactivatedToast": "Staff account deactivated.",
+    "reactivatedToast": "Staff account reactivated.",
+    "errorToast": "Could not complete request.",
+    "quickStartTitle": "Kitchen Tablet Quick-Start Card",
+    "quickStartSubtitle": "Print and laminate near the kitchen prep station.",
+    "printCardButton": "Print Quick-Start Card",
+    "copyLoginUrlButton": "Copy Login Link",
+    "qrAlt": "QR code to open Wafrah kitchen login with restaurant code pre-filled",
+    "cardHeaderTitle": "Wafrah — Kitchen Waste Log / وفرة — سجل هدر المطبخ",
+    "cardRestaurantCodeLabel": "Restaurant Code / رمز المطعم",
+    "cardLoginUrlLabel": "Login Link / رابط الدخول",
+    "cardStep1": "1. Scan QR or open the link on the kitchen tablet / ١. امسح رمز QR أو افتح الرابط على تابلت المطبخ",
+    "cardStep2": "2. Enter Restaurant Code + Username + 4-digit PIN / ٢. أدخل رمز المطعم + اسم المستخدم + رمز PIN من 4 أرقام",
+    "cardStep3": "3. Tap item -> reason -> save in 3 taps (works offline) / ٣. اختر الصنف ← السبب ← حفظ في 3 نقرات (يعمل بدون إنترنت)"
+  },
+  "help": {
+    "title": "Help & Pilot Guide",
+    "subtitle": "Quick answers for kitchen staff and restaurant managers.",
+    "backToApp": "Back to workspace",
+    "q1Title": "How do kitchen staff log waste?",
+    "q1Body": "Sign in on the Kitchen Log tab using your Restaurant Code, username, and 4-digit PIN. Pick the wasted item, select the reason (e.g. Over-preparation or Expired), adjust quantity if needed, and tap Log Waste. You can tap Undo immediately if you picked the wrong item.",
+    "q2Title": "How does offline logging work?",
+    "q2Body": "If kitchen Wi-Fi drops, waste entries are saved safely inside this browser on your device with a 'Pending sync' badge. Once internet returns, Wafrah syncs queued entries automatically (or tap Sync now) without duplicates.",
+    "q3Title": "How are savings estimated?",
+    "q3Body": "Wafrah values each waste entry using your menu item unit cost in SAR and compares weekly waste cost before and after prep recommendations or against baseline averages. Results are operational estimates for management review, not audited accounting figures.",
+    "q4Title": "Who do we contact for support?",
+    "q4Unconfigured": "Pilot support contact has not been configured yet. Please contact the person who onboarded your restaurant.",
+    "contactNameLabel": "Pilot Support",
+    "contactEmailLabel": "Email",
+    "contactPhoneLabel": "Phone",
+    "contactWhatsappLabel": "WhatsApp",
+    "openWhatsapp": "Message on WhatsApp"
+  },
+  "landing": {
+    "meta": {
+      "title": "Wafrah — Smart Food Waste Management for Saudi Restaurants & Hotels",
+      "description": "Log kitchen waste in 10 seconds even offline, get weekly buy-and-prep recommendations, and track estimated SAR savings. Founding pilot in Makkah & Jeddah.",
+      "ogImageAlt": "Wafrah — Kitchen food waste logging, weekly prep guidance, and estimated SAR savings for Saudi restaurants"
+    },
+    "header": {
+      "brandName": "Wafrah",
+      "pilotTag": "Makkah & Jeddah Pilot",
+      "signIn": "Sign in",
+      "goToWorkspace": "Go to workspace",
+      "requestPilot": "Request a spot in the pilot",
+      "shortCta": "Join pilot",
+      "switchLanguage": "العربية",
+      "switchLanguageLabel": "Switch to Arabic",
+      "skipToContent": "Skip to main content",
+      "navLabel": "Landing sections",
+      "navProblem": "Why Wafrah",
+      "navHowItWorks": "How it works",
+      "navFeatures": "Features",
+      "navCalculator": "Calculator",
+      "navPricing": "Pricing",
+      "navFaq": "FAQ"
+    },
+    "hero": {
+      "eyebrow": "Founding pilot • Makkah & Jeddah",
+      "title": "Stop throwing your profit in the bin.",
+      "subtitle": "Wafrah logs kitchen waste in 10 seconds, tells you what to buy and prep each week, and shows your estimated savings in riyals.",
+      "primaryCta": "Request a spot in the pilot",
+      "secondaryCta": "Chat on WhatsApp",
+      "note": "Limited places in the first pilot in Makkah and Jeddah",
+      "previewBadge": "Illustrative example • Estimates only",
+      "previewHeading": "Weekly kitchen waste summary",
+      "previewMetricLabel": "Estimated monthly waste reduction impact",
+      "previewMetricValue": "SAR — tracked per item & shift",
+      "mock": {
+        "frameRegionLabel": "Wafrah product preview with demo data",
+        "urlLabel": "app.wafrah.sa/dashboard",
+        "demoBadge": "Demo data",
+        "dashboardTitle": "Weekly Waste Summary",
+        "kpiWasteLabel": "7-day waste",
+        "kpiWasteValue": "1,620 SAR",
+        "kpiDeltaValue": "-16% vs prior week",
+        "kpiShareLabel": "Share of purchases",
+        "kpiShareValue": "4.8%",
+        "kpiTopDriverLabel": "Top driver",
+        "kpiTopDriverValue": "Grilled chicken • Evening",
+        "chartTitle": "4-week waste trend (SAR — demo)",
+        "chartWeek1": "W1",
+        "chartWeek2": "W2",
+        "chartWeek3": "W3",
+        "chartWeek4": "W4",
+        "phoneFrameLabel": "Kitchen mobile log preview",
+        "phoneTitle": "Kitchen Log",
+        "phoneShiftBadge": "Evening",
+        "phoneOfflineReady": "Works offline",
+        "phoneItemLabel": "Grilled chicken",
+        "phoneQty1": "0.5 KG",
+        "phoneQty2": "1.5 KG",
+        "phoneQty3": "3.0 KG",
+        "phoneReason1": "Prep excess",
+        "phoneReason2": "Spoilage",
+        "phoneSubmit": "Save log"
+      }
+    },
+    "problem": {
+      "heading": "Waste quietly eats your margin",
+      "stat1": {
+        "figure": "SAR 47 billion",
+        "description": "annual food-waste losses in Saudi Arabia",
+        "fullLine": "SAR 47 billion — annual food-waste losses in Saudi Arabia",
+        "sourceRef": "[1]"
+      },
+      "stat2": {
+        "figure": "26%",
+        "description": "average restaurant waste as a share of purchases",
+        "fullLine": "26% — average restaurant waste as a share of purchases",
+        "sourceRef": "[2]"
+      },
+      "callout": {
+        "text": "A quarter of the purchasing bill goes in the bin, unnoticed."
+      }
+    },
+    "howItWorks": {
+      "heading": "How it works",
+      "subheading": "Three steps from kitchen logging to weekly purchasing clarity.",
+      "step1": {
+        "number": "1",
+        "title": "Log",
+        "description": "Kitchen staff log waste in seconds on a phone or tablet, even offline."
+      },
+      "step2": {
+        "number": "2",
+        "title": "Understand",
+        "description": "Get alerted to abnormal spikes and see which item, day and shift drive the waste."
+      },
+      "step3": {
+        "number": "3",
+        "title": "Decide",
+        "description": "A weekly buy-and-prep recommendation with the reason why, and a monthly estimated-savings report."
+      }
+    },
+    "features": {
+      "heading": "Built for daily kitchen reality",
+      "subheading": "Practical tools for restaurant managers and kitchen teams, without extra hardware.",
+      "cards": {
+        "offlineLogging": {
+          "title": "Fast logging that works offline",
+          "description": "Kitchen staff record item, quantity, and waste reason in seconds from a phone or tablet, and entries sync automatically once connectivity returns."
+        },
+        "spikeAlerts": {
+          "title": "Smart spike alerts",
+          "description": "Compares daily item waste against that weekday's normal baseline and alerts you to abnormal increases above meaningful cost thresholds."
+        },
+        "weeklyRecommendations": {
+          "title": "Weekly recommendations with the \"why\"",
+          "description": "Suggests weekly purchasing and prep quantities from recent demand and shortage-to-waste cost tradeoffs, explained in plain language."
+        },
+        "monthlyReport": {
+          "title": "Printable monthly estimated-savings report in Arabic",
+          "description": "Summarizes estimated SAR savings against your starting baseline and highlights top wasted items, shifts, and reasons in a print-ready Arabic report."
+        },
+        "bilingual": {
+          "title": "Arabic-first, English supported",
+          "description": "Designed right-to-left in clear Arabic for Saudi operations, while letting managers and kitchen staff switch to English whenever needed."
+        },
+        "csvPosImport": {
+          "title": "Import sales from any POS via CSV",
+          "description": "Import sales and purchasing sheets from any POS via CSV today with Arabic and English item matching; direct Foodics integration is on the roadmap."
+        }
+      }
+    },
+    "calculator": {
+      "heading": "Estimate your monthly savings",
+      "subheading": "Enter your monthly kitchen spend for an illustrative estimate of current waste, potential savings, and the matching Wafrah plan.",
+      "estimateBadge": "Illustrative estimate",
+      "purchasesLabel": "Monthly food purchases (SAR)",
+      "purchasesHint": "Approximate monthly spend on food and ingredients (slider 5,000–250,000 SAR, or type any amount).",
+      "purchasesRangeLabel": "Monthly food purchases slider",
+      "wastePctLabel": "Current waste (% of purchases)",
+      "wastePctHint": "Saudi average, adjust to your kitchen",
+      "reductionPctLabel": "Expected waste reduction (%)",
+      "reductionPctHint": "Assumption — adjust it",
+      "reductionMinLabel": "5%",
+      "reductionMaxLabel": "30%",
+      "clampedNotice": "Inputs were adjusted to stay within valid non-negative limits.",
+      "resultsRegionLabel": "Estimated monthly and annual savings results",
+      "monthlyWasteResultLabel": "Estimated monthly waste cost",
+      "monthlySavingsResultLabel": "Estimated monthly savings",
+      "annualSavingsResultLabel": "Estimated yearly savings",
+      "planComparisonTitle": "Plan comparison by monthly purchases",
+      "recommendedPlanLabel": "Applicable plan",
+      "planFeeLabel": "Plan price",
+      "netAfterPlanLabel": "Estimated monthly savings minus plan",
+      "belowPlanFeeNote": "At these inputs, estimated monthly savings are below the {price} SAR plan price.",
+      "tierThresholds": {
+        "small": "Under 40,000 SAR/month",
+        "medium": "40,000–120,000 SAR/month",
+        "enterprise": "Above 120,000 SAR/month"
+      },
+      "sarAmount": "{amount} SAR",
+      "sarPerMonth": "{amount} SAR / month",
+      "sarPerYear": "{amount} SAR / year",
+      "sarUnit": "SAR",
+      "disclaimer": "Illustrative estimate based on your inputs, not a guarantee. Real results are measured against your own baseline during the pilot.",
+      "cta": "Request a spot in the pilot"
+    },
+    "pricing": {
+      "heading": "Simple monthly subscription",
+      "subheading": "Clear plans scaled to your kitchen volume after the founding pilot.",
+      "pilotOfferBadge": "Founding pilot: a free trial period for the first 15 restaurants",
+      "pilotOfferNote": "Pilot restaurants in Makkah and Jeddah receive guided onboarding for menu setup and staff accounts before choosing any paid plan.",
+      "periodLabel": "SAR per month",
+      "vatNote": "",
+      "cta": "Request a spot in the pilot",
+      "tiers": {
+        "small": {
+          "name": "Small restaurant",
+          "price": "400",
+          "summary": "For independent single-kitchen restaurants building consistent waste control.",
+          "features": {
+            "item1": "Offline kitchen waste logging by shift & reason",
+            "item2": "Smart weekday spike alerts",
+            "item3": "CSV sales & purchases import",
+            "item4": "Printable Arabic monthly estimated-savings report"
+          }
+        },
+        "medium": {
+          "name": "Medium restaurant",
+          "price": "700",
+          "summary": "For higher-volume restaurants running multiple shifts and wider menus.",
+          "features": {
+            "item1": "Everything in Small restaurant",
+            "item2": "Weekly buy-and-prep recommendations with explanations",
+            "item3": "Custom shift boundaries & Ramadan demand events",
+            "item4": "Guided team onboarding during pilot setup"
+          }
+        },
+        "enterprise": {
+          "name": "Hotel / chain",
+          "price": "1,200",
+          "summary": "For hotel F&B departments, central kitchens, and multi-unit operators.",
+          "features": {
+            "item1": "Everything in Medium restaurant",
+            "item2": "Higher SKU capacity and larger kitchen staff rosters",
+            "item3": "Dedicated CSV mapping & onboarding review",
+            "item4": "Direct founder support channel during rollout"
+          }
+        }
+      }
+    },
+    "faq": {
+      "heading": "Frequently asked questions",
+      "q1": {
+        "question": "Does Wafrah integrate with Foodics or my current POS?",
+        "answer": "You can import sales and purchasing reports from any POS (including Foodics or Marn) via CSV today, with automatic Arabic and English item matching. Direct Foodics API integration is on the roadmap."
+      },
+      "q2": {
+        "question": "What happens if Wi-Fi drops in the kitchen?",
+        "answer": "Kitchen logging works offline right in the browser on a phone or tablet. Entries are stored locally on the device and sync automatically as soon as the connection returns."
+      },
+      "q3": {
+        "question": "How are estimated SAR savings calculated?",
+        "answer": "Savings are always shown as an estimate comparing your weekly waste cost against your starting baseline (typically the first 14 days, optionally adjusted for sales volume). Every monthly report displays the exact baseline and calculation method."
+      },
+      "q4": {
+        "question": "Do we need special hardware or long staff training?",
+        "answer": "No new hardware is needed — any mobile phone or tablet works. Kitchen staff unlock the logging screen quickly using your restaurant code, username, and a 4–6 digit PIN."
+      },
+      "q5": {
+        "question": "How is our restaurant's data handled?",
+        "answer": "Each restaurant's operational records are strictly separated per account with role-based access controls. You can review our Privacy Policy page for details on data handling."
+      },
+      "q6": {
+        "question": "What are the pilot terms and commitment after the trial?",
+        "answer": "There is no long-term lock-in required to apply. Exact trial length, onboarding timeline, and post-pilot continuation options are confirmed with you directly when your pilot spot is allocated."
+      }
+    },
+    "leadForm": {
+      "heading": "Request a spot in the pilot",
+      "subheading": "Limited to 15 restaurants and hotels in Makkah and Jeddah. Leave your details and we will follow up personally.",
+      "fields": {
+        "name": {
+          "label": "Full name",
+          "placeholder": "e.g. Faisal Al-Harbi"
+        },
+        "restaurantName": {
+          "label": "Restaurant or hotel name",
+          "placeholder": "e.g. Al-Balad Kitchen"
+        },
+        "city": {
+          "label": "City",
+          "options": {
+            "makkah": "Makkah",
+            "jeddah": "Jeddah",
+            "other": "Other"
+          }
+        },
+        "role": {
+          "label": "Your role",
+          "placeholder": "e.g. Owner, General Manager, Operations Manager"
+        },
+        "phone": {
+          "label": "Mobile / WhatsApp number",
+          "placeholder": "05XXXXXXXX"
+        },
+        "email": {
+          "label": "Email (optional)",
+          "placeholder": "name@restaurant.sa"
+        },
+        "branchesCount": {
+          "label": "Number of branches",
+          "placeholder": "1"
+        },
+        "currentPos": {
+          "label": "Current POS system",
+          "options": {
+            "foodics": "Foodics",
+            "marn": "Marn",
+            "other": "Other",
+            "none": "None currently"
+          }
+        },
+        "consent": {
+          "labelPrefix": "I agree to be contacted about the pilot in accordance with the ",
+          "privacyLinkText": "Privacy Policy",
+          "labelSuffix": "."
+        },
+        "cityOther": {
+          "label": "City name",
+          "placeholder": "e.g. Riyadh, Dammam"
+        }
+      },
+      "submit": "Request a spot in the pilot",
+      "submitting": "Sending request...",
+      "successTitle": "Request received. We'll contact you within one business day",
+      "successDescription": "Prefer to message right away? Reach us directly on WhatsApp.",
+      "whatsappFallbackCta": "Chat on WhatsApp",
+      "errors": {
+        "requiredField": "Please complete this field.",
+        "invalidPhone": "Please enter a valid mobile or WhatsApp number.",
+        "invalidEmail": "Please enter a valid email address.",
+        "invalidBranches": "Please enter at least 1 branch.",
+        "consentRequired": "Please confirm you agree to be contacted about the pilot.",
+        "submitFailed": "Could not send your request right now. Please try again or reach us on WhatsApp.",
+        "cityOtherRequired": "Please enter your city.",
+        "submittedTooFast": "Please take a moment to review your details and submit again.",
+        "tooManyRequests": "Too many requests from this device. Please try again later or reach us on WhatsApp."
+      }
+    },
+    "sources": {
+      "heading": "Sources",
+      "placeholderNotice": "Published statistics link to our source registry and remain marked as placeholders until verified publication references are added.",
+      "referenceLabel": "Source {number}",
+      "pendingVerificationBadge": "Pending verification",
+      "openSourceLink": "View source"
+    },
+    "finalCta": {
+      "badge": "Founding pilot • 15 restaurants max",
+      "highlight1": "Free trial period for the first 15 restaurants in Makkah and Jeddah",
+      "highlight2": "Guided menu and kitchen PIN setup before go-live",
+      "highlight3": "Import sales from any POS via CSV today"
+    },
+    "stickyBar": {
+      "ariaLabel": "Quick pilot actions"
+    },
+    "whatsapp": {
+      "prefilledMessage": "Hello, I'd like to know more about the Wafrah pilot for my restaurant."
+    },
+    "footer": {
+      "tagline": "Practical food waste logging, weekly prep clarity, and estimated SAR savings for Saudi kitchens.",
+      "pilotRegions": "Founding pilot region: Makkah & Jeddah",
+      "linksTitle": "Product & Legal",
+      "contactTitle": "Contact",
+      "privacy": "Privacy Policy",
+      "terms": "Terms & Conditions",
+      "help": "Help",
+      "signIn": "Sign in",
+      "whatsapp": "WhatsApp",
+      "emailLabel": "Email",
+      "copyright": "© {year} Wafrah. All rights reserved."
+    }
+  }
+}

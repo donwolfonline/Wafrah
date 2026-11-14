@@ -1,0 +1,425 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STAFF
+  MANAGER
+  OWNER
+  PLATFORM_ADMIN
+}
+
+enum Unit {
+  KG
+  LITER
+  PORTION
+  PIECE
+}
+
+enum WasteReason {
+  EXPIRED
+  OVER_PREPARATION
+  ORDER_ERROR
+  CUSTOMER_RETURN
+  DAMAGED_IN_PREP
+  OTHER
+}
+
+enum Shift {
+  MORNING
+  EVENING
+  NIGHT
+}
+
+enum SalesChannel {
+  DINE_IN
+  DELIVERY
+  TAKEAWAY
+  UNSPECIFIED
+}
+
+enum SalesSource {
+  CSV
+  POS
+  MANUAL
+}
+
+enum AlertType {
+  WASTE_SPIKE
+  TOP_WASTE_ITEM
+  DATA_GAP
+  FORECAST_RISK
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AlertStatus {
+  UNREAD
+  READ
+  DISMISSED
+}
+
+enum SubscriptionPlan {
+  SMALL
+  MEDIUM
+  CHAIN
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  SUSPENDED
+}
+
+enum ImportType {
+  SALES
+  PURCHASES
+}
+
+enum LeadCity {
+  MAKKAH
+  JEDDAH
+  OTHER
+}
+
+enum LeadPosSystem {
+  FOODICS
+  MARN
+  OTHER
+  NONE
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  PILOT
+  NOT_FIT
+}
+
+model Restaurant {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  name          String
+  nameAr        String
+  city          String
+  type          String
+  timezone      String    @default("Asia/Riyadh")
+  shiftConfig   Json      @default("{\"MORNING\":\"05:00\",\"EVENING\":\"15:00\",\"NIGHT\":\"23:00\"}")
+  baselineStart DateTime? @db.Date
+  baselineEnd   DateTime? @db.Date
+  createdAt     DateTime  @default(now())
+
+  users                User[]
+  menuItems            MenuItem[]
+  wasteEntries         WasteEntry[]
+  salesRecords         SalesRecord[]
+  purchaseRecords      PurchaseRecord[]
+  eventCalendars       EventCalendar[]
+  forecastResults      ForecastResult[]
+  alerts               Alert[]
+  subscription         Subscription?
+  auditLogs            AuditLog[]
+  importColumnMappings ImportColumnMapping[]
+  importBatches        ImportBatch[]
+  notificationPreferences NotificationPreference[]
+  feedbacks            Feedback[]
+}
+
+model User {
+  id           String    @id @default(cuid())
+  tenantId     String?
+  name         String
+  role         Role
+  email        String?   @unique
+  username     String
+  passwordHash String?
+  pinHash      String?
+  locale       String    @default("ar")
+  active       Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+
+  tenant                 Restaurant?             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  wasteEntries           WasteEntry[]
+  auditLogs              AuditLog[]
+  importBatches          ImportBatch[]
+  notificationPreference NotificationPreference?
+  feedbacks              Feedback[]
+
+  @@unique([tenantId, username])
+  @@index([tenantId])
+  @@index([tenantId, lastLoginAt])
+}
+
+model MenuItem {
+  id              String   @id @default(cuid())
+  tenantId        String
+  code            String?
+  name            String
+  nameAr          String
+  category        String
+  unit            Unit
+  salesUnitFactor Decimal  @default(1) @db.Decimal(12, 4)
+  unitCost        Decimal  @db.Decimal(12, 2)
+  shortageCost    Decimal? @db.Decimal(12, 2)
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  tenant          Restaurant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  wasteEntries    WasteEntry[]
+  salesRecords    SalesRecord[]
+  purchaseRecords PurchaseRecord[]
+  forecastResults ForecastResult[]
+  alerts          Alert[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+}
+
+model WasteEntry {
+  id         String      @id @default(cuid())
+  tenantId   String
+  menuItemId String
+  quantity   Decimal     @db.Decimal(12, 3)
+  reason     WasteReason
+  shift      Shift
+  occurredAt DateTime    @default(now())
+  createdAt  DateTime    @default(now())
+  deletedAt  DateTime?
+  loggedById String
+  clientId   String
+  note       String?
+
+  tenant   Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  menuItem MenuItem   @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  loggedBy User       @relation(fields: [loggedById], references: [id], onDelete: Restrict)
+
+  @@unique([tenantId, clientId])
+  @@index([tenantId])
+  @@index([tenantId, occurredAt])
+  @@index([tenantId, deletedAt, occurredAt])
+  @@index([tenantId, menuItemId, occurredAt])
+}
+
+model SalesRecord {
+  id           String       @id @default(cuid())
+  tenantId     String
+  menuItemId   String
+  date         DateTime     @db.Date
+  quantitySold Decimal      @db.Decimal(12, 3)
+  channel      SalesChannel @default(UNSPECIFIED)
+  source       SalesSource  @default(CSV)
+
+  tenant   Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  menuItem MenuItem   @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, menuItemId, date, channel])
+  @@index([tenantId])
+  @@index([tenantId, date])
+}
+
+model PurchaseRecord {
+  id         String   @id @default(cuid())
+  tenantId   String
+  menuItemId String
+  date       DateTime @db.Date
+  quantity   Decimal  @db.Decimal(12, 3)
+  cost       Decimal? @db.Decimal(12, 2)
+
+  tenant   Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  menuItem MenuItem   @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, menuItemId, date])
+  @@index([tenantId])
+  @@index([tenantId, date])
+}
+
+model EventCalendar {
+  id               String   @id @default(cuid())
+  tenantId         String?
+  name             String
+  nameAr           String
+  startDate        DateTime @db.Date
+  endDate          DateTime @db.Date
+  demandMultiplier Decimal  @default(1.0) @db.Decimal(6, 3)
+
+  tenant Restaurant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([startDate, endDate])
+}
+
+model ForecastResult {
+  id             String   @id @default(cuid())
+  tenantId       String
+  menuItemId     String
+  forDate        DateTime @db.Date
+  meanQty        Decimal  @db.Decimal(12, 3)
+  lowQty         Decimal  @db.Decimal(12, 3)
+  highQty        Decimal  @db.Decimal(12, 3)
+  recommendedQty Decimal  @db.Decimal(12, 3)
+  method         String
+  createdAt      DateTime @default(now())
+  inputsSnapshot Json
+
+  tenant   Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  menuItem MenuItem   @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, menuItemId, forDate])
+  @@index([tenantId])
+  @@index([tenantId, forDate])
+}
+
+model Alert {
+  id            String        @id @default(cuid())
+  tenantId      String
+  menuItemId    String?
+  type          AlertType
+  severity      AlertSeverity
+  messageKey    String
+  messageParams Json
+  status        AlertStatus   @default(UNREAD)
+  dedupeKey     String
+  notifiedAt    DateTime?
+  createdAt     DateTime      @default(now())
+
+  tenant   Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  menuItem MenuItem?  @relation(fields: [menuItemId], references: [id], onDelete: SetNull)
+
+  @@unique([tenantId, dedupeKey])
+  @@index([tenantId])
+  @@index([tenantId, status, createdAt])
+  @@index([tenantId, severity, notifiedAt])
+}
+
+model NotificationPreference {
+  id             String   @id @default(cuid())
+  tenantId       String
+  userId         String   @unique
+  criticalAlerts Boolean  @default(true)
+  weeklySummary  Boolean  @default(true)
+  monthlyReport  Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+}
+
+model Subscription {
+  id       String             @id @default(cuid())
+  tenantId String             @unique
+  plan     SubscriptionPlan
+  status   SubscriptionStatus
+  renewsAt DateTime?
+
+  tenant Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  userId    String?
+  action    String
+  entity    String
+  entityId  String
+  metadata  Json
+  createdAt DateTime @default(now())
+
+  tenant Restaurant? @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  user   User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([userId])
+}
+
+model ImportColumnMapping {
+  id        String     @id @default(cuid())
+  tenantId  String
+  type      ImportType
+  mapping   Json
+  updatedAt DateTime   @updatedAt
+  createdAt DateTime   @default(now())
+
+  tenant Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, type])
+  @@index([tenantId])
+}
+
+model ImportBatch {
+  id            String     @id @default(cuid())
+  tenantId      String
+  uploadedById  String?
+  type          ImportType
+  fileName      String
+  rowsImported  Int
+  rowsRejected  Int
+  rowsDuplicate Int        @default(0)
+  createdAt     DateTime   @default(now())
+
+  tenant     Restaurant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  uploadedBy User?      @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, createdAt])
+  @@index([uploadedById])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  userId    String
+  page      String
+  rating    Int
+  message   String
+  createdAt DateTime @default(now())
+
+  tenant Restaurant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, createdAt])
+  @@index([rating, createdAt])
+  @@index([createdAt])
+}
+
+model Lead {
+  id           String        @id @default(cuid())
+  name         String
+  businessName String
+  city         LeadCity
+  cityOther    String?
+  role         String
+  phone        String
+  email        String?
+  branches     Int
+  posSystem    LeadPosSystem
+  locale       String
+  consent      Boolean
+  consentAt    DateTime
+  utmSource    String?
+  utmMedium    String?
+  utmCampaign  String?
+  status       LeadStatus    @default(NEW)
+  notes        String?
+  createdAt    DateTime      @default(now())
+
+  @@index([phone, createdAt])
+  @@index([status, city, createdAt])
+  @@index([createdAt])
+}
+
