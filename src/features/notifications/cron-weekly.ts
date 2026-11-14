@@ -1,8 +1,14 @@
 import type { Prisma } from "@prisma/client";
 import { shiftDateKey, toTimeZoneDateKey } from "@/features/insights";
 import { toDecimal } from "@/features/insights/math";
+import { getServerAppUrl } from "@/lib/app-url";
+import {
+  executeBudgetedCronTenantLoop,
+  resolveSundayWeekKey,
+} from "@/lib/cron-budget";
 import { sendEmail } from "@/lib/email";
 import { RIYADH_TIME_ZONE } from "@/lib/format";
+import { logger } from "@/lib/logger";
 import { createTenantDb } from "@/lib/tenant";
 import {
   finalizePeriodicCronSummary,
@@ -14,7 +20,6 @@ import { loadTenantManagerRecipients } from "./preferences";
 import { renderWeeklySummaryEmail } from "./templates";
 import type {
   ScheduledCronSummary,
-  TenantCronOutcome,
   WeeklyRecommendationRow,
 } from "./types";
 
@@ -24,25 +29,48 @@ export async function runWeeklyCronJob(
 ): Promise<ScheduledCronSummary> {
   const listRestaurants = deps?.listRestaurants ?? listDefaultRestaurants;
   const sendEmailFn = deps?.sendEmailFn ?? sendEmail;
-  const resolvedAppUrl =
-    deps?.appUrl ?? process.env.APP_URL ?? "http://localhost:3000";
+  const resolvedAppUrl = getServerAppUrl(deps?.appUrl);
 
   const restaurants = await listRestaurants();
-  const tenants: TenantCronOutcome[] = [];
+  const loopResult = await executeBudgetedCronTenantLoop({
+    job: "weekly",
+    auditAction: "CRON_WEEKLY_COMPLETED",
+    tenants: restaurants,
+    budget: deps,
+    runTenant: async (tenant) => {
+      const db = createTenantDb(tenant.id);
+      const tz = tenant.timezone || RIYADH_TIME_ZONE;
+      const todayKey = toTimeZoneDateKey(now, tz);
+      const weekKey = resolveSundayWeekKey(todayKey);
+      const periodEntityId = `weekly:${weekKey}`;
 
-  for (const tenant of restaurants) {
-    try {
+      const existing = await db.auditLog.findFirst({
+        where: {
+          action: "CRON_WEEKLY_TENANT_COMPLETED",
+          entity: "CronJob",
+          entityId: periodEntityId,
+        },
+        select: { id: true },
+      });
+      if (existing) {
+        return {
+          tenantId: tenant.id,
+          tenantCode: tenant.code,
+          status: "OK" as const,
+          emailsSent: 0,
+          alreadyCompleted: true,
+        };
+      }
+
       const recipients = await loadTenantManagerRecipients(
         tenant.id,
         "weeklySummary",
       );
       let emailsSent = 0;
+      let lastError: string | undefined;
+      const horizonEnd = shiftDateKey(todayKey, 6);
 
       if (recipients.length > 0) {
-        const db = createTenantDb(tenant.id);
-        const tz = tenant.timezone || RIYADH_TIME_ZONE;
-        const todayKey = toTimeZoneDateKey(now, tz);
-        const horizonEnd = shiftDateKey(todayKey, 6);
         const wasteStartKey = shiftDateKey(todayKey, -7);
 
         const [forecastRows, recentWasteRows] = await Promise.all([
@@ -132,43 +160,68 @@ export async function runWeeklyCronJob(
             rendered.html,
             rendered.text,
           );
-          if (res.ok) emailsSent += 1;
+          if (res.ok) {
+            emailsSent += 1;
+          } else {
+            lastError = res.error;
+          }
+        }
+
+        if (emailsSent === 0) {
+          throw new Error(lastError ?? "Failed to send weekly summary emails");
         }
       }
 
-      const db = createTenantDb(tenant.id);
       await db.auditLog.create({
         data: {
           tenantId: tenant.id,
           action: "CRON_WEEKLY_TENANT_COMPLETED",
           entity: "CronJob",
-          entityId: "weekly",
+          entityId: periodEntityId,
           metadata: {
             evaluatedAt: now.toISOString(),
+            weekKey,
+            horizonStart: todayKey,
+            horizonEnd,
             emailsSent,
           } satisfies Prisma.InputJsonObject,
         },
       });
 
-      tenants.push({
+      return {
         tenantId: tenant.id,
         tenantCode: tenant.code,
-        status: "OK",
+        status: "OK" as const,
         emailsSent,
-      });
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      console.error(`[cron:weekly] Tenant ${tenant.code} failed: ${errorMsg}`);
-      await recordPeriodicTenantFailure(tenant.id, "weekly", now, errorMsg);
-      tenants.push({
+      };
+    },
+    onTenantFailed: async (tenant, errorMsg) => {
+      logger.error("cron.weekly.tenant_failed", {
         tenantId: tenant.id,
         tenantCode: tenant.code,
-        status: "FAILED",
-        emailsSent: 0,
         error: errorMsg,
       });
-    }
-  }
+      await recordPeriodicTenantFailure(tenant.id, "weekly", now, errorMsg);
+      return {
+        tenantId: tenant.id,
+        tenantCode: tenant.code,
+        status: "FAILED" as const,
+        emailsSent: 0,
+        error: errorMsg,
+      };
+    },
+    onTenantSkipped: (tenant) => ({
+      tenantId: tenant.id,
+      tenantCode: tenant.code,
+      status: "SKIPPED" as const,
+      emailsSent: 0,
+    }),
+  });
 
-  return finalizePeriodicCronSummary("weekly", now, tenants);
+  return finalizePeriodicCronSummary("weekly", now, loopResult.outcomes, {
+    skippedTenantIds: loopResult.skippedTenantIds,
+    stoppedEarlyByBudget: loopResult.stoppedEarlyByBudget,
+    budgetMs: loopResult.budgetMs,
+    recordSummaryAudit: deps?.recordSummaryAudit,
+  });
 }

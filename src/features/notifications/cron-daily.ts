@@ -1,20 +1,29 @@
 import type { Prisma } from "@prisma/client";
 import { runForecastsForTenant } from "@/features/forecast";
 import { runInsightsForTenant, toTimeZoneDateKey } from "@/features/insights";
+import { getServerAppUrl } from "@/lib/app-url";
+import {
+  type CronExecutionBudgetOptions,
+  executeBudgetedCronTenantLoop,
+  recordCronSummaryAuditLog,
+} from "@/lib/cron-budget";
 import { sendEmail, type EmailSendResult } from "@/lib/email";
 import { RIYADH_TIME_ZONE } from "@/lib/format";
+import { logger } from "@/lib/logger";
+import { cleanupExpiredRateLimitBuckets } from "@/lib/rate-limit-store";
 import { createTenantDb, platformAdminDb } from "@/lib/tenant";
 import { loadTenantManagerRecipients } from "./preferences";
 import { renderCriticalAlertEmail } from "./templates";
-import type { ScheduledCronSummary, TenantCronOutcome } from "./types";
+import type { ScheduledCronSummary } from "./types";
 
-export interface DailyCronDependencies {
+export interface DailyCronDependencies extends CronExecutionBudgetOptions {
   listRestaurants?: () => Promise<
     Array<{ id: string; code: string; name: string; nameAr: string; timezone: string }>
   >;
   runInsights?: typeof runInsightsForTenant;
   runForecasts?: typeof runForecastsForTenant;
   sendEmailFn?: typeof sendEmail;
+  cleanupRateLimitBuckets?: typeof cleanupExpiredRateLimitBuckets;
   appUrl?: string;
 }
 
@@ -66,7 +75,7 @@ export async function deliverCriticalAlertsForTenant(
 
   const tz = tenant.timezone || RIYADH_TIME_ZONE;
   const dateKey = toTimeZoneDateKey(now, tz);
-  const resolvedAppUrl = appUrl ?? process.env.APP_URL ?? "http://localhost:3000";
+  const resolvedAppUrl = getServerAppUrl(appUrl);
 
   const alertsPayload = pendingAlerts.map((a) => ({
     id: a.id,
@@ -127,7 +136,8 @@ export async function deliverCriticalAlertsForTenant(
 
 /**
  * Daily cron orchestrator: insights -> forecast -> critical alert emails,
- * isolating errors per tenant and logging an AuditLog summary row.
+ * prioritizing previously skipped tenants first, isolating errors per tenant,
+ * stopping before Vercel timeout (~80% budget), and logging an AuditLog summary.
  */
 export async function runDailyCronJob(
   now: Date = new Date(),
@@ -145,10 +155,12 @@ export async function runDailyCronJob(
   const sendEmailFn = deps?.sendEmailFn ?? sendEmail;
 
   const restaurants = await listRestaurants();
-  const tenants: TenantCronOutcome[] = [];
-
-  for (const tenant of restaurants) {
-    try {
+  const loopResult = await executeBudgetedCronTenantLoop({
+    job: "daily",
+    auditAction: "CRON_DAILY_COMPLETED",
+    tenants: restaurants,
+    budget: deps,
+    runTenant: async (tenant) => {
       await runInsights(tenant.id, now);
       await runForecasts(tenant.id, now);
       const delivery = await deliverCriticalAlertsForTenant(
@@ -173,16 +185,20 @@ export async function runDailyCronJob(
         },
       });
 
-      tenants.push({
+      return {
         tenantId: tenant.id,
         tenantCode: tenant.code,
-        status: "OK",
+        status: "OK" as const,
         emailsSent: delivery.emailsSent,
         alertsNotified: delivery.alertsNotified,
+      };
+    },
+    onTenantFailed: async (tenant, errorMsg) => {
+      logger.error("cron.daily.tenant_failed", {
+        tenantId: tenant.id,
+        tenantCode: tenant.code,
+        error: errorMsg,
       });
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      console.error(`[cron:daily] Tenant ${tenant.code} failed: ${errorMsg}`);
       try {
         const tenantDb = createTenantDb(tenant.id);
         await tenantDb.auditLog.create({
@@ -201,15 +217,33 @@ export async function runDailyCronJob(
         // Ignore secondary audit failure
       }
 
-      tenants.push({
+      return {
         tenantId: tenant.id,
         tenantCode: tenant.code,
-        status: "FAILED",
+        status: "FAILED" as const,
         emailsSent: 0,
         alertsNotified: 0,
         error: errorMsg,
-      });
-    }
+      };
+    },
+    onTenantSkipped: (tenant) => ({
+      tenantId: tenant.id,
+      tenantCode: tenant.code,
+      status: "SKIPPED" as const,
+      emailsSent: 0,
+      alertsNotified: 0,
+    }),
+  });
+
+  const tenants = loopResult.outcomes;
+
+  const cleanupRateLimits =
+    deps?.cleanupRateLimitBuckets ?? cleanupExpiredRateLimitBuckets;
+  let rateLimitBucketsCleaned = 0;
+  try {
+    rateLimitBucketsCleaned = await cleanupRateLimits(now);
+  } catch (error) {
+    logger.warn("cron.daily.rate_limit_cleanup_failed", { error });
   }
 
   const summary: ScheduledCronSummary = {
@@ -218,23 +252,33 @@ export async function runDailyCronJob(
     tenantCount: tenants.length,
     tenantsSucceeded: tenants.filter((t) => t.status === "OK").length,
     tenantsFailed: tenants.filter((t) => t.status === "FAILED").length,
+    tenantsSkipped: tenants.filter((t) => t.status === "SKIPPED").length,
+    skippedTenantIds: loopResult.skippedTenantIds,
+    stoppedEarlyByBudget: loopResult.stoppedEarlyByBudget,
+    budgetMs: loopResult.budgetMs,
     totalEmailsSent: tenants.reduce((acc, t) => acc + t.emailsSent, 0),
     tenants,
+    rateLimitBucketsCleaned,
   };
 
-  console.info(
-    `[cron:daily] Summary evaluatedAt=${summary.evaluatedAt} succeeded=${summary.tenantsSucceeded}/${summary.tenantCount} failed=${summary.tenantsFailed} emailsSent=${summary.totalEmailsSent}`,
-  );
-
-  await platformAdminDb.auditLog.create({
-    data: {
-      tenantId: null,
-      action: "CRON_DAILY_COMPLETED",
-      entity: "CronJob",
-      entityId: "daily",
-      metadata: summary as unknown as Prisma.InputJsonObject,
-    },
+  logger.info("cron.daily.completed", {
+    evaluatedAt: summary.evaluatedAt,
+    tenantCount: summary.tenantCount,
+    tenantsSucceeded: summary.tenantsSucceeded,
+    tenantsFailed: summary.tenantsFailed,
+    tenantsSkipped: summary.tenantsSkipped,
+    stoppedEarlyByBudget: summary.stoppedEarlyByBudget,
+    totalEmailsSent: summary.totalEmailsSent,
+    rateLimitBucketsCleaned,
   });
+
+  if (deps?.recordSummaryAudit !== false) {
+    await recordCronSummaryAuditLog(
+      "CRON_DAILY_COMPLETED",
+      "daily",
+      summary as unknown as Prisma.InputJsonObject,
+    );
+  }
 
   return summary;
 }

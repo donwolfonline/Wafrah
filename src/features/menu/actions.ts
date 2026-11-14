@@ -46,7 +46,7 @@ function extractFirstErrorKey(
 
 async function authorizeMenuMutation(): Promise<SessionUser | null> {
   const user = await requireRole("menu.manage");
-  const rate = checkApiWriteRateLimit(
+  const rate = await checkApiWriteRateLimit(
     buildApiRateLimitKey({ userId: user.userId, scope: "menu-action-write" }),
   );
   return rate.allowed ? user : null;

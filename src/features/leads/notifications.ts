@@ -3,6 +3,7 @@ import {
   getFounderEmail,
   getWhatsAppHref,
 } from "@/features/landing/landing-config";
+import { logger } from "@/lib/logger";
 import {
   buildBaseAppUrl,
   escapeHtml,
@@ -186,7 +187,7 @@ export async function sendLeadNotifications(
   const sendEmailFn = deps?.sendEmailFn ?? sendEmail;
   const founderEmail =
     deps?.founderEmail !== undefined ? deps.founderEmail : getFounderEmail();
-  const baseUrl = deps?.appUrl ?? buildBaseAppUrl();
+  const baseUrl = buildBaseAppUrl(deps?.appUrl);
 
   const tasks: Array<Promise<{ kind: "founder" | "confirm"; res: EmailSendResult }>> = [];
   if (founderEmail) {
@@ -197,7 +198,7 @@ export async function sendLeadNotifications(
       ),
     );
   } else {
-    console.warn("[leads] FOUNDER_EMAIL is not configured; skipping founder notification.");
+    logger.warn("leads.founder_email_missing");
   }
 
   if (lead.email) {
@@ -217,9 +218,16 @@ export async function sendLeadNotifications(
     const settled = await Promise.allSettled(tasks);
     for (const outcome of settled) {
       if (outcome.status === "rejected") {
-        console.error("[leads] Notification delivery threw:", outcome.reason);
+        logger.error("leads.notification_delivery_threw", {
+          leadId: lead.id,
+          error: outcome.reason,
+        });
       } else if (!outcome.value.res.ok) {
-        console.error(`[leads] ${outcome.value.kind} email failed:`, outcome.value.res.error ?? "unknown error");
+        logger.error("leads.notification_email_failed", {
+          leadId: lead.id,
+          kind: outcome.value.kind,
+          error: outcome.value.res.error ?? "unknown error",
+        });
       } else if (outcome.value.kind === "founder") {
         founderSent = true;
       } else {
@@ -227,7 +235,10 @@ export async function sendLeadNotifications(
       }
     }
   } catch (error) {
-    console.error("[leads] Unexpected notification failure:", error);
+    logger.error("leads.notification_unexpected_error", {
+      leadId: lead.id,
+      error,
+    });
   }
 
   return { founderSent, confirmationSent };

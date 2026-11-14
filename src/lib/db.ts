@@ -1,24 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
+import { env } from "@/env";
+import {
+  createPlatformPrismaClient,
+  resolveDatabaseUrl,
+} from "./db-factory";
 
-export function resolveDatabaseUrl(rawUrl?: string): string | undefined {
-  if (!rawUrl) return undefined;
-  try {
-    const parsed = new URL(rawUrl);
-    if (!parsed.username) {
-      parsed.username = process.env.USER || process.env.LOGNAME || "postgres";
-      return parsed.toString();
-    }
-    return rawUrl;
-  } catch {
-    return rawUrl;
-  }
-}
+export { resolveDatabaseUrl };
 
 const globalForPrisma = globalThis as unknown as {
   platformAdminDbV3: PrismaClient | undefined;
 };
-
-const resolvedUrl = resolveDatabaseUrl(process.env.DATABASE_URL);
 
 const cachedClient = globalForPrisma.platformAdminDbV3;
 const isCachedClientCurrent =
@@ -26,7 +17,9 @@ const isCachedClientCurrent =
   "importColumnMapping" in cachedClient &&
   "importBatch" in cachedClient &&
   "notificationPreference" in cachedClient &&
-  "feedback" in cachedClient;
+  "feedback" in cachedClient &&
+  "lead" in cachedClient &&
+  "rateLimitBucket" in cachedClient;
 
 /**
  * Unscoped Prisma client reserved strictly for PLATFORM_ADMIN paths,
@@ -35,12 +28,12 @@ const isCachedClientCurrent =
  */
 export const platformAdminDb = isCachedClientCurrent
   ? cachedClient
-  : new PrismaClient({
-      ...(resolvedUrl ? { datasources: { db: { url: resolvedUrl } } } : {}),
-      log:
-        process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+  : createPlatformPrismaClient({
+      databaseUrl: env.DATABASE_URL,
+      fallbackUsername: env.USER ?? env.LOGNAME,
+      nodeEnv: env.NODE_ENV,
     });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.platformAdminDbV3 = platformAdminDb;
-}
+// Reuse a single pooled PrismaClient instance per runtime worker/container
+// across both local HMR reloads and warm serverless function invocations.
+globalForPrisma.platformAdminDbV3 = platformAdminDb;

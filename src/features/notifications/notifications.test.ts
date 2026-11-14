@@ -77,6 +77,70 @@ describe("sendEmail wrapper", () => {
     const result = await sendEmail(["   "], "Empty", "<p>x</p>", "x");
     expect(result.ok).toBe(false);
   });
+
+  it("redacts passwords and phones in dev/preview console emails and disables console fallback in production", async () => {
+    const prevKey = process.env.RESEND_API_KEY;
+    const prevVercelEnv = process.env.VERCEL_ENV;
+    const prevNodeEnv = process.env.NODE_ENV;
+    delete process.env.RESEND_API_KEY;
+    process.env.VERCEL_ENV = "preview";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+
+    const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      const previewRes = await sendEmail(
+        "owner@shami.sa",
+        "Welcome",
+        "<p>Hi</p>",
+        "Temporary password: MyTempPassword123 Phone: +966501234567 PIN: 9876",
+      );
+
+      expect(previewRes.ok).toBe(true);
+      expect(previewRes.mode).toBe("console");
+      expect(infoSpy).toHaveBeenCalledTimes(1);
+      const rawLine = String(infoSpy.mock.calls[0]?.[0]);
+      const parsed = JSON.parse(rawLine) as { preview: string; event: string };
+      expect(parsed.event).toBe("email.dev_preview");
+      expect(parsed.preview).not.toContain("MyTempPassword123");
+      expect(parsed.preview).not.toContain("+966501234567");
+      expect(parsed.preview).not.toContain("9876");
+      expect(parsed.preview).toContain("***4567");
+
+      process.env.VERCEL_ENV = "production";
+      const prodRes = await sendEmail(
+        "owner@shami.sa",
+        "Reset",
+        "<p>Hi</p>",
+        "Secret body",
+      );
+      expect(prodRes.ok).toBe(false);
+      expect(infoSpy).toHaveBeenCalledTimes(1);
+      expect(errSpy).toHaveBeenCalledTimes(1);
+      const prodErr = JSON.parse(String(errSpy.mock.calls[0]?.[0])) as Record<
+        string,
+        unknown
+      >;
+      expect(prodErr.event).toBe("email.resend_key_missing");
+      expect(JSON.stringify(prodErr)).not.toContain("Secret body");
+    } finally {
+      infoSpy.mockRestore();
+      errSpy.mockRestore();
+      process.env.RESEND_API_KEY = prevKey;
+      if (prevVercelEnv === undefined) {
+        delete process.env.VERCEL_ENV;
+      } else {
+        process.env.VERCEL_ENV = prevVercelEnv;
+      }
+      if (prevNodeEnv === undefined) {
+        delete (process.env as Record<string, string | undefined>).NODE_ENV;
+      } else {
+        (process.env as Record<string, string | undefined>).NODE_ENV =
+          prevNodeEnv;
+      }
+    }
+  });
 });
 
 describe("notification templates (AR RTL & EN LTR + plain text)", () => {

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ServiceWorkerRegistrar } from "@/components/pwa/service-worker-registrar";
+import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/i18n/provider";
 import { getAppLocale, getAppMessages } from "@/i18n/request";
 import type { SessionUser } from "@/lib/authz-rules";
@@ -59,7 +59,7 @@ export async function AppShell({
 
   return (
     <I18nProvider locale={locale} messages={messages}>
-      <ServiceWorkerRegistrar />
+      <Toaster position="bottom-center" />
       {content}
     </I18nProvider>
   );

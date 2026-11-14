@@ -4,6 +4,7 @@ import {
   checkApiWriteRateLimit,
   createRateLimitResponse,
 } from "@/lib/api-rate-limit";
+import { logger } from "@/lib/logger";
 import { toTimeZoneDateKey } from "@/features/insights";
 import { AuthorizationError, requireRole } from "@/lib/authz";
 import { RIYADH_TIME_ZONE } from "@/lib/format";
@@ -34,7 +35,7 @@ function handleAdminLeadError(error: unknown): NextResponse {
       { status: error.statusCode },
     );
   }
-  console.error("[admin/leads] Unexpected error:", error);
+  logger.error("admin.leads.unexpected_error", { error });
   return NextResponse.json(
     { error: "Unable to process admin lead request" },
     { status: 500 },
@@ -68,7 +69,7 @@ export async function handleAdminLeadPatch(
 ): Promise<NextResponse> {
   try {
     const admin = await requireRole("admin.*");
-    const rate = checkApiWriteRateLimit(
+    const rate = await checkApiWriteRateLimit(
       buildApiRateLimitKey({
         userId: admin.userId,
         scope: "admin-lead-patch",

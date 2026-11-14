@@ -25,7 +25,7 @@ export const STRICT_TENANT_MODELS = new Set([
   "Feedback",
 ]);
 
-export const PLATFORM_ONLY_MODELS = new Set(["Lead"]);
+export const PLATFORM_ONLY_MODELS = new Set(["Lead", "RateLimitBucket"]);
 
 export const MODELS_WITH_MENU_ITEM_FK = new Set([
   "WasteEntry",

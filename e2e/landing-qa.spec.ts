@@ -2,9 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { readToolingEnv } from "../src/env.core";
 
 const SCREENSHOT_DIR = path.resolve(
-  process.env.LANDING_SCREENSHOT_DIR ??
+  readToolingEnv().LANDING_SCREENSHOT_DIR ??
     "/Users/frederickdineen/.gemini/antigravity/brain/3b432a40-e115-425c-8b42-4a1b1dc72cd8/landing-screenshots",
 );
 

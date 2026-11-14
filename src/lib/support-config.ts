@@ -1,3 +1,5 @@
+import { env } from "@/env";
+
 export interface SupportContactConfig {
   contactName: string | null;
   contactEmail: string | null;
@@ -5,16 +7,11 @@ export interface SupportContactConfig {
   whatsappUrl: string | null;
 }
 
-function readTrimmedEnv(key: string): string | null {
-  const value = process.env[key]?.trim();
-  return value && value.length > 0 ? value : null;
-}
-
-function readSafeHttpsUrl(key: string): string | null {
-  const raw = readTrimmedEnv(key);
-  if (!raw) return null;
+function readSafeHttpsUrl(raw: string | undefined): string | null {
+  const trimmed = raw?.trim();
+  if (!trimmed) return null;
   try {
-    const parsed = new URL(raw);
+    const parsed = new URL(trimmed);
     if (parsed.protocol === "https:" || parsed.protocol === "http:") {
       return parsed.toString();
     }
@@ -26,9 +23,9 @@ function readSafeHttpsUrl(key: string): string | null {
 
 export function getSupportContactConfig(): SupportContactConfig {
   return {
-    contactName: readTrimmedEnv("SUPPORT_CONTACT_NAME"),
-    contactEmail: readTrimmedEnv("SUPPORT_CONTACT_EMAIL"),
-    contactPhone: readTrimmedEnv("SUPPORT_CONTACT_PHONE"),
-    whatsappUrl: readSafeHttpsUrl("SUPPORT_WHATSAPP_URL"),
+    contactName: env.SUPPORT_CONTACT_NAME?.trim() || null,
+    contactEmail: env.SUPPORT_CONTACT_EMAIL?.trim() || null,
+    contactPhone: env.SUPPORT_CONTACT_PHONE?.trim() || null,
+    whatsappUrl: readSafeHttpsUrl(env.SUPPORT_WHATSAPP_URL),
   };
 }

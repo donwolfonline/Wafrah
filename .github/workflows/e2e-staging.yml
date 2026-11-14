@@ -1,0 +1,110 @@
+name: Playwright E2E (Staging)
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Staging or Vercel Preview base URL (e.g. https://wafrah-git-feature.vercel.app)"
+        required: true
+        type: string
+      suite:
+        description: "Test suite scope: all (full e2e/, requires STAGING_DATABASE_URL) or browser-smoke (no DB secret needed)"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - browser-smoke
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    name: Staging E2E (${{ inputs.suite }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Validate base URL & required secrets
+        env:
+          INPUT_BASE_URL: ${{ inputs.base_url }}
+          INPUT_SUITE: ${{ inputs.suite }}
+          HAS_STAGING_DB: ${{ secrets.STAGING_DATABASE_URL != '' }}
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const raw = (process.env.INPUT_BASE_URL || "").trim();
+            let parsed;
+            try {
+              parsed = new URL(raw);
+            } catch {
+              console.error("Invalid base_url input: must be a full http(s):// URL");
+              process.exit(1);
+            }
+            if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+              console.error("base_url must use https:// or http://");
+              process.exit(1);
+            }
+            const host = parsed.hostname.toLowerCase();
+            if (host === "localhost" || host === "127.0.0.1" || host === "::1") {
+              console.error("Refusing localhost base_url in remote staging E2E workflow");
+              process.exit(1);
+            }
+            if (process.env.INPUT_SUITE === "all" && process.env.HAS_STAGING_DB !== "true") {
+              console.error("STAGING_DATABASE_URL secret is required for suite=all (or run suite=browser-smoke for HTTP-only specs).");
+              process.exit(1);
+            }
+            fs.appendFileSync(process.env.GITHUB_ENV, `TARGET_BASE_URL=${parsed.origin}\n`);
+          '
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js & pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium for Playwright
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run full Playwright E2E suite against staging URL
+        if: ${{ inputs.suite == 'all' }}
+        env:
+          APP_URL: ${{ env.TARGET_BASE_URL }}
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.STAGING_DIRECT_URL || secrets.STAGING_DATABASE_URL }}
+          LANDING_SCREENSHOT_DIR: test-results/landing-screenshots
+          QA_SCREENSHOT_DIR: test-results/qa-screenshots
+          ADMIN_SCREENSHOT_DIR: test-results/admin-screenshots
+        run: pnpm exec playwright test
+
+      - name: Run browser-only Playwright smoke specs against staging URL
+        if: ${{ inputs.suite == 'browser-smoke' }}
+        env:
+          APP_URL: ${{ env.TARGET_BASE_URL }}
+          LANDING_SCREENSHOT_DIR: test-results/landing-screenshots
+        run: >-
+          pnpm exec playwright test
+          e2e/waste-log.spec.ts
+          e2e/qa-accessibility.spec.ts
+          e2e/landing-qa.spec.ts
+
+      - name: Upload Playwright report & screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-staging-${{ github.run_number }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore

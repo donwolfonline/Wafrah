@@ -1,4 +1,4 @@
-import { platformAdminDb as prisma } from "../src/lib/db";
+import { readRuntimeFlags } from "../src/env.core";
 import { hashSecret } from "../src/lib/password";
 import {
   GLOBAL_EVENT_CALENDAR,
@@ -10,7 +10,8 @@ import {
 import { createPrng, seedRestaurantTimeSeries } from "./seed-timeseries";
 
 function assertNonProductionSeedEnv(): void {
-  if (process.env.NODE_ENV === "production") {
+  const { NODE_ENV, VERCEL_ENV } = readRuntimeFlags();
+  if (VERCEL_ENV === "production" || NODE_ENV === "production") {
     throw new Error(
       "Refusing to run destructive demo seed in production. Use pnpm db:seed:prod instead.",
     );
@@ -19,6 +20,8 @@ function assertNonProductionSeedEnv(): void {
 
 export async function runSeed() {
   assertNonProductionSeedEnv();
+  const { platformAdminDb: prisma } = await import("../src/lib/db");
+  try {
   const prng = createPrng(20261112);
   const totalDays = 120;
   const todayUtc = new Date("2026-11-12T00:00:00.000Z");
@@ -245,7 +248,7 @@ export async function runSeed() {
     },
   });
 
-  if (process.env.NODE_ENV !== "production") {
+  if (readRuntimeFlags().NODE_ENV !== "production") {
     console.log("\n=== Wafrah Dev Seed Credentials ===");
     console.log(
       `Platform Admin: ${SEED_CREDENTIALS.platformAdmin.email} / ${SEED_CREDENTIALS.platformAdmin.password}`,
@@ -308,13 +311,12 @@ export async function runSeed() {
     Subscription: subscriptionCount,
     AuditLog: auditLogCount,
   });
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
-runSeed()
-  .catch((error) => {
-    console.error("Seed failed:", error);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+runSeed().catch((error) => {
+  console.error("Seed failed:", error);
+  process.exit(1);
+});

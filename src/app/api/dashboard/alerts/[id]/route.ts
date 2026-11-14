@@ -28,7 +28,7 @@ export async function PATCH(
     const sessionUser = await getServerSessionUser();
     const user = await requireRole(["MANAGER", "OWNER"], sessionUser);
 
-    const rate = checkApiWriteRateLimit(
+    const rate = await checkApiWriteRateLimit(
       buildApiRateLimitKey({
         userId: user.userId,
         ip: extractClientIpFromHeaders(request.headers),

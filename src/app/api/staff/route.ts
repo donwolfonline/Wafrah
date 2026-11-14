@@ -19,7 +19,7 @@ export async function GET(): Promise<NextResponse> {
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const user = await requireRole(["MANAGER", "OWNER"]);
-    const limited = checkStaffWriteRate(user, "staff-post");
+    const limited = await checkStaffWriteRate(user, "staff-post");
     if (limited) return limited;
     const body: unknown = await request.json();
     const created = await createStaffMember(user, body);

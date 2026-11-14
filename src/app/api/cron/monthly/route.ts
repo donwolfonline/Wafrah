@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { runMonthlyCronJob } from "@/features/notifications";
-import { isCronAuthorized, parseCronJsonBody } from "@/lib/cron";
+import { authorizeCronRequest, parseCronJsonBody } from "@/lib/cron";
+import { withRequestContext } from "@/lib/request-context";
+
+export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 const MonthlyCronBodySchema = z.object({
   now: z.string().datetime().optional(),
@@ -12,8 +16,9 @@ const MonthlyCronBodySchema = z.object({
 });
 
 async function handleCronMonthly(request: Request): Promise<NextResponse> {
-  if (!isCronAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const auth = authorizeCronRequest(request);
+  if (!auth.ok) {
+    return auth.response;
   }
 
   if (request.method === "GET" || request.method === "HEAD") {
@@ -33,7 +38,9 @@ async function handleCronMonthly(request: Request): Promise<NextResponse> {
     }
 
     const now = parsedQuery.data.now ? new Date(parsedQuery.data.now) : new Date();
-    const summary = await runMonthlyCronJob(now, parsedQuery.data.yearMonth);
+    const summary = await runMonthlyCronJob(now, parsedQuery.data.yearMonth, {
+      maxDurationSeconds: maxDuration,
+    });
     return NextResponse.json({
       ok: true,
       ...summary,
@@ -46,7 +53,9 @@ async function handleCronMonthly(request: Request): Promise<NextResponse> {
   }
 
   const now = parsed.data.now ? new Date(parsed.data.now) : new Date();
-  const summary = await runMonthlyCronJob(now, parsed.data.yearMonth);
+  const summary = await runMonthlyCronJob(now, parsed.data.yearMonth, {
+    maxDurationSeconds: maxDuration,
+  });
   return NextResponse.json({
     ok: true,
     ...summary,
@@ -54,9 +63,9 @@ async function handleCronMonthly(request: Request): Promise<NextResponse> {
 }
 
 export async function GET(request: Request): Promise<NextResponse> {
-  return handleCronMonthly(request);
+  return withRequestContext(request, () => handleCronMonthly(request));
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  return handleCronMonthly(request);
+  return withRequestContext(request, () => handleCronMonthly(request));
 }

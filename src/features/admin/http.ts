@@ -42,8 +42,11 @@ function handleAdminHttpError(error: unknown): NextResponse {
   throw error;
 }
 
-function checkAdminWriteRate(user: SessionUser, scope: string): NextResponse | null {
-  const rate = checkApiWriteRateLimit(
+async function checkAdminWriteRate(
+  user: SessionUser,
+  scope: string,
+): Promise<NextResponse | null> {
+  const rate = await checkApiWriteRateLimit(
     buildApiRateLimitKey({ userId: user.userId, scope }),
   );
   return rate.allowed ? null : createRateLimitResponse(rate);
@@ -75,7 +78,7 @@ export async function handleAdminRestaurantsPost(
 ): Promise<NextResponse> {
   try {
     const user = await requireRole("admin.*", sessionOverride);
-    const limited = checkAdminWriteRate(user, "admin-restaurants-post");
+    const limited = await checkAdminWriteRate(user, "admin-restaurants-post");
     if (limited) return limited;
     const body: unknown = await request.json();
     const result = await createAdminRestaurant(user, body);
@@ -92,7 +95,7 @@ export async function handleAdminSubscriptionPatch(
 ): Promise<NextResponse> {
   try {
     const user = await requireRole("admin.*", sessionOverride);
-    const limited = checkAdminWriteRate(user, "admin-subscription-patch");
+    const limited = await checkAdminWriteRate(user, "admin-subscription-patch");
     if (limited) return limited;
     const validId = parseRestaurantIdParam(restaurantId);
     const body: unknown = await request.json();
@@ -110,7 +113,7 @@ export async function handleAdminSuspendPost(
 ): Promise<NextResponse> {
   try {
     const user = await requireRole("admin.*", sessionOverride);
-    const limited = checkAdminWriteRate(user, "admin-suspend-post");
+    const limited = await checkAdminWriteRate(user, "admin-suspend-post");
     if (limited) return limited;
     const validId = parseRestaurantIdParam(restaurantId);
     const body: unknown = await request.json();
@@ -142,7 +145,7 @@ export async function handleAdminRestaurantDelete(
 ): Promise<NextResponse> {
   try {
     const user = await requireRole("admin.*", sessionOverride);
-    const limited = checkAdminWriteRate(user, "admin-restaurant-delete");
+    const limited = await checkAdminWriteRate(user, "admin-restaurant-delete");
     if (limited) return limited;
     const validId = parseRestaurantIdParam(restaurantId);
     const body: unknown = await request.json();

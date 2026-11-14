@@ -1,3 +1,5 @@
+import { clientEnv } from "@/env.client";
+
 export type AnalyticsEvent =
   | "cta_click"
   | "whatsapp_click"
@@ -9,7 +11,7 @@ export type AnalyticsPropValue = string | number | boolean;
 export type AnalyticsProps = Record<string, AnalyticsPropValue>;
 
 export function isAnalyticsEnabled(
-  rawProvider = process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER,
+  rawProvider = clientEnv.NEXT_PUBLIC_ANALYTICS_PROVIDER,
 ): boolean {
   return Boolean(rawProvider?.trim());
 }
@@ -19,7 +21,7 @@ export function isAnalyticsEnabled(
  * No-ops completely until NEXT_PUBLIC_ANALYTICS_PROVIDER is configured and wired.
  */
 export function track(event: AnalyticsEvent, props?: AnalyticsProps): void {
-  const provider = process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER?.trim();
+  const provider = clientEnv.NEXT_PUBLIC_ANALYTICS_PROVIDER?.trim();
   if (!provider) {
     return;
   }

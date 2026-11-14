@@ -1,4 +1,5 @@
 import { createTranslator } from "next-intl";
+import { getServerAppUrl } from "@/lib/app-url";
 import type { SupportedLocale } from "@/lib/format";
 import arMessages from "../../../messages/ar.json";
 import enMessages from "../../../messages/en.json";
@@ -77,8 +78,7 @@ export function wrapBrandedEmailHtml(params: BrandedEmailShellParams): string {
 }
 
 export function buildBaseAppUrl(rawAppUrl?: string): string {
-  const base = (rawAppUrl ?? process.env.APP_URL ?? "http://localhost:3000").trim();
-  return base.replace(/\/+$/, "");
+  return getServerAppUrl(rawAppUrl);
 }
 
 export function pickRestaurantName(

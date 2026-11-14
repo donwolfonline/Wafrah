@@ -22,18 +22,18 @@ import {
 } from "./rate-limit";
 
 describe("Security regression — Manager & API rate limiters", () => {
-  beforeEach(() => {
-    clearAllRateLimits();
-    clearAllManagerRateLimits();
-    clearAllApiRateLimits();
+  beforeEach(async () => {
+    await clearAllRateLimits();
+    await clearAllManagerRateLimits();
+    await clearAllApiRateLimits();
   });
 
-  it("locks manager login after 10 failures for 30 minutes and resets on success", () => {
+  it("locks manager login after 10 failures for 30 minutes and resets on success", async () => {
     const start = 1_700_000_000_000;
     const key = buildManagerAccountKey("Manager@Shami.sa");
 
     for (let i = 1; i < MAX_MANAGER_ATTEMPTS; i++) {
-      const res = recordManagerFailure({
+      const res = await recordManagerFailure({
         ip: "10.0.0.1",
         accountKey: key,
         now: start + i * 1000,
@@ -42,7 +42,7 @@ describe("Security regression — Manager & API rate limiters", () => {
       expect(res.remainingAttempts).toBe(MAX_MANAGER_ATTEMPTS - i);
     }
 
-    const locked = recordManagerFailure({
+    const locked = await recordManagerFailure({
       ip: "10.0.0.1",
       accountKey: key,
       now: start + 10_000,
@@ -53,7 +53,7 @@ describe("Security regression — Manager & API rate limiters", () => {
       Math.floor(MANAGER_LOCKOUT_DURATION_MS / 1000) - 1,
     );
 
-    const duringLock = checkManagerRateLimit({
+    const duringLock = await checkManagerRateLimit({
       ip: "10.0.0.2",
       accountKey: key,
       now: start + 15 * 60 * 1000,
@@ -61,7 +61,7 @@ describe("Security regression — Manager & API rate limiters", () => {
     expect(duringLock.allowed).toBe(false);
     expect(duringLock.reason).toBe("ACCOUNT_LOCKED");
 
-    const afterLock = checkManagerRateLimit({
+    const afterLock = await checkManagerRateLimit({
       ip: "10.0.0.2",
       accountKey: key,
       now: start + 10_000 + MANAGER_LOCKOUT_DURATION_MS + 1,
@@ -69,9 +69,9 @@ describe("Security regression — Manager & API rate limiters", () => {
     expect(afterLock.allowed).toBe(true);
     expect(afterLock.remainingAttempts).toBe(MAX_MANAGER_ATTEMPTS);
 
-    recordManagerFailure({ ip: "10.0.0.9", accountKey: key, now: start });
-    resetManagerRateLimit({ ip: "10.0.0.9", accountKey: key });
-    const resetCheck = checkManagerRateLimit({
+    await recordManagerFailure({ ip: "10.0.0.9", accountKey: key, now: start });
+    await resetManagerRateLimit({ ip: "10.0.0.9", accountKey: key });
+    const resetCheck = await checkManagerRateLimit({
       ip: "10.0.0.9",
       accountKey: key,
       now: start + 100,
@@ -88,11 +88,11 @@ describe("Security regression — Manager & API rate limiters", () => {
     });
 
     for (let i = 0; i < MAX_IMPORT_UPLOAD_REQUESTS; i++) {
-      const res = checkImportUploadRateLimit(key, start + i * 500);
+      const res = await checkImportUploadRateLimit(key, start + i * 500);
       expect(res.allowed).toBe(true);
     }
 
-    const blocked = checkImportUploadRateLimit(key, start + 6000);
+    const blocked = await checkImportUploadRateLimit(key, start + 6000);
     expect(blocked.allowed).toBe(false);
     expect(blocked.retryAfterSeconds).toBeGreaterThan(0);
 
@@ -100,14 +100,14 @@ describe("Security regression — Manager & API rate limiters", () => {
     expect(response.status).toBe(429);
     expect(Number(response.headers.get("Retry-After"))).toBeGreaterThan(0);
 
-    const afterWindow = checkImportUploadRateLimit(
+    const afterWindow = await checkImportUploadRateLimit(
       key,
       start + IMPORT_UPLOAD_WINDOW_MS + 1,
     );
     expect(afterWindow.allowed).toBe(true);
   });
 
-  it("enforces 60 requests/min API write rate limit and parses forwarded IP headers", () => {
+  it("enforces 60 requests/min API write rate limit and parses forwarded IP headers", async () => {
     const start = 1_700_000_000_000;
     const headers = new Headers({ "x-forwarded-for": "203.0.113.10, 10.0.0.1" });
     expect(extractClientIpFromHeaders(headers)).toBe("203.0.113.10");
@@ -119,10 +119,10 @@ describe("Security regression — Manager & API rate limiters", () => {
     });
 
     for (let i = 0; i < MAX_API_WRITE_REQUESTS; i++) {
-      expect(checkApiWriteRateLimit(key, start + i * 100).allowed).toBe(true);
+      expect((await checkApiWriteRateLimit(key, start + i * 100)).allowed).toBe(true);
     }
 
-    const blocked = checkApiWriteRateLimit(key, start + 10_000);
+    const blocked = await checkApiWriteRateLimit(key, start + 10_000);
     expect(blocked.allowed).toBe(false);
     expect(blocked.remaining).toBe(0);
   });

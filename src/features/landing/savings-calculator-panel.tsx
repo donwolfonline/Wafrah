@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -41,7 +41,7 @@ export function SavingsCalculatorPanel({
   );
 
   const trackedSessionRef = useRef(false);
-  const idPrefix = useId();
+  const idPrefix = "calculator";
   const purchasesInputId = `${idPrefix}-purchases-input`;
   const purchasesSliderId = `${idPrefix}-purchases-slider`;
   const purchasesHintId = `${idPrefix}-purchases-hint`;

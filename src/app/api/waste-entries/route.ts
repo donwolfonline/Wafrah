@@ -51,7 +51,7 @@ export async function POST(request: Request) {
   try {
     const sessionUser = await getServerSessionUser();
     const user = await requireRole("waste.create", sessionUser);
-    const rate = checkApiWriteRateLimit(
+    const rate = await checkApiWriteRateLimit(
       buildApiRateLimitKey({
         userId: user.userId,
         ip: extractClientIpFromHeaders(request.headers),
@@ -82,7 +82,7 @@ export async function DELETE(request: Request) {
   try {
     const sessionUser = await getServerSessionUser();
     const user = await requireRole("waste.create", sessionUser);
-    const rate = checkApiWriteRateLimit(
+    const rate = await checkApiWriteRateLimit(
       buildApiRateLimitKey({
         userId: user.userId,
         ip: extractClientIpFromHeaders(request.headers),

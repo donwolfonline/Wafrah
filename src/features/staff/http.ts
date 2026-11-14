@@ -4,15 +4,16 @@ import {
   checkApiWriteRateLimit,
   createRateLimitResponse,
 } from "@/lib/api-rate-limit";
+import { logger } from "@/lib/logger";
 import { AuthorizationError, type SessionUser } from "@/lib/authz";
 import { TenantIsolationError } from "@/lib/tenant";
 import { StaffServiceError } from "./schemas";
 
-export function checkStaffWriteRate(
+export async function checkStaffWriteRate(
   user: SessionUser,
   scope: string,
-): NextResponse | null {
-  const rate = checkApiWriteRateLimit(
+): Promise<NextResponse | null> {
+  const rate = await checkApiWriteRateLimit(
     buildApiRateLimitKey({ userId: user.userId, scope }),
   );
   return rate.allowed ? null : createRateLimitResponse(rate);
@@ -43,7 +44,7 @@ export function handleStaffHttpError(error: unknown): NextResponse {
       { status: 400 },
     );
   }
-  console.error("[api/staff] unexpected error:", error);
+  logger.error("staff.unexpected_error", { error });
   return NextResponse.json(
     { error: "Unable to complete staff action" },
     { status: 500 },

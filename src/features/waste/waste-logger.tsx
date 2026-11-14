@@ -4,7 +4,6 @@ import type { Role, Shift, WasteReason } from "@prisma/client";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import {
   clearRetryTimer,
   flushWasteQueue,
@@ -289,8 +288,6 @@ export function WasteLogger({ initialData, userRole }: WasteLoggerProps) {
 
   return (
     <div className="flex flex-1 flex-col gap-4" data-testid="waste-logger">
-      <Toaster position="bottom-center" />
-
       <WasteHeaderBar
         restaurantDisplayName={restaurantDisplayName}
         isOffline={isOffline}

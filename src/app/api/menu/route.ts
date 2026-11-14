@@ -53,7 +53,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const user = await requireRole("menu.manage");
-    const rate = checkApiWriteRateLimit(
+    const rate = await checkApiWriteRateLimit(
       buildApiRateLimitKey({
         userId: user.userId,
         ip: extractClientIpFromHeaders(request.headers),

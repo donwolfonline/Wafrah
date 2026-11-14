@@ -65,8 +65,8 @@ function makeValidPayload(overrides?: Record<string, unknown>) {
 }
 
 describe("pilot lead capture validation, anti-spam, dedupe, and RBAC", () => {
-  beforeEach(() => {
-    clearLeadSubmitRateLimits();
+  beforeEach(async () => {
+    await clearLeadSubmitRateLimits();
   });
 
   afterAll(async () => {

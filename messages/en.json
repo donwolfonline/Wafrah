@@ -21,7 +21,9 @@
     "currencyCode": "SAR",
     "errorTitle": "Something went wrong",
     "errorDescription": "We could not complete this request right now. Please try again.",
-    "retryButton": "Try again"
+    "retryButton": "Try again",
+    "pwaUpdateAvailable": "App update ready",
+    "pwaUpdateDescription": "The new version will activate automatically on next launch."
   },
   "nav": {
     "sidebarLabel": "Restaurant navigation",

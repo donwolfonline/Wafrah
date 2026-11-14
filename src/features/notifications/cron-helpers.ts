@@ -1,6 +1,11 @@
 import type { Prisma } from "@prisma/client";
 import type { getMonthlyReportForTenant } from "@/features/reports";
+import {
+  type CronExecutionBudgetOptions,
+  recordCronSummaryAuditLog,
+} from "@/lib/cron-budget";
 import type { sendEmail } from "@/lib/email";
+import { logger } from "@/lib/logger";
 import { createTenantDb, platformAdminDb } from "@/lib/tenant";
 import type { ScheduledCronSummary, TenantCronOutcome } from "./types";
 
@@ -12,7 +17,7 @@ export interface CronTenant {
   timezone: string;
 }
 
-export interface PeriodicCronDependencies {
+export interface PeriodicCronDependencies extends CronExecutionBudgetOptions {
   listRestaurants?: () => Promise<CronTenant[]>;
   sendEmailFn?: typeof sendEmail;
   getMonthlyReport?: typeof getMonthlyReportForTenant;
@@ -67,6 +72,12 @@ export async function finalizePeriodicCronSummary(
   job: "weekly" | "monthly",
   now: Date,
   tenants: TenantCronOutcome[],
+  meta: {
+    skippedTenantIds: string[];
+    stoppedEarlyByBudget: boolean;
+    budgetMs: number;
+    recordSummaryAudit?: boolean;
+  },
 ): Promise<ScheduledCronSummary> {
   const summary: ScheduledCronSummary = {
     job,
@@ -74,23 +85,31 @@ export async function finalizePeriodicCronSummary(
     tenantCount: tenants.length,
     tenantsSucceeded: tenants.filter((t) => t.status === "OK").length,
     tenantsFailed: tenants.filter((t) => t.status === "FAILED").length,
+    tenantsSkipped: tenants.filter((t) => t.status === "SKIPPED").length,
+    skippedTenantIds: meta.skippedTenantIds,
+    stoppedEarlyByBudget: meta.stoppedEarlyByBudget,
+    budgetMs: meta.budgetMs,
     totalEmailsSent: tenants.reduce((acc, t) => acc + t.emailsSent, 0),
     tenants,
   };
 
-  console.info(
-    `[cron:${job}] Summary evaluatedAt=${summary.evaluatedAt} succeeded=${summary.tenantsSucceeded}/${summary.tenantCount} failed=${summary.tenantsFailed} emailsSent=${summary.totalEmailsSent}`,
-  );
-
-  await platformAdminDb.auditLog.create({
-    data: {
-      tenantId: null,
-      action: job === "weekly" ? "CRON_WEEKLY_COMPLETED" : "CRON_MONTHLY_COMPLETED",
-      entity: "CronJob",
-      entityId: job,
-      metadata: summary as unknown as Prisma.InputJsonObject,
-    },
+  logger.info(`cron.${job}.completed`, {
+    evaluatedAt: summary.evaluatedAt,
+    tenantCount: summary.tenantCount,
+    tenantsSucceeded: summary.tenantsSucceeded,
+    tenantsFailed: summary.tenantsFailed,
+    tenantsSkipped: summary.tenantsSkipped,
+    stoppedEarlyByBudget: summary.stoppedEarlyByBudget,
+    totalEmailsSent: summary.totalEmailsSent,
   });
+
+  if (meta.recordSummaryAudit !== false) {
+    await recordCronSummaryAuditLog(
+      job === "weekly" ? "CRON_WEEKLY_COMPLETED" : "CRON_MONTHLY_COMPLETED",
+      job,
+      summary as unknown as Prisma.InputJsonObject,
+    );
+  }
 
   return summary;
 }

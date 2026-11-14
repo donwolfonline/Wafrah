@@ -1,6 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
+import { getPublicSiteBaseUrl } from "@/lib/app-url";
 import type { ReactNode } from "react";
+import "@/env";
+import { ServiceWorkerRegistrar } from "@/components/pwa/service-worker-registrar";
 import { I18nProvider } from "@/i18n/provider";
 import {
   getAppLocale,
@@ -24,11 +27,29 @@ const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#0B4F45",
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getAppTranslations("app");
   return {
+    metadataBase: getPublicSiteBaseUrl(),
     title: t("metaTitle"),
     description: t("metaDescription"),
+    manifest: "/manifest.webmanifest",
+    icons: {
+      icon: [
+        { url: "/icon.svg", type: "image/svg+xml" },
+        { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      ],
+      apple: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+    },
+    appleWebApp: {
+      capable: true,
+      title: t("logoText"),
+      statusBarStyle: "default",
+    },
   };
 }
 
@@ -51,6 +72,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <I18nProvider locale={locale} messages={rootMessages}>
+          <ServiceWorkerRegistrar />
           {children}
         </I18nProvider>
       </body>

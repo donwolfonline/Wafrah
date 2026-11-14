@@ -1,4 +1,7 @@
 import { randomUUID } from "node:crypto";
+import { env } from "@/env";
+import { isProductionRuntime } from "@/lib/app-url";
+import { logger } from "@/lib/logger";
 
 export interface EmailSendResult {
   ok: boolean;
@@ -18,7 +21,7 @@ const RESEND_API_ENDPOINT = "https://api.resend.com/emails";
 const PLACEHOLDER_API_KEY = "re_replace_with_api_key";
 
 function resolveApiKey(explicitKey?: string): string {
-  const key = (explicitKey ?? process.env.RESEND_API_KEY ?? "").trim();
+  const key = (explicitKey ?? env.RESEND_API_KEY ?? "").trim();
   if (!key || key === PLACEHOLDER_API_KEY) {
     return "";
   }
@@ -51,16 +54,17 @@ export async function sendEmail(
 
   const from = (
     options?.from ??
-    process.env.EMAIL_FROM ??
+    env.EMAIL_FROM ??
     DEFAULT_FROM_EMAIL
   ).trim();
   const apiKey = resolveApiKey(options?.apiKey);
 
   if (!apiKey) {
-    if (process.env.NODE_ENV === "production") {
-      console.error(
-        `[email] RESEND_API_KEY missing in production; skipped "${subject}" to ${recipients.join(", ")}`,
-      );
+    if (isProductionRuntime() && env.VERCEL_ENV !== "preview") {
+      logger.error("email.resend_key_missing", {
+        subject,
+        recipientCount: recipients.length,
+      });
       return {
         ok: false,
         mode: "console",
@@ -70,20 +74,15 @@ export async function sendEmail(
     }
 
     const devId = `dev-console-${randomUUID().slice(0, 8)}`;
-    console.info(
-      [
-        "================================================================",
-        `[WAFRAH DEV EMAIL] id=${devId}`,
-        `From:    ${from}`,
-        `To:      ${recipients.join(", ")}`,
-        `Subject: ${subject}`,
-        "----------------------------------------------------------------",
-        text,
-        "----------------------------------------------------------------",
-        `HTML length: ${html.length} chars`,
-        "================================================================",
-      ].join("\n"),
-    );
+    logger.info("email.dev_preview", {
+      tag: "[WAFRAH DEV EMAIL]",
+      id: devId,
+      from,
+      to: recipients,
+      subject,
+      preview: text,
+      htmlLength: html.length,
+    });
 
     return { ok: true, mode: "console", id: devId };
   }
@@ -107,9 +106,11 @@ export async function sendEmail(
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => "");
-      console.error(
-        `[email] Resend HTTP ${response.status} sending "${subject}": ${errorText}`,
-      );
+      logger.error("email.resend_http_error", {
+        status: response.status,
+        subject,
+        error: errorText,
+      });
       return {
         ok: false,
         mode: "resend",
@@ -126,7 +127,7 @@ export async function sendEmail(
     };
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
-    console.error(`[email] Resend network error sending "${subject}": ${msg}`);
+    logger.error("email.resend_network_error", { subject, error });
     return {
       ok: false,
       mode: "resend",

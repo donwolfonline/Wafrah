@@ -2,6 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { chromium } from "@playwright/test";
+import { readToolingEnv } from "../src/env.core";
 
 interface OgLocaleSpec {
   locale: "ar" | "en";
@@ -30,8 +31,9 @@ interface LandingMessageSlice {
 }
 
 function resolveChromiumExecutable(): string | undefined {
-  if (process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH) {
-    return process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
+  const { PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH } = readToolingEnv();
+  if (PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH) {
+    return PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH;
   }
 
   const cacheDir = path.join(os.homedir(), "Library/Caches/ms-playwright");

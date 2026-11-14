@@ -5,9 +5,7 @@ export {
   resolveEventMultiplier,
   roundToUnitStep,
 } from "./math";
-export {
-  runForecastsForAllTenants,
-  runForecastsForTenant,
-} from "./service";
+export { runForecastsForAllTenants } from "./cron-runner";
+export { runForecastsForTenant } from "./service";
 export { StatisticalForecaster } from "./statistical-forecaster";
 export type * from "./types";

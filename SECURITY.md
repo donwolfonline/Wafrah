@@ -13,7 +13,7 @@ Every Next.js Route Handler and `"use server"` module requires explicit server-s
 | Surface | Auth & Role Guard | Validation & Tenant Scoping | Hardening Applied |
 | --- | --- | --- | --- |
 | `src/app/api/auth/[...nextauth]/route.ts` | Auth.js v5 Credentials | Zod `managerLoginSchema` / `staffPinLoginSchema` | Integrated manager lockout (`10` failures / `30m`), PIN lockout (`5` failures / `15m`), audit logs |
-| `src/app/api/cron/{daily,weekly,forecast,insights,monthly}/route.ts` | `verifyCronSecret` (`x-cron-secret`, SHA-256 + `timingSafeEqual`) | `CronNowBodySchema` / `MonthlyCronBodySchema` | Rejects placeholder `replace-with-cron-secret` in `NODE_ENV=production`; shared `parseCronJsonBody` |
+| `src/app/api/cron/{daily,weekly,forecast,insights,monthly}/route.ts` & `/api/health/deep` | `authorizeCronRequest` (`Authorization: Bearer <CRON_SECRET>`, SHA-256 + `timingSafeEqual`; `500` if unset, `401` otherwise) | `CronNowBodySchema` / `MonthlyCronBodySchema` | Rejects placeholder `replace-with-cron-secret` with `500` in `NODE_ENV=production`; `maxDuration = 300` + 80% budget cutoff & skipped-tenant resume |
 | `src/app/api/waste-entries/route.ts` | `requireRole("waste.create")` | `createWasteEntrySchema` / `undoWasteEntrySchema` + `getTenantDb` | Role check & `checkApiWriteRateLimit` moved **before** `request.json()` on `POST`/`DELETE` |
 | `src/app/api/menu/route.ts` | `requireRole("menu.manage")` | `menuItemInputSchema` + `getTenantDb` | `requireRole` & `checkApiWriteRateLimit` moved **before** `request.json()` on `POST` |
 | `src/app/api/imports/route.ts` | `requireRole("sales.import")` | `getTenantDb` | Verified existing role + tenant guard |
@@ -81,7 +81,8 @@ Applied globally to `/(.*)`:
 - **Role-specific lifetimes (`applyJwtSessionPolicy` & JWE `maxAge` cap):**
   - `STAFF` (shared kitchen devices): **12 hours fixed** from login (`43,200` seconds), no sliding extension on activity; rejected and cleared cleanly after expiry. `loginStaffAction` also caps the browser cookie `maxAge` to 12 hours.
   - `MANAGER` / `OWNER` / `PLATFORM_ADMIN`: **7 days (`604,800` seconds) with sliding refresh** in the JWT callback when requests occur prior to expiry.
-- **Host trust (`src/features/auth/config.ts`):** `trustHost: true` is set only when `!useSecureCookies` (non-production or explicit `http://localhost` / `http://127.0.0.1` `APP_URL`), allowing local `next start` verification without bypassing Auth.js host verification in HTTPS production.
+- **Host trust & redirect safety (`src/features/auth/config.ts`, `src/features/auth/host-policy.ts`):** `trustHost: shouldTrustAuthHost(env)` defaults to `true` across Vercel Preview/Production (honoring `AUTH_TRUST_HOST="false"` explicitly) so Auth.js accepts Vercel reverse-proxy headers (`x-forwarded-host`, `x-forwarded-proto`), while `callbacks.redirect` (`resolveSafeAuthRedirectUrl`) rejects protocol-relative `//host` and untrusted external origins.
+- **Non-production crawler blocking (`next.config.ts`, `src/proxy.ts`, `src/app/robots.ts`):** Whenever `VERCEL_ENV !== "production"`, every response includes `X-Robots-Tag: noindex, nofollow` and `/robots.txt` disallows everything (`Disallow: /`); in `VERCEL_ENV === "production"`, landing routes are indexable while `/dashboard`, `/log`, `/admin`, `/login`, `/menu`, `/imports`, `/reports`, `/settings`, `/design-check`, and `/api` remain `noindex, nofollow`.
 
 ---
 

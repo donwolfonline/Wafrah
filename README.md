@@ -105,16 +105,16 @@ pnpm forecast:run   # Daily demand + Newsvendor prep/purchase recommendations
 pnpm cron:daily     # Full daily pipeline (insights -> forecast -> email notifications)
 ```
 
-Scheduled Vercel cron endpoints (defined in [`vercel.json`](./vercel.json), secured via `Authorization: Bearer <CRON_SECRET>`):
+Scheduled Vercel cron endpoints (defined in [`vercel.json`](./vercel.json), `"regions": ["fra1"]`, Production deployments only, secured via `Authorization: Bearer <CRON_SECRET>`):
 
-- `GET /api/cron/daily` (`0 0 * * *` UTC) — insights, forecasting, alert digest emails
-- `GET /api/cron/weekly` (`15 0 * * 0` UTC) — weekly restaurant summary email
-- `GET /api/cron/monthly` (`30 0 1 * *` UTC) — monthly executive report email
+- `GET /api/cron/daily` (`0 0 * * *` UTC / `03:00` Asia/Riyadh) — insights, forecasting, alert digest emails
+- `GET /api/cron/weekly` (`0 5 * * 0` UTC / `08:00` Asia/Riyadh Sunday) — weekly restaurant summary email
+- `GET /api/cron/monthly` (`0 5 1 * *` UTC / `08:00` Asia/Riyadh 1st of month) — monthly executive report email
 
 Manual HTTP trigger example (staging/production):
 
 ```bash
-curl -H "Authorization: Bearer $CRON_SECRET" https://your-domain/api/cron/daily
+curl -X POST -H "Authorization: Bearer $CRON_SECRET" https://your-domain/api/cron/daily
 ```
 
 ---
@@ -136,7 +136,7 @@ Related documentation: [`SECURITY.md`](./SECURITY.md) · [`DATA.md`](./DATA.md) 
 
 Complete these steps when onboarding a new pilot restaurant:
 
-1. **Environment check:** Confirm `DATABASE_URL`, `AUTH_SECRET`, `APP_URL`, `CRON_SECRET`, `RESEND_API_KEY`, and `SUPPORT_CONTACT_*` are set in production, and verify `/api/health` returns `{ "ok": true }`.
+1. **Environment check:** Confirm `DATABASE_URL`, `AUTH_SECRET`, `APP_URL`, `CRON_SECRET`, `RESEND_API_KEY`, and `SUPPORT_CONTACT_*` are set in production; verify `/api/health` returns `{ "status": "ok", "version": "...", "time": "..." }` and `/api/health/deep` (`Authorization: Bearer $CRON_SECRET`) checks DB + cron freshness.
 2. **Provision restaurant (`/admin`):** Create the restaurant, confirm the generated Branch Code (e.g., `NAJD-RYD`), and securely share the one-time manager password.
 3. **Manager first sign-in (`/dashboard`):** Have the manager change/confirm credentials and review the 5-step **Onboarding Checklist**:
    - Step 1 (`/menu`): Add core menu items with canonical units (`KG`, `LITER`, `PORTION`, `PIECE`) and SAR unit costs.

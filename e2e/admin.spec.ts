@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { expect, type Page, test } from "@playwright/test";
+import { readToolingEnv } from "../src/env.core";
 
 function attachErrorListeners(page: Page, bucket: string[]) {
   page.on("console", (msg) => {
@@ -29,7 +30,7 @@ test.describe("Platform Admin console (/admin) E2E flow", () => {
     browser,
   }) => {
     const prisma = new PrismaClient();
-    const screenshotDir = process.env.ADMIN_SCREENSHOT_DIR;
+    const screenshotDir = readToolingEnv().ADMIN_SCREENSHOT_DIR;
     if (screenshotDir) {
       fs.mkdirSync(screenshotDir, { recursive: true });
     }

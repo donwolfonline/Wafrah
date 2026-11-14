@@ -1,4 +1,5 @@
 import type { Role } from "@prisma/client";
+import { env } from "@/env";
 
 export type AppAction =
   | "waste.create"
@@ -198,6 +199,7 @@ export function evaluateMiddlewareDecision(
     pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/cron/") ||
     pathname === "/api/health" ||
+    pathname === "/api/health/deep" ||
     pathname === "/api/leads" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
@@ -211,7 +213,8 @@ export function evaluateMiddlewareDecision(
   }
 
   if (
-    process.env.NODE_ENV !== "production" &&
+    env.VERCEL_ENV !== "production" &&
+    env.NODE_ENV !== "production" &&
     (pathname === "/design-check" || pathname.startsWith("/design-check/"))
   ) {
     return { type: "next" };

@@ -186,7 +186,7 @@ export async function resetStaffMemberPin(
     select: STAFF_SELECT,
   });
 
-  resetPinRateLimit({
+  await resetPinRateLimit({
     ip: "manager-reset",
     accountKey: buildPinAccountKey(restaurant.code, existing.username),
   });

@@ -67,16 +67,52 @@ describe("landing SEO, structured data & content QA", () => {
     }
   });
 
-  it("generates robots.txt rules allowing landing/help and blocking app routes", () => {
-    const result = robots();
-    const rules = Array.isArray(result.rules) ? result.rules : [result.rules];
-    expect(rules[0]?.allow).toEqual(
-      expect.arrayContaining(["/", "/en", "/help", "/og-ar.png", "/og-en.png"]),
-    );
-    for (const prefix of DISALLOWED_APP_PATH_PREFIXES) {
-      expect(rules[0]?.disallow).toContain(prefix);
+  it("disallows everything in robots.txt when VERCEL_ENV !== production and allows landing routes in production", () => {
+    const previousVercelEnv = process.env.VERCEL_ENV;
+    try {
+      delete process.env.VERCEL_ENV;
+      const devResult = robots();
+      const devRules = Array.isArray(devResult.rules)
+        ? devResult.rules
+        : [devResult.rules];
+      expect(devRules[0]?.disallow).toBe("/");
+      expect(devRules[0]?.allow).toBeUndefined();
+      expect(devResult.sitemap).toBeUndefined();
+
+      process.env.VERCEL_ENV = "preview";
+      const previewResult = robots();
+      const previewRules = Array.isArray(previewResult.rules)
+        ? previewResult.rules
+        : [previewResult.rules];
+      expect(previewRules[0]?.disallow).toBe("/");
+      expect(previewRules[0]?.allow).toBeUndefined();
+      expect(previewResult.sitemap).toBeUndefined();
+
+      process.env.VERCEL_ENV = "production";
+      const prodResult = robots();
+      const prodRules = Array.isArray(prodResult.rules)
+        ? prodResult.rules
+        : [prodResult.rules];
+      expect(prodRules[0]?.allow).toEqual(
+        expect.arrayContaining([
+          "/",
+          "/en",
+          "/help",
+          "/og-ar.png",
+          "/og-en.png",
+        ]),
+      );
+      for (const prefix of DISALLOWED_APP_PATH_PREFIXES) {
+        expect(prodRules[0]?.disallow).toContain(prefix);
+      }
+      expect(prodResult.sitemap).toMatch(/\/sitemap\.xml$/);
+    } finally {
+      if (previousVercelEnv === undefined) {
+        delete process.env.VERCEL_ENV;
+      } else {
+        process.env.VERCEL_ENV = previousVercelEnv;
+      }
     }
-    expect(result.sitemap).toMatch(/\/sitemap\.xml$/);
   });
 
   it("generates sitemap with ar, en, and x-default hreflang alternates", () => {

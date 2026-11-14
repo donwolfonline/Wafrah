@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getSiteBaseUrl } from "@/features/landing/landing-config";
 
+export const dynamic = "force-dynamic";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getSiteBaseUrl().toString().replace(/\/+$/, "");
   const lastModified = new Date();

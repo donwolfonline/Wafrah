@@ -1,4 +1,5 @@
 import type { Role } from "@prisma/client";
+import { env } from "@/env";
 
 export const STAFF_SESSION_MAX_AGE_SECONDS = 12 * 60 * 60; // 12 hours fixed
 export const MANAGER_SESSION_MAX_AGE_SECONDS = 7 * 24 * 60 * 60; // 7 days sliding
@@ -22,10 +23,10 @@ export function getMaxAgeForRole(
  * so local production builds and Playwright E2E over HTTP still receive cookies.
  */
 export function shouldUseSecureCookies(): boolean {
-  if (process.env.NODE_ENV !== "production") {
+  if (env.NODE_ENV !== "production") {
     return false;
   }
-  const appUrl = (process.env.APP_URL ?? "").trim().toLowerCase();
+  const appUrl = (env.APP_URL ?? "").trim().toLowerCase();
   if (
     appUrl.startsWith("http://localhost") ||
     appUrl.startsWith("http://127.0.0.1")

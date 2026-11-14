@@ -1,0 +1,199 @@
+name: Weekly Dependency Audit
+
+on:
+  schedule:
+    # Weekly every Monday at 06:00 UTC (09:00 Asia/Riyadh)
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    name: pnpm audit report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Run pnpm audit and build Markdown report
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const { spawnSync } = require("node:child_process");
+
+            const proc = spawnSync("pnpm", ["audit", "--json"], {
+              encoding: "utf8",
+              maxBuffer: 20 * 1024 * 1024,
+            });
+
+            if (proc.error) {
+              console.error("Failed to execute pnpm audit:", proc.error);
+              process.exit(1);
+            }
+
+            let report;
+            try {
+              report = JSON.parse(proc.stdout || "");
+            } catch {
+              console.error("Invalid JSON from pnpm audit (exit code " + proc.status + "):");
+              console.error(proc.stderr || proc.stdout);
+              process.exit(1);
+            }
+
+            if (!report || typeof report !== "object" || typeof report.advisories !== "object") {
+              console.error("Unexpected pnpm audit output structure:", proc.stderr || proc.stdout);
+              process.exit(1);
+            }
+
+            fs.writeFileSync("pnpm-audit-report.json", JSON.stringify(report, null, 2));
+
+            const severityRank = { critical: 0, high: 1, moderate: 2, low: 3, info: 4 };
+            const counts = { critical: 0, high: 0, moderate: 0, low: 0, info: 0 };
+            const rows = Object.values(report.advisories).sort((a, b) => {
+              const rankDiff = (severityRank[a.severity] ?? 9) - (severityRank[b.severity] ?? 9);
+              return rankDiff !== 0 ? rankDiff : String(a.module_name).localeCompare(String(b.module_name));
+            });
+
+            for (const adv of rows) {
+              const sev = String(adv.severity || "info").toLowerCase();
+              if (sev in counts) counts[sev] += 1;
+            }
+
+            const total = rows.length;
+            const dateStr = new Date().toISOString().slice(0, 10);
+            const lines = [
+              `## Weekly Dependency Audit Report (${dateStr})`,
+              "",
+              `Workflow run: ${process.env.RUN_URL}`,
+              "",
+              "| Critical | High | Moderate | Low | Info | Total |",
+              "| :---: | :---: | :---: | :---: | :---: | :---: |",
+              `| ${counts.critical} | ${counts.high} | ${counts.moderate} | ${counts.low} | ${counts.info} | **${total}** |`,
+              "",
+            ];
+
+            if (total === 0) {
+              lines.push("No known dependency advisories reported by `pnpm audit`.");
+            } else {
+              lines.push(
+                "> Report only — automated dependency updates and auto-merge are disabled (`AGENTS.md` requires manual review and approval before editing `package.json`).",
+                "",
+                "| Severity | Package | Installed | Advisory | Patched Versions | Scope |",
+                "| :--- | :--- | :--- | :--- | :--- | :--- |",
+              );
+              for (const adv of rows) {
+                const findings = Array.isArray(adv.findings) ? adv.findings : [];
+                const versions = Array.from(new Set(findings.map((f) => f.version))).join(", ") || "-";
+                const scope = findings.every((f) => f.dev) ? "devOnly" : "runtime";
+                const ghsa = adv.github_advisory_id || String(adv.id);
+                const advLink = adv.url ? `[${ghsa}](${adv.url})` : ghsa;
+                const patched = adv.patched_versions || "None yet";
+                lines.push(
+                  `| \`${adv.severity}\` | \`${adv.module_name}\` | \`${versions}\` | ${advLink} | \`${patched}\` | ${scope} |`,
+                );
+              }
+            }
+
+            const summary = lines.join("\n") + "\n";
+            fs.writeFileSync("audit-report.md", summary);
+            if (process.env.GITHUB_STEP_SUMMARY) {
+              fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
+            }
+          '
+
+      - name: Upload audit report artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pnpm-audit-${{ github.run_number }}
+          path: |
+            pnpm-audit-report.json
+            audit-report.md
+          retention-days: 30
+
+      - name: Open or update security audit issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("node:fs");
+            const reportJson = JSON.parse(fs.readFileSync("pnpm-audit-report.json", "utf8"));
+            const body = fs.readFileSync("audit-report.md", "utf8");
+            const total = Object.keys(reportJson.advisories || {}).length;
+            const title = "[Security] Weekly pnpm audit report";
+
+            try {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: "security-audit",
+                color: "B60205",
+                description: "Automated weekly pnpm audit reports (no auto-merge)",
+              });
+            } catch (error) {
+              if (error.status !== 422) throw error;
+            }
+
+            const { data: openIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: "security-audit",
+              per_page: 20,
+            });
+            const existing = openIssues.find((issue) => issue.title === title && !issue.pull_request);
+
+            if (total === 0) {
+              if (existing) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existing.number,
+                  body: `Resolved: \`0\` advisories found in latest weekly scan.\n\n${body}`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existing.number,
+                  state: "closed",
+                });
+              }
+              return;
+            }
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body,
+              });
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ["security-audit"],
+              });
+            }

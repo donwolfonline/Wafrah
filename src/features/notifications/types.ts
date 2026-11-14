@@ -75,9 +75,10 @@ export interface WelcomeEmailInput {
 export interface TenantCronOutcome {
   tenantId: string;
   tenantCode: string;
-  status: "OK" | "FAILED";
+  status: "OK" | "FAILED" | "SKIPPED";
   emailsSent: number;
   alertsNotified?: number;
+  alreadyCompleted?: boolean;
   error?: string;
 }
 
@@ -87,6 +88,11 @@ export interface ScheduledCronSummary {
   tenantCount: number;
   tenantsSucceeded: number;
   tenantsFailed: number;
+  tenantsSkipped: number;
+  skippedTenantIds: string[];
+  stoppedEarlyByBudget: boolean;
+  budgetMs: number;
   totalEmailsSent: number;
   tenants: TenantCronOutcome[];
+  rateLimitBucketsCleaned?: number;
 }

@@ -1,8 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { readRuntimeFlags } from "../src/env.core";
 
 export function assertNonProductionScript(scriptName: string): void {
-  if (process.env.NODE_ENV === "production") {
+  const { NODE_ENV, VERCEL_ENV } = readRuntimeFlags();
+  if (NODE_ENV === "production" || VERCEL_ENV === "production") {
     throw new Error(`${scriptName} is restricted to development environments.`);
   }
 }

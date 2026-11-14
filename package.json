@@ -2,9 +2,20 @@
   "name": "wafrah",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@12.18.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.18.0",
+      "onFail": "ignore"
+    }
+  },
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "prisma generate && next build --webpack",
     "postinstall": "prisma generate",
     "start": "next start",
     "typecheck": "tsc --noEmit",
@@ -14,16 +25,13 @@
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "db:seed:prod": "tsx prisma/seed-prod.ts",
+    "db:seed:prod": "tsx prisma/seed.production.ts",
     "db:reset": "prisma migrate reset",
     "vercel-build": "node scripts/vercel-build.mjs",
     "insights:run": "tsx scripts/run-insights.ts",
     "forecast:run": "tsx scripts/run-forecast.ts",
     "cron:daily": "tsx scripts/run-daily.ts",
     "og:generate": "tsx scripts/generate-og-images.ts"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",

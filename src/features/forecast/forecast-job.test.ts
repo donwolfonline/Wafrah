@@ -105,7 +105,7 @@ describe("Forecast job, persistence, accuracy audit, and cron endpoint", () => {
     }
   });
 
-  it("protects POST /api/cron/forecast with x-cron-secret and bypasses NextAuth cookie in middleware", async () => {
+  it("protects POST and GET /api/cron/forecast with Authorization Bearer and rejects x-cron-secret", async () => {
     expect(evaluateMiddlewareDecision("/api/cron/forecast", null)).toEqual({
       type: "next",
     });
@@ -122,11 +122,19 @@ describe("Forecast job, persistence, accuracy audit, and cron endpoint", () => {
       );
       expect(missingRes.status).toBe(401);
 
+      const legacyHeaderRes = await cronForecastPost(
+        new Request("http://localhost:3000/api/cron/forecast", {
+          method: "POST",
+          headers: { "x-cron-secret": runtimeSecret },
+        }),
+      );
+      expect(legacyHeaderRes.status).toBe(401);
+
       const badBodyRes = await cronForecastPost(
         new Request("http://localhost:3000/api/cron/forecast", {
           method: "POST",
           headers: {
-            "x-cron-secret": runtimeSecret,
+            authorization: `Bearer ${runtimeSecret}`,
             "content-type": "application/json",
           },
           body: JSON.stringify({ now: "invalid-date" }),
@@ -138,7 +146,7 @@ describe("Forecast job, persistence, accuracy audit, and cron endpoint", () => {
         new Request("http://localhost:3000/api/cron/forecast", {
           method: "POST",
           headers: {
-            "x-cron-secret": runtimeSecret,
+            authorization: `Bearer ${runtimeSecret}`,
             "content-type": "application/json",
           },
           body: JSON.stringify({ now: "2026-11-13T11:00:00.000Z" }),

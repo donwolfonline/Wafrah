@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import type { AppLocale } from "@/i18n/request";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
-import { getWhatsAppHref } from "./landing-config";
+import { getWhatsAppHref } from "./landing-config.client";
 import { WhatsAppIcon } from "./landing-icons";
 
 export type WhatsAppLocation =

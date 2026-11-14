@@ -60,7 +60,7 @@ Restaurants and hotels in Saudi Arabia — particularly in high-volume hospitali
 
 ### Flow C: Nightly Pattern Detection & Forecasting Job (System)
 
-1. Protected HTTP endpoints (`x-cron-secret`) triggered nightly by Vercel Cron (around `03:00` `Asia/Riyadh` time; also runnable via a local script in development).
+1. Protected HTTP endpoints (`Authorization: Bearer <CRON_SECRET>`, `GET` for Vercel Cron and `POST` for manual trigger) triggered nightly around `03:00` `Asia/Riyadh` time (also runnable via a local script in development).
 2. Computes item-level waste baselines, detects anomalies (capped at 5 new alerts/day per restaurant by SAR impact), updates daily demand forecasts, and calculates weekly purchase/prep quantity recommendations.
 
 ### Flow D: Manager Dashboard, Alerts & Weekly Recommendations (Restaurant Manager / Owner)
@@ -219,7 +219,7 @@ All tenant-owned tables carry a mandatory `tenantId` column and are queried stri
    - **Kitchen Staff:** `restaurant code` + `username` + `4–6 digit PIN` on a shared tablet; the restaurant code is remembered on the device, and a `"Switch user"` button returns to the PIN pad. No magic links.
 
 8. **NIGHTLY JOBS:**
-   - Protected HTTP endpoints (`x-cron-secret`) triggered by Vercel Cron (daily around `03:00` Riyadh time), plus a local script for development. No separate worker process.
+   - Protected HTTP endpoints (`Authorization: Bearer <CRON_SECRET>`, `GET`/`POST`) triggered by Vercel Cron (daily around `03:00` Riyadh time), plus a local script for development. No separate worker process.
 
 9. **SCHEMA IMPLICATIONS:**
    - `MenuItem.code` (optional, unique per tenant)

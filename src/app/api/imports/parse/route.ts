@@ -43,11 +43,14 @@ function checkDeclaredContentLength(
   }
 }
 
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   try {
     const user = await requireRole("sales.import");
     const ip = extractClientIpFromHeaders(request.headers);
-    const rate = checkImportUploadRateLimit(
+    const rate = await checkImportUploadRateLimit(
       buildApiRateLimitKey({
         userId: user.userId,
         ip,

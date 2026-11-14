@@ -1,6 +1,12 @@
 import type { Role } from "@prisma/client";
 import type { NextAuthConfig } from "next-auth";
 import { decode, encode } from "next-auth/jwt";
+import { env } from "@/env";
+import { getPublicSiteBaseUrl, getServerAppUrl } from "@/lib/app-url";
+import {
+  resolveSafeAuthRedirectUrl,
+  shouldTrustAuthHost,
+} from "./host-policy";
 import {
   applyJwtSessionPolicy,
   getTokenEncodeMaxAge,
@@ -43,8 +49,9 @@ const baseCookieOptions = {
 };
 
 export const authConfig: NextAuthConfig = {
+  ...(env.AUTH_SECRET ? { secret: env.AUTH_SECRET } : {}),
   useSecureCookies,
-  ...(!useSecureCookies ? { trustHost: true } : {}),
+  trustHost: shouldTrustAuthHost(env),
   session: {
     strategy: "jwt",
     // Ceiling lifetime for managers/owners/admins (sliding refresh enforced in jwt callback).
@@ -86,6 +93,13 @@ export const authConfig: NextAuthConfig = {
   },
   providers: [],
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      return resolveSafeAuthRedirectUrl({
+        url,
+        baseUrl,
+        allowedOrigins: [getServerAppUrl(), getPublicSiteBaseUrl().origin],
+      });
+    },
     async jwt({ token, user }) {
       return applyJwtSessionPolicy(token, user);
     },

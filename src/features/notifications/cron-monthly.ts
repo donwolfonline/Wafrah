@@ -2,8 +2,11 @@ import type { Prisma } from "@prisma/client";
 import { toTimeZoneDateKey } from "@/features/insights";
 import { getMonthlyReportForTenant } from "@/features/reports";
 import type { SessionUser } from "@/lib/authz";
+import { getServerAppUrl } from "@/lib/app-url";
+import { executeBudgetedCronTenantLoop } from "@/lib/cron-budget";
 import { sendEmail } from "@/lib/email";
 import { RIYADH_TIME_ZONE } from "@/lib/format";
+import { logger } from "@/lib/logger";
 import { createTenantDb } from "@/lib/tenant";
 import {
   finalizePeriodicCronSummary,
@@ -14,7 +17,7 @@ import {
 } from "./cron-helpers";
 import { loadTenantManagerRecipients } from "./preferences";
 import { renderMonthlyReportEmail } from "./templates-account";
-import type { ScheduledCronSummary, TenantCronOutcome } from "./types";
+import type { ScheduledCronSummary } from "./types";
 
 export async function runMonthlyCronJob(
   now: Date = new Date(),
@@ -24,25 +27,48 @@ export async function runMonthlyCronJob(
   const listRestaurants = deps?.listRestaurants ?? listDefaultRestaurants;
   const sendEmailFn = deps?.sendEmailFn ?? sendEmail;
   const getMonthlyReport = deps?.getMonthlyReport ?? getMonthlyReportForTenant;
-  const resolvedAppUrl =
-    deps?.appUrl ?? process.env.APP_URL ?? "http://localhost:3000";
+  const resolvedAppUrl = getServerAppUrl(deps?.appUrl);
 
   const restaurants = await listRestaurants();
-  const tenants: TenantCronOutcome[] = [];
+  const loopResult = await executeBudgetedCronTenantLoop({
+    job: "monthly",
+    auditAction: "CRON_MONTHLY_COMPLETED",
+    tenants: restaurants,
+    budget: deps,
+    runTenant: async (tenant) => {
+      const db = createTenantDb(tenant.id);
+      const tz = tenant.timezone || RIYADH_TIME_ZONE;
+      const targetMonth =
+        yearMonthOverride ??
+        resolvePreviousMonthKey(toTimeZoneDateKey(now, tz));
+      const periodEntityId = `monthly:${targetMonth}`;
 
-  for (const tenant of restaurants) {
-    try {
+      const existing = await db.auditLog.findFirst({
+        where: {
+          action: "CRON_MONTHLY_TENANT_COMPLETED",
+          entity: "CronJob",
+          entityId: periodEntityId,
+        },
+        select: { id: true },
+      });
+      if (existing) {
+        return {
+          tenantId: tenant.id,
+          tenantCode: tenant.code,
+          status: "OK" as const,
+          emailsSent: 0,
+          alreadyCompleted: true,
+        };
+      }
+
       const recipients = await loadTenantManagerRecipients(
         tenant.id,
         "monthlyReport",
       );
       let emailsSent = 0;
+      let lastError: string | undefined;
 
       if (recipients.length > 0) {
-        const tz = tenant.timezone || RIYADH_TIME_ZONE;
-        const targetMonth =
-          yearMonthOverride ??
-          resolvePreviousMonthKey(toTimeZoneDateKey(now, tz));
         const firstRecipient = recipients[0]!;
         const actorSession: SessionUser = {
           userId: firstRecipient.userId,
@@ -72,43 +98,66 @@ export async function runMonthlyCronJob(
             rendered.html,
             rendered.text,
           );
-          if (res.ok) emailsSent += 1;
+          if (res.ok) {
+            emailsSent += 1;
+          } else {
+            lastError = res.error;
+          }
+        }
+
+        if (emailsSent === 0) {
+          throw new Error(lastError ?? "Failed to send monthly report emails");
         }
       }
 
-      const db = createTenantDb(tenant.id);
       await db.auditLog.create({
         data: {
           tenantId: tenant.id,
           action: "CRON_MONTHLY_TENANT_COMPLETED",
           entity: "CronJob",
-          entityId: "monthly",
+          entityId: periodEntityId,
           metadata: {
             evaluatedAt: now.toISOString(),
+            yearMonth: targetMonth,
             emailsSent,
           } satisfies Prisma.InputJsonObject,
         },
       });
 
-      tenants.push({
+      return {
         tenantId: tenant.id,
         tenantCode: tenant.code,
-        status: "OK",
+        status: "OK" as const,
         emailsSent,
-      });
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      console.error(`[cron:monthly] Tenant ${tenant.code} failed: ${errorMsg}`);
-      await recordPeriodicTenantFailure(tenant.id, "monthly", now, errorMsg);
-      tenants.push({
+      };
+    },
+    onTenantFailed: async (tenant, errorMsg) => {
+      logger.error("cron.monthly.tenant_failed", {
         tenantId: tenant.id,
         tenantCode: tenant.code,
-        status: "FAILED",
-        emailsSent: 0,
         error: errorMsg,
       });
-    }
-  }
+      await recordPeriodicTenantFailure(tenant.id, "monthly", now, errorMsg);
+      return {
+        tenantId: tenant.id,
+        tenantCode: tenant.code,
+        status: "FAILED" as const,
+        emailsSent: 0,
+        error: errorMsg,
+      };
+    },
+    onTenantSkipped: (tenant) => ({
+      tenantId: tenant.id,
+      tenantCode: tenant.code,
+      status: "SKIPPED" as const,
+      emailsSent: 0,
+    }),
+  });
 
-  return finalizePeriodicCronSummary("monthly", now, tenants);
+  return finalizePeriodicCronSummary("monthly", now, loopResult.outcomes, {
+    skippedTenantIds: loopResult.skippedTenantIds,
+    stoppedEarlyByBudget: loopResult.stoppedEarlyByBudget,
+    budgetMs: loopResult.budgetMs,
+    recordSummaryAudit: deps?.recordSummaryAudit,
+  });
 }

@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { expect, test } from "@playwright/test";
+import { readToolingEnv } from "../src/env.core";
 import { hashSecret } from "../src/lib/password";
 import {
   applyLocaleCookie,
@@ -204,7 +205,7 @@ test.describe("Arabic RTL Visual Review (375px & 1280px)", () => {
   test("captures Arabic RTL pages at 375px and 1280px with dir=rtl and zero horizontal overflow", async ({
     browser,
   }) => {
-    const outDir = process.env.QA_SCREENSHOT_DIR;
+    const outDir = readToolingEnv().QA_SCREENSHOT_DIR;
     if (outDir) {
       fs.mkdirSync(outDir, { recursive: true });
     }

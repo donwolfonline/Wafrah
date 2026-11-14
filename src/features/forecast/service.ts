@@ -32,6 +32,11 @@ export interface TenantForecastRunResult {
 export interface AllTenantsForecastSummary {
   evaluatedAt: string;
   tenantCount: number;
+  tenantsFailed: number;
+  tenantsSkipped: number;
+  skippedTenantIds: string[];
+  stoppedEarlyByBudget: boolean;
+  budgetMs: number;
   totalPersistedRows: number;
   tenants: TenantForecastRunResult[];
 }
@@ -224,6 +229,7 @@ export async function runForecastsForTenant(
     if (rowsToInsert.length > 0) {
       await db.forecastResult.createMany({
         data: rowsToInsert,
+        skipDuplicates: true,
       });
       persistedRows = rowsToInsert.length;
     }
@@ -265,33 +271,5 @@ export async function runForecastsForTenant(
     insufficientDataItemIds: output.insufficientDataItemIds,
     accuracy,
     output,
-  };
-}
-
-export async function runForecastsForAllTenants(
-  now: Date = new Date(),
-  forecaster: DemandForecaster = new StatisticalForecaster(),
-): Promise<AllTenantsForecastSummary> {
-  const restaurants = await platformAdminDb.restaurant.findMany({
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
-  });
-
-  const tenants: TenantForecastRunResult[] = [];
-  for (const restaurant of restaurants) {
-    const result = await runForecastsForTenant(restaurant.id, now, forecaster);
-    tenants.push(result);
-  }
-
-  const totalPersistedRows = tenants.reduce(
-    (sum, tenant) => sum + tenant.persistedRows,
-    0,
-  );
-
-  return {
-    evaluatedAt: now.toISOString(),
-    tenantCount: tenants.length,
-    totalPersistedRows,
-    tenants,
   };
 }

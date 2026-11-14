@@ -13,11 +13,14 @@ import {
 } from "@/lib/api-rate-limit";
 import { requireRole } from "@/lib/authz";
 
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   try {
     const user = await requireRole("sales.import");
     const ip = extractClientIpFromHeaders(request.headers);
-    const rate = checkApiWriteRateLimit(
+    const rate = await checkApiWriteRateLimit(
       buildApiRateLimitKey({
         userId: user.userId,
         ip,

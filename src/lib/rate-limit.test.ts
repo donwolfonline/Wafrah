@@ -11,33 +11,33 @@ import {
 } from "@/lib/rate-limit";
 
 describe("PIN rate limiting and 5-failure lockout", () => {
-  beforeEach(() => {
-    clearAllRateLimits();
+  beforeEach(async () => {
+    await clearAllRateLimits();
   });
 
-  it("locks out an account after 5 failed PIN attempts and unlocks after the lockout window", () => {
+  it("locks out an account after 5 failed PIN attempts and unlocks after the lockout window", async () => {
     const ip = "192.0.2.10";
     const accountKey = buildPinAccountKey("SHAMI-JED", "ahmed");
     const t0 = 1_700_000_000_000;
 
-    expect(checkPinRateLimit({ ip, accountKey, now: t0 }).allowed).toBe(true);
+    expect((await checkPinRateLimit({ ip, accountKey, now: t0 })).allowed).toBe(true);
 
     for (let attempt = 1; attempt < MAX_PIN_ATTEMPTS; attempt++) {
-      const status = recordPinFailure({ ip, accountKey, now: t0 });
+      const status = await recordPinFailure({ ip, accountKey, now: t0 });
       expect(status.lockedOut).toBe(false);
       expect(status.allowed).toBe(true);
       expect(status.remainingAttempts).toBe(MAX_PIN_ATTEMPTS - attempt);
     }
 
     // 5th bad PIN triggers lockout
-    const fifthAttempt = recordPinFailure({ ip, accountKey, now: t0 });
+    const fifthAttempt = await recordPinFailure({ ip, accountKey, now: t0 });
     expect(fifthAttempt.lockedOut).toBe(true);
     expect(fifthAttempt.allowed).toBe(false);
     expect(fifthAttempt.remainingAttempts).toBe(0);
     expect(fifthAttempt.retryAfterSeconds).toBe(LOCKOUT_DURATION_MS / 1000);
 
     // Subsequent check during lockout window is blocked even from a different IP
-    const blockedCheck = checkPinRateLimit({
+    const blockedCheck = await checkPinRateLimit({
       ip: "192.0.2.99",
       accountKey,
       now: t0 + 60_000,
@@ -46,7 +46,7 @@ describe("PIN rate limiting and 5-failure lockout", () => {
     expect(blockedCheck.lockedOut).toBe(true);
 
     // After the 15-minute lockout window expires, attempts are allowed again
-    const afterLockout = checkPinRateLimit({
+    const afterLockout = await checkPinRateLimit({
       ip,
       accountKey,
       now: t0 + LOCKOUT_DURATION_MS + 1,
@@ -55,13 +55,13 @@ describe("PIN rate limiting and 5-failure lockout", () => {
     expect(afterLockout.remainingAttempts).toBe(MAX_PIN_ATTEMPTS);
   });
 
-  it("locks out an IP address after 5 failed PIN attempts across different usernames", () => {
+  it("locks out an IP address after 5 failed PIN attempts across different usernames", async () => {
     const sharedIp = "198.51.100.42";
     const restaurantCode = "SHAMI-JED";
     const t0 = 1_700_000_000_000;
 
     for (let i = 1; i <= 4; i++) {
-      const res = recordPinFailure({
+      const res = await recordPinFailure({
         ip: sharedIp,
         accountKey: buildPinAccountKey(restaurantCode, `user${i}`),
         now: t0,
@@ -69,7 +69,7 @@ describe("PIN rate limiting and 5-failure lockout", () => {
       expect(res.lockedOut).toBe(false);
     }
 
-    const fifth = recordPinFailure({
+    const fifth = await recordPinFailure({
       ip: sharedIp,
       accountKey: buildPinAccountKey(restaurantCode, "user5"),
       now: t0,
@@ -78,7 +78,7 @@ describe("PIN rate limiting and 5-failure lockout", () => {
     expect(fifth.allowed).toBe(false);
 
     // A 6th username from the same IP is immediately blocked
-    const sixthCheck = checkPinRateLimit({
+    const sixthCheck = await checkPinRateLimit({
       ip: sharedIp,
       accountKey: buildPinAccountKey(restaurantCode, "user6"),
       now: t0 + 1_000,
@@ -128,7 +128,7 @@ describe("PIN rate limiting and 5-failure lockout", () => {
     }
 
     // Reset rate limit and verify valid PIN ("1234") succeeds
-    resetPinRateLimit({ ip, accountKey });
+    await resetPinRateLimit({ ip, accountKey });
     const successOutcome = await authenticateStaffPin(
       { restaurantCode, username, pin: "1234" },
       ip,

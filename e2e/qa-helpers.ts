@@ -1,8 +1,10 @@
 import { type BrowserContext, expect, type Page } from "@playwright/test";
+import { readToolingEnv } from "../src/env.core";
 
 export type TestLocale = "ar" | "en";
 
-export const APP_BASE_URL = process.env.APP_URL ?? "http://localhost:3000";
+export const APP_BASE_URL =
+  readToolingEnv().APP_URL ?? "http://localhost:3000";
 
 export async function applyLocaleCookie(
   context: BrowserContext,

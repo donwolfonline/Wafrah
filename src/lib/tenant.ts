@@ -1,6 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 import { AuthorizationError, type SessionUser } from "@/lib/authz";
 import { platformAdminDb } from "@/lib/db";
+import { setLogContextFields } from "@/lib/logger";
 import {
   MODELS_WITH_MENU_ITEM_FK,
   PLATFORM_ONLY_MODELS,
@@ -300,6 +301,7 @@ export async function getTenantDb(
     );
   }
 
+  setLogContextFields({ tenantId: user.tenantId });
   return createTenantDb(user.tenantId);
 }
 

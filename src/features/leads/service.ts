@@ -68,7 +68,7 @@ export async function submitPilotLead(
   const db = deps?.db ?? platformAdminDb;
 
   // 1. Per-IP sliding-window rate limit (5 per hour)
-  const rateLimit = checkLeadSubmitRateLimit(clientIp, nowMs);
+  const rateLimit = await checkLeadSubmitRateLimit(clientIp, nowMs);
   if (!rateLimit.allowed) {
     return {
       ok: false,

@@ -13,5 +13,6 @@ export {
   toTimeZoneDateKey,
 } from "./math";
 export { detectSpikes } from "./spike-detector";
-export { runInsightsForAllTenants, runInsightsForTenant } from "./service";
+export { runInsightsForAllTenants } from "./cron-runner";
+export { runInsightsForTenant } from "./service";
 export type * from "./types";

@@ -1,5 +1,7 @@
 import type { Prisma } from "@prisma/client";
+import { env } from "@/env";
 import { platformAdminDb } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export interface AuditLogInput {
   tenantId?: string | null;
@@ -23,8 +25,13 @@ export async function recordAuditLog(input: AuditLogInput): Promise<void> {
       },
     });
   } catch (error) {
-    if (process.env.NODE_ENV !== "test") {
-      console.error("Failed to record audit log:", error);
+    if (env.NODE_ENV !== "test") {
+      logger.error("audit.record_failed", {
+        tenantId: input.tenantId ?? null,
+        action: input.action,
+        entity: input.entity,
+        error,
+      });
     }
   }
 }

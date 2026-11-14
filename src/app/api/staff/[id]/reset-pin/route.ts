@@ -12,7 +12,7 @@ export async function POST(
 ): Promise<NextResponse> {
   try {
     const user = await requireRole(["MANAGER", "OWNER"]);
-    const limited = checkStaffWriteRate(user, "staff-reset-pin");
+    const limited = await checkStaffWriteRate(user, "staff-reset-pin");
     if (limited) return limited;
     const { id } = await context.params;
     const result = await resetStaffMemberPin(user, id);

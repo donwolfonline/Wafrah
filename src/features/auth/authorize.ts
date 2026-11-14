@@ -1,6 +1,7 @@
 import { recordAuditLog } from "@/lib/audit";
 import type { SessionUser } from "@/lib/authz";
 import { platformAdminDb } from "@/lib/db";
+import { logger } from "@/lib/logger";
 import { verifySecret } from "@/lib/password";
 import {
   buildManagerAccountKey,
@@ -37,7 +38,7 @@ async function recordLastLoginSafely(userId: string): Promise<void> {
       data: { lastLoginAt: new Date() },
     });
   } catch (error) {
-    console.error("[auth] Failed to update User.lastLoginAt:", error);
+    logger.error("auth.last_login_update_failed", { userId, error });
   }
 }
 
@@ -53,7 +54,7 @@ export async function authenticateManager(
   const { email, password } = parsed.data;
   const accountKey = buildManagerAccountKey(email);
 
-  const preCheck = checkManagerRateLimit({ ip: clientIp, accountKey });
+  const preCheck = await checkManagerRateLimit({ ip: clientIp, accountKey });
   if (!preCheck.allowed) {
     await recordAuditLog({
       tenantId: null,
@@ -113,7 +114,7 @@ export async function authenticateManager(
     !user.passwordHash ||
     !verifySecret(password, user.passwordHash)
   ) {
-    recordManagerFailure({ ip: clientIp, accountKey });
+    await recordManagerFailure({ ip: clientIp, accountKey });
     await recordAuditLog({
       tenantId: user?.tenantId ?? null,
       userId: user?.id ?? null,
@@ -146,7 +147,7 @@ export async function authenticateManager(
     return { ok: false, code: "TENANT_SUSPENDED" };
   }
 
-  resetManagerRateLimit({ ip: clientIp, accountKey });
+  await resetManagerRateLimit({ ip: clientIp, accountKey });
 
   await Promise.all([
     recordLastLoginSafely(user.id),
@@ -188,7 +189,7 @@ export async function authenticateStaffPin(
   const { restaurantCode, username, pin } = parsed.data;
   const accountKey = buildPinAccountKey(restaurantCode, username);
 
-  const preCheck = checkPinRateLimit({ ip: clientIp, accountKey });
+  const preCheck = await checkPinRateLimit({ ip: clientIp, accountKey });
   if (!preCheck.allowed) {
     await recordAuditLog({
       tenantId: null,
@@ -238,7 +239,7 @@ export async function authenticateStaffPin(
     !user.pinHash ||
     !verifySecret(pin, user.pinHash)
   ) {
-    const postFail = recordPinFailure({ ip: clientIp, accountKey });
+    const postFail = await recordPinFailure({ ip: clientIp, accountKey });
     await recordAuditLog({
       tenantId: restaurant?.id ?? null,
       userId: user?.id ?? null,
@@ -271,7 +272,7 @@ export async function authenticateStaffPin(
     };
   }
 
-  resetPinRateLimit({ ip: clientIp, accountKey });
+  await resetPinRateLimit({ ip: clientIp, accountKey });
 
   if (restaurant.subscription?.status === "SUSPENDED") {
     await recordAuditLog({

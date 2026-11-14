@@ -10,12 +10,15 @@ import {
 import { AuthorizationError, requireRole } from "@/lib/authz";
 import { TenantIsolationError } from "@/lib/tenant";
 
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
 export async function GET(request: Request): Promise<Response> {
   try {
     const sessionUser = await getServerSessionUser();
     const user = await requireRole(["MANAGER", "OWNER"], sessionUser);
 
-    const rate = checkImportUploadRateLimit(
+    const rate = await checkImportUploadRateLimit(
       buildApiRateLimitKey({
         userId: user.userId,
         ip: extractClientIpFromHeaders(request.headers),

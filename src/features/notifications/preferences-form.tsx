@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import type { NotificationPreferencesDto } from "./types";
 
@@ -165,7 +164,6 @@ export function NotificationPreferencesForm({
           </Button>
         </div>
       </CardContent>
-      <Toaster position="bottom-center" />
     </Card>
   );
 }

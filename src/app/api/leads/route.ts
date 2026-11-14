@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { submitPilotLead } from "@/features/leads/service";
 import { extractClientIpFromHeaders } from "@/lib/api-rate-limit";
+import { withRequestContext } from "@/lib/request-context";
 
 export async function POST(request: Request): Promise<NextResponse> {
+  return withRequestContext(request, async () => {
   let body: unknown;
   try {
     body = await request.json();
@@ -43,6 +45,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     },
     { status: result.status },
   );
+  });
 }
 
 export async function GET(): Promise<NextResponse> {

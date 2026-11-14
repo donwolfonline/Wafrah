@@ -38,6 +38,11 @@ export interface TenantInsightsResult {
 export interface AllTenantsInsightsSummary {
   evaluatedAt: string;
   tenantCount: number;
+  tenantsFailed: number;
+  tenantsSkipped: number;
+  skippedTenantIds: string[];
+  stoppedEarlyByBudget: boolean;
+  budgetMs: number;
   totalAlertsUpserted: number;
   tenants: TenantInsightsResult[];
 }
@@ -255,32 +260,5 @@ export async function runInsightsForTenant(
     topReasons: rankedReasons,
     itemTiers,
     persistedAlerts,
-  };
-}
-
-export async function runInsightsForAllTenants(
-  now: Date = new Date(),
-): Promise<AllTenantsInsightsSummary> {
-  const restaurants = await platformAdminDb.restaurant.findMany({
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
-  });
-
-  const tenants: TenantInsightsResult[] = [];
-  for (const restaurant of restaurants) {
-    const result = await runInsightsForTenant(restaurant.id, now);
-    tenants.push(result);
-  }
-
-  const totalAlertsUpserted = tenants.reduce(
-    (sum, t) => sum + t.persistedAlerts.length,
-    0,
-  );
-
-  return {
-    evaluatedAt: now.toISOString(),
-    tenantCount: tenants.length,
-    totalAlertsUpserted,
-    tenants,
   };
 }

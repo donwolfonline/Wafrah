@@ -1,6 +1,8 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { env } from "@/env";
+import { logger } from "@/lib/logger";
 
 const CronNowBodySchema = z.object({
   now: z.string().datetime().optional(),
@@ -16,31 +18,39 @@ function sha256Digest(value: string): Buffer {
   return createHash("sha256").update(value, "utf8").digest();
 }
 
+function getSafeRequestPath(request: Request): string {
+  try {
+    return new URL(request.url).pathname;
+  } catch {
+    return "unknown";
+  }
+}
+
 /**
- * Extracts cron credentials from either Vercel Cron's `Authorization: Bearer <token>`
- * header or a manual `x-cron-secret` header.
+ * Extracts Vercel Cron or manual caller credentials strictly from the
+ * `Authorization: Bearer <token>` header.
  */
 export function extractCronSecret(request: Request): string | null {
   const authorization = request.headers.get("authorization")?.trim();
-  if (authorization) {
-    const match = /^Bearer\s+(.+)$/i.exec(authorization);
-    if (match?.[1]) {
-      return match[1].trim();
-    }
+  if (!authorization) {
     return null;
   }
 
-  const headerSecret = request.headers.get("x-cron-secret")?.trim();
-  return headerSecret || null;
+  const match = /^Bearer\s+(.+)$/i.exec(authorization);
+  if (!match?.[1]) {
+    return null;
+  }
+
+  return match[1].trim() || null;
 }
 
 export function verifyCronSecret(providedSecret: string | null): boolean {
-  const expectedSecret = process.env.CRON_SECRET?.trim() ?? "";
+  const expectedSecret = env.CRON_SECRET?.trim() ?? "";
   if (!expectedSecret || !providedSecret) {
     return false;
   }
   if (
-    process.env.NODE_ENV === "production" &&
+    env.NODE_ENV === "production" &&
     expectedSecret === PLACEHOLDER_CRON_SECRET
   ) {
     return false;
@@ -54,6 +64,68 @@ export function verifyCronSecret(providedSecret: string | null): boolean {
 
 export function isCronAuthorized(request: Request): boolean {
   return verifyCronSecret(extractCronSecret(request));
+}
+
+/**
+ * Enforces cron Bearer authentication. Returns 500 (never running unauthenticated)
+ * if CRON_SECRET is unset or placeholder in production, and 401 with no details
+ * if the Bearer token is missing or invalid.
+ */
+export function authorizeCronRequest(
+  request: Request,
+): { ok: true } | { ok: false; response: NextResponse } {
+  const expectedSecret = env.CRON_SECRET?.trim() ?? "";
+  if (!expectedSecret) {
+    logger.error("cron.auth.secret_unset", {
+      path: getSafeRequestPath(request),
+      message: "CRON_SECRET is unset; refusing cron/health-deep request",
+    });
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { error: "Server configuration error" },
+        { status: 500 },
+      ),
+    };
+  }
+
+  if (
+    env.NODE_ENV === "production" &&
+    expectedSecret === PLACEHOLDER_CRON_SECRET
+  ) {
+    logger.error("cron.auth.secret_placeholder", {
+      path: getSafeRequestPath(request),
+      message: "CRON_SECRET uses placeholder value in production",
+    });
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { error: "Server configuration error" },
+        { status: 500 },
+      ),
+    };
+  }
+
+  const providedSecret = extractCronSecret(request);
+  if (!providedSecret) {
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
+    };
+  }
+
+  const isMatch = timingSafeEqual(
+    sha256Digest(providedSecret),
+    sha256Digest(expectedSecret),
+  );
+  if (!isMatch) {
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
+    };
+  }
+
+  return { ok: true };
 }
 
 export async function parseCronJsonBody<TSchema extends z.ZodTypeAny>(
@@ -141,11 +213,9 @@ export async function requireCronNow(
   | { ok: true; now: Date }
   | { ok: false; response: NextResponse }
 > {
-  if (!isCronAuthorized(request)) {
-    return {
-      ok: false,
-      response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
-    };
+  const auth = authorizeCronRequest(request);
+  if (!auth.ok) {
+    return auth;
   }
 
   return parseCronNowBody(request);

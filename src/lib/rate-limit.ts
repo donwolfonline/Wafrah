@@ -1,34 +1,36 @@
+import {
+  deleteRateLimitBucketsByKeys,
+  deleteRateLimitBucketsByPrefix,
+  getLockoutBucketStates,
+  type LockoutBucketState,
+  recordLockoutFailureBucket,
+} from "@/lib/rate-limit-store";
+
 export const MAX_PIN_ATTEMPTS = 5;
 export const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
 export const MAX_MANAGER_ATTEMPTS = 10;
 export const MANAGER_LOCKOUT_DURATION_MS = 30 * 60 * 1000; // 30 minutes
 
-const MAX_BUCKET_ENTRIES = 10_000;
+const EMPTY_BUCKET: LockoutBucketState = {
+  failures: 0,
+  lockedUntilMs: null,
+};
 
-interface AttemptBucket {
-  failures: number;
-  lockedUntilMs: number | null;
-  lastAttemptMs: number;
-}
-
-interface BucketPolicy {
-  ipBuckets: Map<string, AttemptBucket>;
-  accountBuckets: Map<string, AttemptBucket>;
+interface LockoutPolicyConfig {
+  prefix: "pin" | "manager";
   maxAttempts: number;
   lockoutDurationMs: number;
 }
 
-const pinPolicy: BucketPolicy = {
-  ipBuckets: new Map<string, AttemptBucket>(),
-  accountBuckets: new Map<string, AttemptBucket>(),
+const pinPolicy: LockoutPolicyConfig = {
+  prefix: "pin",
   maxAttempts: MAX_PIN_ATTEMPTS,
   lockoutDurationMs: LOCKOUT_DURATION_MS,
 };
 
-const managerPolicy: BucketPolicy = {
-  ipBuckets: new Map<string, AttemptBucket>(),
-  accountBuckets: new Map<string, AttemptBucket>(),
+const managerPolicy: LockoutPolicyConfig = {
+  prefix: "manager",
   maxAttempts: MAX_MANAGER_ATTEMPTS,
   lockoutDurationMs: MANAGER_LOCKOUT_DURATION_MS,
 };
@@ -52,6 +54,16 @@ function normalizeKey(value: string): string {
   return value.trim().toLowerCase() || "unknown";
 }
 
+function buildBucketKeys(
+  policy: LockoutPolicyConfig,
+  input: RateLimitInput,
+): { ipKey: string; acctKey: string } {
+  return {
+    ipKey: `${policy.prefix}:ip:${normalizeKey(input.ip)}`,
+    acctKey: `${policy.prefix}:acct:${normalizeKey(input.accountKey)}`,
+  };
+}
+
 export function buildPinAccountKey(
   restaurantCode: string,
   username: string,
@@ -63,76 +75,9 @@ export function buildManagerAccountKey(email: string): string {
   return normalizeKey(email);
 }
 
-function pruneExpiredBuckets(
-  store: Map<string, AttemptBucket>,
-  now: number,
-  lockoutDurationMs: number,
-): void {
-  if (store.size < MAX_BUCKET_ENTRIES) {
-    return;
-  }
-  for (const [key, bucket] of store.entries()) {
-    const expiredLock =
-      bucket.lockedUntilMs !== null && now >= bucket.lockedUntilMs;
-    const staleIdle =
-      bucket.lockedUntilMs === null &&
-      now - bucket.lastAttemptMs >= lockoutDurationMs;
-    if (expiredLock || staleIdle) {
-      store.delete(key);
-    }
-  }
-  while (store.size >= MAX_BUCKET_ENTRIES) {
-    const oldestKey = store.keys().next().value;
-    if (!oldestKey) break;
-    store.delete(oldestKey);
-  }
-}
-
-function getActiveBucket(
-  store: Map<string, AttemptBucket>,
-  key: string,
-  now: number,
-): AttemptBucket {
-  const existing = store.get(key);
-  if (!existing) {
-    return { failures: 0, lockedUntilMs: null, lastAttemptMs: now };
-  }
-  if (existing.lockedUntilMs !== null && now >= existing.lockedUntilMs) {
-    const reset: AttemptBucket = {
-      failures: 0,
-      lockedUntilMs: null,
-      lastAttemptMs: now,
-    };
-    store.set(key, reset);
-    return reset;
-  }
-  return existing;
-}
-
-function incrementBucket(
-  store: Map<string, AttemptBucket>,
-  key: string,
-  now: number,
-  maxAttempts: number,
-  lockoutDurationMs: number,
-): AttemptBucket {
-  pruneExpiredBuckets(store, now, lockoutDurationMs);
-  const current = getActiveBucket(store, key, now);
-  const failures = current.failures + 1;
-  const lockedUntilMs =
-    failures >= maxAttempts ? now + lockoutDurationMs : null;
-  const updated: AttemptBucket = {
-    failures,
-    lockedUntilMs,
-    lastAttemptMs: now,
-  };
-  store.set(key, updated);
-  return updated;
-}
-
 function buildStatus(
-  acctBucket: AttemptBucket,
-  ipBucket: AttemptBucket,
+  acctBucket: LockoutBucketState,
+  ipBucket: LockoutBucketState,
   now: number,
   maxAttempts: number,
 ): RateLimitStatus {
@@ -168,80 +113,99 @@ function buildStatus(
   };
 }
 
-function checkRateLimitPolicy(
-  policy: BucketPolicy,
+async function checkRateLimitPolicy(
+  policy: LockoutPolicyConfig,
   input: RateLimitInput,
-): RateLimitStatus {
+): Promise<RateLimitStatus> {
   const now = input.now ?? Date.now();
-  const ipKey = normalizeKey(input.ip);
-  const acctKey = normalizeKey(input.accountKey);
-  const acctBucket = getActiveBucket(policy.accountBuckets, acctKey, now);
-  const ipBucket = getActiveBucket(policy.ipBuckets, ipKey, now);
+  const { ipKey, acctKey } = buildBucketKeys(policy, input);
+  const buckets = await getLockoutBucketStates({
+    keys: [ipKey, acctKey],
+    maxAttempts: policy.maxAttempts,
+    nowMs: now,
+  });
+
+  return buildStatus(
+    buckets.get(acctKey) ?? EMPTY_BUCKET,
+    buckets.get(ipKey) ?? EMPTY_BUCKET,
+    now,
+    policy.maxAttempts,
+  );
+}
+
+async function recordFailurePolicy(
+  policy: LockoutPolicyConfig,
+  input: RateLimitInput,
+): Promise<RateLimitStatus> {
+  const now = input.now ?? Date.now();
+  const { ipKey, acctKey } = buildBucketKeys(policy, input);
+
+  const [ipBucket, acctBucket] = await Promise.all([
+    recordLockoutFailureBucket({
+      key: ipKey,
+      maxAttempts: policy.maxAttempts,
+      lockoutMs: policy.lockoutDurationMs,
+      nowMs: now,
+    }),
+    recordLockoutFailureBucket({
+      key: acctKey,
+      maxAttempts: policy.maxAttempts,
+      lockoutMs: policy.lockoutDurationMs,
+      nowMs: now,
+    }),
+  ]);
+
   return buildStatus(acctBucket, ipBucket, now, policy.maxAttempts);
 }
 
-function recordFailurePolicy(
-  policy: BucketPolicy,
+async function resetRateLimitPolicy(
+  policy: LockoutPolicyConfig,
   input: RateLimitInput,
-): RateLimitStatus {
-  const now = input.now ?? Date.now();
-  const ipKey = normalizeKey(input.ip);
-  const acctKey = normalizeKey(input.accountKey);
-  const acctBucket = incrementBucket(
-    policy.accountBuckets,
-    acctKey,
-    now,
-    policy.maxAttempts,
-    policy.lockoutDurationMs,
-  );
-  const ipBucket = incrementBucket(
-    policy.ipBuckets,
-    ipKey,
-    now,
-    policy.maxAttempts,
-    policy.lockoutDurationMs,
-  );
-  return buildStatus(acctBucket, ipBucket, now, policy.maxAttempts);
+): Promise<void> {
+  const { ipKey, acctKey } = buildBucketKeys(policy, input);
+  await deleteRateLimitBucketsByKeys([ipKey, acctKey]);
 }
 
-function resetRateLimitPolicy(
-  policy: BucketPolicy,
+export async function checkPinRateLimit(
   input: RateLimitInput,
-): void {
-  policy.accountBuckets.delete(normalizeKey(input.accountKey));
-  policy.ipBuckets.delete(normalizeKey(input.ip));
-}
-
-export function checkPinRateLimit(input: RateLimitInput): RateLimitStatus {
+): Promise<RateLimitStatus> {
   return checkRateLimitPolicy(pinPolicy, input);
 }
 
-export function recordPinFailure(input: RateLimitInput): RateLimitStatus {
+export async function recordPinFailure(
+  input: RateLimitInput,
+): Promise<RateLimitStatus> {
   return recordFailurePolicy(pinPolicy, input);
 }
 
-export function resetPinRateLimit(input: RateLimitInput): void {
-  resetRateLimitPolicy(pinPolicy, input);
+export async function resetPinRateLimit(
+  input: RateLimitInput,
+): Promise<void> {
+  await resetRateLimitPolicy(pinPolicy, input);
 }
 
-export function clearAllRateLimits(): void {
-  pinPolicy.ipBuckets.clear();
-  pinPolicy.accountBuckets.clear();
+export async function clearAllRateLimits(): Promise<void> {
+  await deleteRateLimitBucketsByPrefix(`${pinPolicy.prefix}:`);
 }
 
-export function checkManagerRateLimit(input: RateLimitInput): RateLimitStatus {
+export async function checkManagerRateLimit(
+  input: RateLimitInput,
+): Promise<RateLimitStatus> {
   return checkRateLimitPolicy(managerPolicy, input);
 }
 
-export function recordManagerFailure(input: RateLimitInput): RateLimitStatus {
+export async function recordManagerFailure(
+  input: RateLimitInput,
+): Promise<RateLimitStatus> {
   return recordFailurePolicy(managerPolicy, input);
 }
 
-export function resetManagerRateLimit(input: RateLimitInput): void {
-  resetRateLimitPolicy(managerPolicy, input);
+export async function resetManagerRateLimit(
+  input: RateLimitInput,
+): Promise<void> {
+  await resetRateLimitPolicy(managerPolicy, input);
 }
 
-export function clearAllManagerRateLimits(): void {
-  managerPolicy.ipBuckets.clear();
-  managerPolicy.accountBuckets.clear();
+export async function clearAllManagerRateLimits(): Promise<void> {
+  await deleteRateLimitBucketsByPrefix(`${managerPolicy.prefix}:`);
 }

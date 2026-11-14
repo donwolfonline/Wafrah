@@ -1,5 +1,6 @@
 import type { Role } from "@prisma/client";
 import { z } from "zod";
+import { getServerAppUrl } from "@/lib/app-url";
 import { requireRole, type SessionUser } from "@/lib/authz";
 import { sendEmail, type SendEmailOptions } from "@/lib/email";
 import type { SupportedLocale } from "@/lib/format";
@@ -212,7 +213,7 @@ export async function sendWelcomeEmailForUser(
     restaurantNameAr: params.restaurantNameAr,
     branchCode: params.branchCode,
     role: params.role,
-    appUrl: params.appUrl ?? process.env.APP_URL ?? "http://localhost:3000",
+    appUrl: getServerAppUrl(params.appUrl),
   });
 
   return sendEmail(

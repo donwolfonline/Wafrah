@@ -58,7 +58,7 @@ describe("Insights job, cron endpoint, and seeded verification", () => {
     expect(leaked).toEqual([]);
   });
 
-  it("enforces x-cron-secret on POST /api/cron/insights while bypassing NextAuth cookie in middleware", async () => {
+  it("enforces Authorization Bearer on POST /api/cron/insights while rejecting x-cron-secret", async () => {
     expect(evaluateMiddlewareDecision("/api/cron/insights", null)).toEqual({
       type: "next",
     });
@@ -78,16 +78,24 @@ describe("Insights job, cron endpoint, and seeded verification", () => {
       const wrongRes = await cronInsightsPost(
         new Request("http://localhost:3000/api/cron/insights", {
           method: "POST",
-          headers: { "x-cron-secret": randomUUID() },
+          headers: { authorization: `Bearer ${randomUUID()}` },
         }),
       );
       expect(wrongRes.status).toBe(401);
+
+      const legacyHeaderRes = await cronInsightsPost(
+        new Request("http://localhost:3000/api/cron/insights", {
+          method: "POST",
+          headers: { "x-cron-secret": runtimeTestSecret },
+        }),
+      );
+      expect(legacyHeaderRes.status).toBe(401);
 
       const invalidBodyRes = await cronInsightsPost(
         new Request("http://localhost:3000/api/cron/insights", {
           method: "POST",
           headers: {
-            "x-cron-secret": runtimeTestSecret,
+            authorization: `Bearer ${runtimeTestSecret}`,
             "content-type": "application/json",
           },
           body: JSON.stringify({ now: "not-an-iso-timestamp" }),
@@ -99,7 +107,7 @@ describe("Insights job, cron endpoint, and seeded verification", () => {
         new Request("http://localhost:3000/api/cron/insights", {
           method: "POST",
           headers: {
-            "x-cron-secret": runtimeTestSecret,
+            authorization: `Bearer ${runtimeTestSecret}`,
             "content-type": "application/json",
           },
           body: JSON.stringify({ now: "2026-11-12T20:00:00.000Z" }),

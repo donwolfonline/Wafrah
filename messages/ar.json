@@ -21,7 +21,9 @@
     "currencyCode": "ر.س",
     "errorTitle": "حدث خطأ غير متوقع",
     "errorDescription": "تعذر إكمال هذا الطلب حالياً. يرجى المحاولة مرة أخرى.",
-    "retryButton": "إعادة المحاولة"
+    "retryButton": "إعادة المحاولة",
+    "pwaUpdateAvailable": "يتوفر تحديث جديد للتطبيق",
+    "pwaUpdateDescription": "سيتم تفعيل النسخة الجديدة تلقائياً عند إعادة فتح التطبيق."
   },
   "nav": {
     "sidebarLabel": "قائمة إدارة المطعم",

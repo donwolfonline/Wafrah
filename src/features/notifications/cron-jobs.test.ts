@@ -288,7 +288,7 @@ describe("notification delivery, alert dedupe, preferences, and cron jobs", () =
     expect(actions.has("CRON_WEEKLY_COMPLETED")).toBe(true);
   });
 
-  it("enforces x-cron-secret across daily, weekly, and monthly POST routes and exempts middleware auth", async () => {
+  it("enforces Authorization Bearer across daily, weekly, and monthly POST routes, rejects x-cron-secret, and exempts middleware auth", async () => {
     for (const path of [
       "/api/cron/daily",
       "/api/cron/weekly",
@@ -307,6 +307,14 @@ describe("notification delivery, alert dedupe, preferences, and cron jobs", () =
           new Request("http://localhost:3000/api/cron/test", { method: "POST" }),
         );
         expect(res.status).toBe(401);
+
+        const legacyRes = await handler(
+          new Request("http://localhost:3000/api/cron/test", {
+            method: "POST",
+            headers: { "x-cron-secret": runtimeSecret },
+          }),
+        );
+        expect(legacyRes.status).toBe(401);
       }
 
       const badMonthly = await cronMonthlyPost(
@@ -314,14 +322,202 @@ describe("notification delivery, alert dedupe, preferences, and cron jobs", () =
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-cron-secret": runtimeSecret,
+            authorization: `Bearer ${runtimeSecret}`,
           },
           body: JSON.stringify({ yearMonth: "2026-13" }),
         }),
       );
       expect(badMonthly.status).toBe(400);
     } finally {
-      process.env.CRON_SECRET = prevSecret;
+      if (prevSecret === undefined) {
+        delete process.env.CRON_SECRET;
+      } else {
+        process.env.CRON_SECRET = prevSecret;
+      }
+    }
+  });
+
+  it("keeps weekly and monthly cron runs idempotent when invoked twice for the same period", async () => {
+    const diwan = await platformAdminDb.restaurant.findUniqueOrThrow({
+      where: { code: "DIWAN-MKH" },
+      select: { id: true, code: true, name: true, nameAr: true, timezone: true },
+    });
+    const startedAt = new Date();
+    const evalNow = new Date("2026-11-15T05:00:00.000Z");
+
+    const mockSendEmail = vi.fn(async () => ({
+      ok: true as const,
+      mode: "console" as const,
+      id: "dev-mock-idem",
+    }));
+
+    try {
+      const firstWeekly = await runWeeklyCronJob(evalNow, {
+        listRestaurants: async () => [diwan],
+        sendEmailFn: mockSendEmail,
+      });
+      const firstEmails = firstWeekly.totalEmailsSent;
+      expect(firstEmails).toBeGreaterThanOrEqual(1);
+
+      const secondWeekly = await runWeeklyCronJob(evalNow, {
+        listRestaurants: async () => [diwan],
+        sendEmailFn: mockSendEmail,
+      });
+      expect(secondWeekly.totalEmailsSent).toBe(0);
+      expect(secondWeekly.tenants[0]?.alreadyCompleted).toBe(true);
+      expect(mockSendEmail).toHaveBeenCalledTimes(firstEmails);
+
+      mockSendEmail.mockClear();
+      const firstMonthly = await runMonthlyCronJob(evalNow, "2026-09", {
+        listRestaurants: async () => [diwan],
+        sendEmailFn: mockSendEmail,
+      });
+      const firstMonthlyEmails = firstMonthly.totalEmailsSent;
+      expect(firstMonthlyEmails).toBeGreaterThanOrEqual(1);
+
+      const secondMonthly = await runMonthlyCronJob(evalNow, "2026-09", {
+        listRestaurants: async () => [diwan],
+        sendEmailFn: mockSendEmail,
+      });
+      expect(secondMonthly.totalEmailsSent).toBe(0);
+      expect(secondMonthly.tenants[0]?.alreadyCompleted).toBe(true);
+      expect(mockSendEmail).toHaveBeenCalledTimes(firstMonthlyEmails);
+    } finally {
+      const logs = await platformAdminDb.auditLog.findMany({
+        where: { entity: "CronJob", createdAt: { gte: startedAt } },
+        select: { id: true },
+      });
+      for (const l of logs) createdAuditLogIds.push(l.id);
+    }
+  });
+
+  it("records skipped tenants on budget exhaustion and prioritizes them first on next daily run", async () => {
+    const restaurants = await platformAdminDb.restaurant.findMany({
+      where: { code: { in: ["SHAMI-JED", "DIWAN-MKH"] } },
+      orderBy: { code: "asc" },
+      select: { id: true, code: true, name: true, nameAr: true, timezone: true },
+    });
+    expect(restaurants).toHaveLength(2);
+    const firstTenant = restaurants[0]!;
+    const secondTenant = restaurants[1]!;
+
+    const startedAt = new Date();
+    const evalNow = new Date("2026-11-12T22:00:00.000Z");
+    const runOrder1: string[] = [];
+    const runOrder2: string[] = [];
+    let fakeClock = 0;
+
+    try {
+      const firstRun = await runDailyCronJob(evalNow, {
+        listRestaurants: async () => [firstTenant, secondTenant],
+        runInsights: async (tenantId) => {
+          runOrder1.push(tenantId);
+          fakeClock += 100;
+          return {
+            tenantId,
+            windowEndDate: "2026-11-12",
+            totalWasteSar28d: "0.00",
+            spikes: [],
+            dataGaps: [],
+            topReasons: [],
+            itemTiers: [],
+            persistedAlerts: [],
+          };
+        },
+        runForecasts: async (tenantId, targetNow, forecaster) =>
+          runForecastsForTenant(tenantId, targetNow, forecaster),
+        sendEmailFn: async () => ({
+          ok: true as const,
+          mode: "console" as const,
+          id: "dev-mock-budget",
+        }),
+        cleanupRateLimitBuckets: async () => 0,
+        budgetMs: 80,
+        nowMs: () => fakeClock,
+      });
+
+      expect(runOrder1).toEqual([firstTenant.id]);
+      expect(firstRun.stoppedEarlyByBudget).toBe(true);
+      expect(firstRun.skippedTenantIds).toEqual([secondTenant.id]);
+
+      // Run 2 reads AuditLog without explicit prioritizeTenantIds and must run secondTenant first
+      fakeClock = 0;
+      const secondRun = await runDailyCronJob(evalNow, {
+        listRestaurants: async () => [firstTenant, secondTenant],
+        runInsights: async (tenantId) => {
+          runOrder2.push(tenantId);
+          fakeClock += 100;
+          return {
+            tenantId,
+            windowEndDate: "2026-11-12",
+            totalWasteSar28d: "0.00",
+            spikes: [],
+            dataGaps: [],
+            topReasons: [],
+            itemTiers: [],
+            persistedAlerts: [],
+          };
+        },
+        runForecasts: async (tenantId, targetNow, forecaster) =>
+          runForecastsForTenant(tenantId, targetNow, forecaster),
+        sendEmailFn: async () => ({
+          ok: true as const,
+          mode: "console" as const,
+          id: "dev-mock-budget",
+        }),
+        cleanupRateLimitBuckets: async () => 0,
+        budgetMs: 80,
+        nowMs: () => fakeClock,
+      });
+
+      expect(runOrder2).toEqual([secondTenant.id]);
+      expect(secondRun.skippedTenantIds).toEqual([firstTenant.id]);
+    } finally {
+      const logs = await platformAdminDb.auditLog.findMany({
+        where: { entity: "CronJob", createdAt: { gte: startedAt } },
+        select: { id: true },
+      });
+      for (const l of logs) createdAuditLogIds.push(l.id);
+    }
+  });
+
+  it("cleans up expired RateLimitBucket rows during daily cron while preserving active buckets", async () => {
+    const expiredKey = `test-cleanup-expired-${randomUUID()}`;
+    const activeKey = `test-cleanup-active-${randomUUID()}`;
+    const now = new Date("2026-11-15T00:00:00.000Z");
+
+    await platformAdminDb.rateLimitBucket.createMany({
+      data: [
+        {
+          key: expiredKey,
+          count: 5,
+          windowStart: new Date("2026-11-14T22:00:00.000Z"),
+          expiresAt: new Date("2026-11-14T23:59:00.000Z"),
+        },
+        {
+          key: activeKey,
+          count: 2,
+          windowStart: new Date("2026-11-14T23:50:00.000Z"),
+          expiresAt: new Date("2026-11-15T00:20:00.000Z"),
+        },
+      ],
+    });
+
+    try {
+      const summary = await runDailyCronJob(now, {
+        listRestaurants: async () => [],
+      });
+      expect(summary.rateLimitBucketsCleaned).toBeGreaterThanOrEqual(1);
+
+      const remaining = await platformAdminDb.rateLimitBucket.findMany({
+        where: { key: { in: [expiredKey, activeKey] } },
+        select: { key: true },
+      });
+      expect(remaining.map((r) => r.key)).toEqual([activeKey]);
+    } finally {
+      await platformAdminDb.rateLimitBucket.deleteMany({
+        where: { key: { in: [expiredKey, activeKey] } },
+      });
     }
   });
 });

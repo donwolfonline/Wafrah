@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Users } from "lucide-react";
+import { env } from "@/env";
 import { AppShell } from "@/components/shell/app-shell";
 import { SettingsTabs } from "@/components/shell/settings-tabs";
 import { Badge } from "@/components/ui/badge";
@@ -22,9 +23,9 @@ export const dynamic = "force-dynamic";
 
 async function resolveOrigin(): Promise<string> {
   const configured =
-    process.env.APP_URL ??
-    process.env.NEXT_PUBLIC_APP_URL ??
-    process.env.AUTH_URL ??
+    env.APP_URL ??
+    env.NEXT_PUBLIC_APP_URL ??
+    env.AUTH_URL ??
     "";
   const trimmed = configured.trim().replace(/\/+$/, "");
 

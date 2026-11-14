@@ -12,7 +12,7 @@ export async function PATCH(
 ): Promise<NextResponse> {
   try {
     const user = await requireRole(["MANAGER", "OWNER"]);
-    const limited = checkStaffWriteRate(user, "staff-patch");
+    const limited = await checkStaffWriteRate(user, "staff-patch");
     if (limited) return limited;
     const { id } = await context.params;
     const body: unknown = await request.json();
