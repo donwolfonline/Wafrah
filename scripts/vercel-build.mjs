@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { z } from "zod";
 
 const emptyToUndefined = (value) => {
@@ -78,10 +78,31 @@ const VercelBuildEnvSchema = z
   });
 
 function runStep(command, args) {
-  execFileSync(command, args, {
+  const result = spawnSync(command, args, {
     stdio: "inherit",
     env: process.env,
   });
+
+  if (result.error) {
+    console.error(
+      `[vercel-build] Failed to run "${command} ${args.join(" ")}": ${result.error.message}`,
+    );
+    process.exit(1);
+  }
+
+  if (result.signal) {
+    console.error(
+      `[vercel-build] Step terminated by signal ${result.signal}: ${command} ${args.join(" ")}`,
+    );
+    process.exit(1);
+  }
+
+  if (result.status !== 0) {
+    console.error(
+      `[vercel-build] Step exited with code ${result.status ?? 1}: ${command} ${args.join(" ")}`,
+    );
+    process.exit(result.status ?? 1);
+  }
 }
 
 function validateBuildEnv() {
@@ -103,7 +124,28 @@ function validateBuildEnv() {
 }
 
 function main() {
-  const buildEnv = validateBuildEnv();
+  let buildEnv;
+  try {
+    buildEnv = validateBuildEnv();
+  } catch (error) {
+    console.error(
+      `[vercel-build] ${error instanceof Error ? error.message : String(error)}`,
+    );
+    process.exit(1);
+  }
+
+  if (
+    (buildEnv.VERCEL_ENV === "production" || buildEnv.VERCEL_ENV === "preview") &&
+    !buildEnv.DATABASE_URL &&
+    (process.env.DATABASE_URL_POOLED ||
+      process.env.POSTGRES_URL ||
+      process.env.PRISMA_DATABASE_URL)
+  ) {
+    console.error(
+      "[vercel-build] Note: DATABASE_URL is unset while Vercel Postgres/Prisma integration variables were found. Copy your pooled URI into DATABASE_URL.",
+    );
+  }
+
   runStep("pnpm", ["exec", "prisma", "generate"]);
 
   // Never auto-run prisma migrate deploy, migrate dev, or db push during Vercel builds
