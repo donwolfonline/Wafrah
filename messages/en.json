@@ -1111,13 +1111,197 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "lastUpdated": "Status: Pending legal review",
-    "placeholder": "TO BE REPLACED BY LEGAL TEXT"
+    "lastUpdated": "Last updated: 17 November 2026",
+    "intro": "This Privacy Policy explains what personal data Wafrah collects, why we collect it, how long we keep it, and the choices you have. It applies to the Wafrah website, the pilot request form, and the Wafrah application used by restaurants and hotels (manager dashboard and kitchen waste log).",
+    "sections": {
+      "s01": {
+        "heading": "1. What Wafrah does",
+        "paragraphs": {
+          "p01": "Wafrah is a software service that helps restaurants and hotels record food waste, forecast demand, and estimate savings in Saudi Riyals (SAR). We process only the data needed to provide that service."
+        }
+      },
+      "s02": {
+        "heading": "2. Data we collect",
+        "items": {
+          "i01": "Pilot request form: your name, business name, role, city, mobile/WhatsApp number, optional email address, number of branches, point-of-sale system, interface language, your consent, and optional campaign parameters (for example utm_source) if they were in the link you used.",
+          "i02": "Managers and owners: name, username, email address, password (stored only as a salted hash, never in readable form), interface language, and email notification preferences.",
+          "i03": "Kitchen staff: display name, branch username, 4-digit PIN (stored only as a salted hash), and interface language. We do not collect staff email addresses, phone numbers, National ID or Iqama numbers, home addresses, or biometric data.",
+          "i04": "Restaurant operating data entered or imported by the restaurant: menu items, waste entries, sales and purchase records, forecasts, alerts, and subscription details. For imports we keep the file name and row counts; the uploaded file itself is processed in memory and is not stored.",
+          "i05": "Security and audit records: the action performed, the account that performed it, the time, and the IP address on sign-in and rate-limit security events.",
+          "i06": "We do not collect any personal data about restaurant guests or diners (no names, phone numbers, receipts, or loyalty profiles)."
+        }
+      },
+      "s03": {
+        "heading": "3. How we use your data",
+        "items": {
+          "i01": "To review pilot requests and contact applicants by WhatsApp, phone, or email.",
+          "i02": "To authenticate managers (email and password) and kitchen staff (branch code, username, and PIN).",
+          "i03": "To attribute waste entries to a shift and to the staff member who logged them.",
+          "i04": "To calculate forecasts, preparation recommendations, alerts, and monthly savings estimates.",
+          "i05": "To send operational emails that you have enabled, such as welcome credentials, critical alerts, weekly summaries, and monthly reports.",
+          "i06": "To protect the platform, keep tenant data separated, investigate abuse, and keep audit logs."
+        }
+      },
+      "s04": {
+        "heading": "4. Basis for processing",
+        "paragraphs": {
+          "p01": "We process pilot request data based on the consent you give when you submit the form, and you may withdraw it at any time. We process account and restaurant data to provide the service that you or your employer requested. We process security logs to protect the platform and its users. We do not sell personal data and we do not use it for advertising."
+        }
+      },
+      "s05": {
+        "heading": "5. Cookies and browser storage",
+        "paragraphs": {
+          "p01": "Wafrah uses only strictly necessary first-party cookies. We do not use analytics, advertising, or tracking cookies or scripts, so no tracking consent banner is shown."
+        },
+        "items": {
+          "i01": "Session cookie (authjs.session-token): keeps you signed in. It is encrypted and not readable by scripts. Sessions last 12 hours for kitchen staff and up to 7 days for managers, owners, and platform administrators.",
+          "i02": "Security cookies (authjs.csrf-token and authjs.callback-url): protect sign-in forms and remember where to send you after sign-in.",
+          "i03": "Language cookie (NEXT_LOCALE): remembers whether you chose Arabic or English for one year.",
+          "i04": "Browser storage: the kitchen sign-in form remembers the restaurant branch code on that device (key wafrah.restaurantCode). Waste entries logged while the device is offline are held temporarily in the browser until they sync. No passwords or PINs are stored in browser storage."
+        }
+      },
+      "s06": {
+        "heading": "6. Service providers and hosting",
+        "paragraphs": {
+          "p01": "We use a small number of service providers to run Wafrah. They process data only to provide their service to us, and some of them operate outside the Kingdom of Saudi Arabia."
+        },
+        "items": {
+          "i01": "Vercel: hosts the application and runs scheduled jobs. Application functions run in the Frankfurt, Germany region.",
+          "i02": "Managed PostgreSQL database provider: stores application data, with connections encrypted in transit.",
+          "i03": "Resend: delivers transactional emails. It receives the recipient email address, name, language, and the content of the notification."
+        }
+      },
+      "s07": {
+        "heading": "7. How long we keep data",
+        "items": {
+          "i01": "Restaurant data and staff or manager accounts are kept while the restaurant account is active, including while it is temporarily suspended.",
+          "i02": "Deactivated staff or manager accounts are kept, but can no longer sign in, so that past waste entries stay correctly attributed.",
+          "i03": "Entries removed with the kitchen undo option are excluded from reports and are permanently deleted when the restaurant account is deleted.",
+          "i04": "When a restaurant account is deleted by the platform administrator, all of its operating data, users, notification preferences, import records, and audit logs are deleted together. We keep only one record that contains the restaurant code and aggregate row counts, with no personal data, to document that the deletion happened.",
+          "i05": "Uploaded import files are discarded as soon as the import request finishes.",
+          "i06": "Pilot request data is kept only as long as needed to evaluate and follow up on your request, and is deleted or anonymized when you ask us to."
+        }
+      },
+      "s08": {
+        "heading": "8. How we protect data",
+        "paragraphs": {
+          "p01": "No system is perfectly secure. If we become aware of a personal data breach that affects you, we will notify the affected restaurant and take the steps required by applicable law."
+        },
+        "items": {
+          "i01": "Passwords and PINs are stored only as salted hashes.",
+          "i02": "Every restaurant's data is separated from every other restaurant's data, and the restaurant is always determined on the server from your signed-in session.",
+          "i03": "Connections use HTTPS, and sign-in attempts are rate-limited, with temporary lockout after repeated failed PIN attempts.",
+          "i04": "Access is limited by role: platform administrator, owner, manager, and kitchen staff."
+        }
+      },
+      "s09": {
+        "heading": "9. Your rights",
+        "paragraphs": {
+          "p01": "Under the Saudi Personal Data Protection Law (PDPL) and its regulations, you may ask to know what personal data we hold about you, to correct it, to receive a copy, to have it deleted, and to withdraw consent that you gave us.",
+          "p02": "Restaurant managers and owners can download their restaurant's data at any time from Settings by choosing Export Restaurant Data (ZIP). To exercise any other right, contact us using the details on the Help page or through the WhatsApp number on our website. If you are a kitchen staff member, you can also ask your restaurant manager to correct or deactivate your account."
+        }
+      },
+      "s10": {
+        "heading": "10. Children",
+        "paragraphs": {
+          "p01": "Wafrah is a business tool for restaurant and hotel staff. It is not directed at children, and we do not knowingly collect personal data from children."
+        }
+      },
+      "s11": {
+        "heading": "11. Changes to this policy",
+        "paragraphs": {
+          "p01": "We may update this policy as Wafrah changes. The date at the top of the page shows when it was last updated. If a change is significant, we will tell restaurant managers in the application or by email."
+        }
+      }
+    }
   },
   "terms": {
     "title": "Terms of Service",
-    "lastUpdated": "Status: Pending legal review",
-    "placeholder": "TO BE REPLACED BY LEGAL TEXT"
+    "lastUpdated": "Last updated: 17 November 2026",
+    "intro": "These Terms of Service govern your use of the Wafrah website and application. By requesting a pilot, signing in, or using Wafrah, you agree to these terms. If you use Wafrah on behalf of a restaurant or hotel, you confirm that you are authorized to accept these terms for that business.",
+    "sections": {
+      "s01": {
+        "heading": "1. The service",
+        "paragraphs": {
+          "p01": "Wafrah is a software service for restaurants and hotels in Saudi Arabia. It lets kitchen teams log food waste, lets managers review dashboards and reports, and produces demand forecasts, preparation recommendations, alerts, and savings estimates in Saudi Riyals (SAR)."
+        }
+      },
+      "s02": {
+        "heading": "2. Pilot program",
+        "paragraphs": {
+          "p01": "Wafrah is currently offered to founding pilot restaurants. Pilot features may change, and the service may be interrupted for maintenance or improvements. Commercial terms, pricing, and pilot duration are agreed separately with each restaurant before billing starts."
+        }
+      },
+      "s03": {
+        "heading": "3. Accounts and credentials",
+        "items": {
+          "i01": "Accounts are created for you by Wafrah or by your restaurant's manager. Keep your password or PIN confidential and do not share it.",
+          "i02": "Managers and owners are responsible for the staff accounts they create and for deactivating accounts of people who leave the business.",
+          "i03": "You are responsible for activity carried out with your credentials. Tell us promptly if you believe your account has been used without permission."
+        }
+      },
+      "s04": {
+        "heading": "4. Acceptable use",
+        "paragraphs": {
+          "p01": "You agree not to:"
+        },
+        "items": {
+          "i01": "attempt to access another restaurant's data or any part of Wafrah you are not authorized to use;",
+          "i02": "interfere with, overload, probe, or attempt to bypass the security or rate limits of the service;",
+          "i03": "upload malicious files or content that you do not have the right to use;",
+          "i04": "enter false or misleading data in order to distort reports; or",
+          "i05": "use the service for any unlawful purpose or in breach of Saudi law."
+        }
+      },
+      "s05": {
+        "heading": "5. Your data",
+        "paragraphs": {
+          "p01": "Your restaurant keeps ownership of the data it enters or imports into Wafrah. You give Wafrah permission to process that data only as needed to provide, secure, and improve the service. You can export your restaurant's data at any time from Settings, and a platform administrator can delete it when your account ends. The Privacy Policy explains how personal data is handled."
+        }
+      },
+      "s06": {
+        "heading": "6. Forecasts and recommendations",
+        "paragraphs": {
+          "p01": "Forecasts, anomaly alerts, preparation and purchase recommendations, and savings figures are estimates based on the data available to Wafrah. They are decision support and are not a guarantee of any result or saving. Wafrah does not provide food safety, health, or regulatory advice. Your business remains responsible for food safety, hygiene, purchasing, and preparation decisions."
+        }
+      },
+      "s07": {
+        "heading": "7. Availability and offline use",
+        "paragraphs": {
+          "p01": "We work to keep Wafrah available, but we do not promise uninterrupted or error-free service during the pilot. The kitchen log can queue entries while a device is offline and sync them later. You are responsible for keeping a device's browser data until its queued entries have synced."
+        }
+      },
+      "s08": {
+        "heading": "8. Fees",
+        "paragraphs": {
+          "p01": "Any fees are set out in the commercial agreement between Wafrah and your restaurant. Using the pilot does not create an obligation to pay unless you have agreed to fees in writing."
+        }
+      },
+      "s09": {
+        "heading": "9. Suspension and termination",
+        "paragraphs": {
+          "p01": "You can stop using Wafrah at any time. We may suspend or end access if these terms are breached, if an account is used in a way that risks the security of the service or other customers, or if a commercial agreement ends. While an account is suspended, its data is kept and the restaurant can have access restored."
+        }
+      },
+      "s10": {
+        "heading": "10. Limitation of liability",
+        "paragraphs": {
+          "p01": "To the extent permitted by applicable law, the service is provided as is and as available. Wafrah is not liable for indirect or consequential losses, including lost profit, lost sales, or business interruption, and its total liability for any claim relating to the service is limited to the fees you paid for the service in the three months before the claim arose. Nothing in these terms limits liability that cannot be limited under Saudi law."
+        }
+      },
+      "s11": {
+        "heading": "11. Governing law",
+        "paragraphs": {
+          "p01": "These terms are governed by the laws of the Kingdom of Saudi Arabia. Any dispute that cannot be resolved by discussion will be submitted to the competent courts of the Kingdom of Saudi Arabia."
+        }
+      },
+      "s12": {
+        "heading": "12. Changes and contact",
+        "paragraphs": {
+          "p01": "We may update these terms as Wafrah changes. The date at the top of the page shows the latest version, and continued use after a change means you accept the updated terms. For questions about these terms, use the contact details on the Help page or the WhatsApp number on our website."
+        }
+      }
+    }
   },
   "settingsNav": {
     "title": "Settings",

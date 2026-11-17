@@ -170,7 +170,7 @@ Run every check on `https://wafrah.sa` before inviting pilot restaurants:
 > **HARD STOP BEFORE PILOT CUSTOMER DATA:** Do not enter any real restaurant, manager, staff phone/name, or customer lead PII into Production until every item below is checked off.
 
 - [ ] **Legal opinion on Saudi PDPL cross-border transfer and hosting region obtained** (covering `fra1` Vercel compute + `eu-central-1` PostgreSQL + Resend email processing; migrate database/compute region to `me-central2` if legal counsel requires in-Kingdom storage).
-- [ ] Replace `"TO BE REPLACED BY LEGAL TEXT"` placeholders in [src/app/privacy/page.tsx](src/app/privacy/page.tsx) and [src/app/terms/page.tsx](src/app/terms/page.tsx) (see [SECURITY.md](SECURITY.md)).
+- [ ] Have Saudi legal counsel review and approve the draft Privacy Policy and Terms of Service (text in the `privacy` and `terms` sections of [messages/en.json](messages/en.json) and [messages/ar.json](messages/ar.json), rendered by [src/features/legal/legal-document.tsx](src/features/legal/legal-document.tsx)); the draft was written from [DATA.md](DATA.md) and is not a legal opinion (see [SECURITY.md](SECURITY.md)).
 - [ ] Replace any placeholder citations/URLs in [src/config/sources.ts](src/config/sources.ts) with audited references (see [docs/LANDING-QA.md](docs/LANDING-QA.md)).
 
 ---
