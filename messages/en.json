@@ -1105,9 +1105,19 @@
     }
   },
   "legalPage": {
+    "eyebrow": "Wafrah • Trust & Compliance",
+    "navLabel": "Legal navigation",
+    "navHome": "Home",
+    "backToHome": "Back to home",
     "backToLogin": "Back to Sign In",
     "viewPrivacy": "Privacy Policy",
-    "viewTerms": "Terms of Service"
+    "viewTerms": "Terms of Service",
+    "tocTitle": "On this page",
+    "tocLabel": "Document contents",
+    "sectionCount": "{count} sections",
+    "needHelpHeading": "Questions about Wafrah or your data?",
+    "needHelpBody": "See answers for managers and kitchen teams, or contact our pilot team from Help.",
+    "contactHelp": "Open Help & Support"
   },
   "privacy": {
     "title": "Privacy Policy",

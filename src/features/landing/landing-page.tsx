@@ -1,4 +1,3 @@
-import { getServerSessionUser } from "@/features/auth/session";
 import { I18nProvider } from "@/i18n/provider";
 import {
   getAppMessages,
@@ -6,13 +5,11 @@ import {
   pickRootClientMessages,
   type AppLocale,
 } from "@/i18n/request";
-import { getRoleHomePath } from "@/lib/authz-rules";
 import { Faq } from "./faq";
 import { Features } from "./features";
 import { FinalCta } from "./final-cta";
 import { Hero } from "./hero";
 import { HowItWorks } from "./how-it-works";
-import { getFounderEmail, getWhatsAppHref } from "./landing-config";
 import { buildLandingViewCopy } from "./landing-copy";
 import { LandingFooter } from "./landing-footer";
 import { LandingHeader } from "./landing-header";
@@ -20,44 +17,23 @@ import { buildLandingJsonLd, serializeJsonLd } from "./landing-jsonld";
 import { MobileStickyCta } from "./mobile-sticky-cta";
 import { PilotPricing } from "./pilot-pricing";
 import { ProblemStats } from "./problem-stats";
+import { getPublicChromeContext } from "./public-page-context";
 import { SavingsCalculator } from "./savings-calculator";
 
 interface LandingPageProps {
   locale: AppLocale;
 }
 
-async function resolveWorkspaceHref(): Promise<string | null> {
-  try {
-    const user = await getServerSessionUser();
-    if (!user) {
-      return null;
-    }
-    return getRoleHomePath(user.role);
-  } catch {
-    return null;
-  }
-}
-
-function getRiyadhYear(): number {
-  const formatted = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Riyadh",
-    year: "numeric",
-  }).format(new Date());
-  return Number(formatted);
-}
-
 export async function LandingPage({ locale }: LandingPageProps) {
-  const [t, tApp, messages, workspaceHref] = await Promise.all([
+  const [t, tApp, messages] = await Promise.all([
     getAppTranslations("landing", locale),
     getAppTranslations("app", locale),
     getAppMessages(locale),
-    resolveWorkspaceHref(),
   ]);
 
   const whatsappPrefilledMessage = t("whatsapp.prefilledMessage");
-  const hasWhatsApp = getWhatsAppHref(undefined, whatsappPrefilledMessage) !== null;
-  const founderEmail = getFounderEmail();
-  const currentYear = getRiyadhYear();
+  const { workspaceHref, currentYear, founderEmail, hasWhatsApp } =
+    await getPublicChromeContext(locale, whatsappPrefilledMessage);
   const view = buildLandingViewCopy(
     (key, values) => t(key as Parameters<typeof t>[0], values),
     tApp("logoText"),

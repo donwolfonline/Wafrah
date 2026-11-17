@@ -1,6 +1,9 @@
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import ar from "../../../messages/ar.json";
 import en from "../../../messages/en.json";
+import { LandingFooter } from "../landing/landing-footer";
+import { parseLegalSections, splitSectionHeading } from "./legal-sections";
 
 type KeyedStrings = Record<string, string>;
 type LegalMessages = {
@@ -32,7 +35,7 @@ function shape(doc: LegalMessages) {
     ]);
 }
 
-describe("privacy and terms content", () => {
+describe("privacy and terms content and helpers", () => {
   for (const namespace of namespaces) {
     it(`${namespace}: has real content in both locales with no legal placeholder`, () => {
       for (const messages of [en, ar]) {
@@ -56,5 +59,53 @@ describe("privacy and terms content", () => {
         shape(legal(en, namespace)),
       );
     });
+
+    it(`${namespace}: parses ordered sections cleanly for rendering`, () => {
+      const parsedEn = parseLegalSections(en[namespace].sections);
+      const parsedAr = parseLegalSections(ar[namespace].sections);
+      expect(parsedEn.length).toBe(parsedAr.length);
+      expect(parsedEn[0].id).toBe("section-s01");
+      expect(parsedEn[0].number).toBe("1");
+      expect(parsedEn[0].headingText).not.toMatch(/^1\./);
+    });
   }
+
+  it("splits optional numbered heading prefixes with safe fallback", () => {
+    expect(splitSectionHeading("11. Governing law", 0)).toEqual({
+      number: "11",
+      headingText: "Governing law",
+    });
+    expect(splitSectionHeading("Overview", 2)).toEqual({
+      number: "3",
+      headingText: "Overview",
+    });
+  });
+
+  it("renders matching LandingFooter with Wafrah brand mark", () => {
+    const html = renderToStaticMarkup(
+      LandingFooter({
+        locale: "ar",
+        brandWordmark: ar.app.logoText,
+        tagline: ar.landing.footer.tagline,
+        pilotRegions: ar.landing.footer.pilotRegions,
+        linksTitle: ar.landing.footer.linksTitle,
+        contactTitle: ar.landing.footer.contactTitle,
+        privacyLabel: ar.landing.footer.privacy,
+        termsLabel: ar.landing.footer.terms,
+        helpLabel: ar.landing.footer.help,
+        signInLabel: ar.landing.footer.signIn,
+        workspaceLabel: ar.landing.header.goToWorkspace,
+        workspaceHref: null,
+        whatsappLabel: ar.landing.footer.whatsapp,
+        whatsappPrefilledMessage: ar.landing.whatsapp.prefilledMessage,
+        hasWhatsApp: false,
+        emailLabel: ar.landing.footer.emailLabel,
+        founderEmail: null,
+        copyright: "© 2026 وفرة",
+      }),
+    );
+    expect(html).toContain('data-brand-mark="wafrah"');
+    expect(html).toContain('href="/privacy"');
+    expect(html).toContain('href="/terms"');
+  });
 });

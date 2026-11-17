@@ -1,137 +1,257 @@
-import { UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
-import { LanguageSwitcher } from "@/components/shell/language-switcher";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-export type LegalDocumentNamespace = "privacy" | "terms";
-
-type LegalSection = {
-  heading: string;
-  paragraphs?: string[];
-  items?: string[];
-};
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function sortedStrings(raw: unknown): string[] {
-  if (!isRecord(raw)) {
-    return [];
-  }
-  return Object.keys(raw)
-    .sort()
-    .map((key) => raw[key])
-    .filter((value): value is string => typeof value === "string");
-}
-
-// Legal copy is stored as keyed objects (s01, p01, i01, ...) because
-// next-intl message types do not allow arrays.
-function parseSections(raw: unknown): LegalSection[] {
-  if (!isRecord(raw)) {
-    return [];
-  }
-  return Object.keys(raw)
-    .sort()
-    .flatMap((key) => {
-      const section = raw[key];
-      if (!isRecord(section) || typeof section.heading !== "string") {
-        return [];
-      }
-      return [
-        {
-          heading: section.heading,
-          paragraphs: sortedStrings(section.paragraphs),
-          items: sortedStrings(section.items),
-        },
-      ];
-    });
-}
+import { Card, CardContent } from "@/components/ui/card";
+import { LandingFooter } from "@/features/landing/landing-footer";
+import { DirectionalArrowIcon } from "@/features/landing/landing-icons";
+import { getPublicChromeContext } from "@/features/landing/public-page-context";
+import {
+  getAppLocale,
+  getAppMessages,
+  getAppTranslations,
+} from "@/i18n/request";
+import { LegalHeader } from "./legal-header";
+import {
+  type LegalDocumentNamespace,
+  parseLegalSections,
+} from "./legal-sections";
 
 export async function LegalDocument({
   namespace,
 }: {
   namespace: LegalDocumentNamespace;
 }) {
-  const [t, tLegal, tApp] = await Promise.all([
-    getTranslations(namespace),
-    getTranslations("legalPage"),
-    getTranslations("app"),
+  const locale = await getAppLocale();
+  const [t, tLegal, tApp, tLanding, messages] = await Promise.all([
+    getAppTranslations(namespace, locale),
+    getAppTranslations("legalPage", locale),
+    getAppTranslations("app", locale),
+    getAppTranslations("landing", locale),
+    getAppMessages(locale),
   ]);
-  const sections = parseSections(t.raw("sections"));
+
+  const whatsappPrefilledMessage = tLanding("whatsapp.prefilledMessage");
+  const { workspaceHref, currentYear, founderEmail, hasWhatsApp } =
+    await getPublicChromeContext(locale, whatsappPrefilledMessage);
+
+  const sections = parseLegalSections(messages[namespace].sections);
+  const homeHref = locale === "en" ? "/en" : "/";
+  const authHref = workspaceHref ?? "/login";
+  const authLabel = workspaceHref
+    ? tLanding("header.goToWorkspace")
+    : tLanding("header.signIn");
+  const cardAuthLabel = workspaceHref ? authLabel : tLegal("backToLogin");
   const otherHref = namespace === "privacy" ? "/terms" : "/privacy";
   const otherLabel =
     namespace === "privacy" ? tLegal("viewTerms") : tLegal("viewPrivacy");
 
   return (
-    <main className="min-h-dvh bg-background px-4 py-8 sm:px-6">
-      <div className="mx-auto max-w-3xl space-y-6">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
-          <Link href="/login" className="flex items-center gap-2.5 text-start">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">
-              <UtensilsCrossed className="size-5 text-accent" />
-            </span>
-            <span className="text-base font-bold">{tApp("logoText")}</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <LanguageSwitcher />
-            <Link
-              href="/login"
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              {tLegal("backToLogin")}
-            </Link>
-          </div>
-        </header>
+    <div className="flex min-h-dvh flex-col bg-brand-light-tint text-brand-text">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-brand-gold focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-brand-text focus:shadow-lg"
+      >
+        {tLanding("header.skipToContent")}
+      </a>
 
-        <Card>
-          <CardHeader className="text-start">
-            <CardTitle className="text-2xl font-bold">{t("title")}</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              {t("lastUpdated")}
+      <LegalHeader
+        locale={locale}
+        namespace={namespace}
+        homeHref={homeHref}
+        brandWordmark={tApp("logoText")}
+        pilotTag={tLanding("header.pilotTag")}
+        navLabel={tLegal("navLabel")}
+        navHomeLabel={tLegal("navHome")}
+        privacyLabel={tLegal("viewPrivacy")}
+        termsLabel={tLegal("viewTerms")}
+        helpLabel={tLanding("footer.help")}
+        authHref={authHref}
+        authLabel={authLabel}
+        shortCtaLabel={tLanding("header.shortCta")}
+        requestPilotLabel={tLanding("header.requestPilot")}
+      />
+
+      <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
+        <section className="relative overflow-hidden bg-brand-dark-teal text-white">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_end,rgba(201,162,39,0.14),transparent_48%),radial-gradient(circle_at_bottom_start,rgba(14,107,92,0.55),transparent_55%)]"
+          />
+          <div className="relative mx-auto max-w-[1100px] space-y-5 px-4 py-10 text-start sm:px-6 sm:py-14">
+            <div className="inline-flex items-center gap-2 rounded-full border border-brand-gold/60 bg-brand-mid-teal px-3.5 py-1.5 text-xs font-semibold text-white sm:text-sm">
+              <span
+                className="size-2 rounded-full bg-brand-gold"
+                aria-hidden="true"
+              />
+              <span>{tLegal("eyebrow")}</span>
+            </div>
+
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+              {t("title")}
+            </h1>
+
+            <p className="max-w-3xl text-base leading-relaxed text-[#E4F2EE] sm:text-lg">
+              {t("intro")}
             </p>
-          </CardHeader>
-          <CardContent
-            className="space-y-6 text-start"
-            data-testid="legal-document"
-          >
-            <p className="text-sm leading-7 text-foreground">{t("intro")}</p>
 
-            {sections.map((section) => (
-              <section key={section.heading} className="space-y-3">
-                <h2 className="text-lg font-semibold text-foreground">
-                  {section.heading}
-                </h2>
-                {section.paragraphs?.map((paragraph) => (
-                  <p
-                    key={paragraph}
-                    className="text-sm leading-7 text-muted-foreground"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-                {section.items && section.items.length > 0 ? (
-                  <ul className="list-disc space-y-2 ps-6 text-sm leading-7 text-muted-foreground">
-                    {section.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </section>
-            ))}
-
-            <div className="flex flex-wrap items-center gap-4 border-t border-border pt-4 text-sm text-muted-foreground">
-              <Link href={otherHref} className="text-primary hover:underline">
-                {otherLabel}
-              </Link>
-              <Link href="/login" className="text-primary hover:underline">
-                {tLegal("backToLogin")}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-medium text-[#DDECE8]">
+                {t("lastUpdated")}
+              </span>
+              <Link
+                href={otherHref}
+                className="inline-flex items-center gap-1.5 rounded-full border border-brand-gold/50 bg-brand-mid-teal/75 px-3.5 py-1 text-xs font-semibold text-[#F3CF5E] transition-colors hover:bg-brand-mid-teal hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+              >
+                <span>{otherLabel}</span>
+                <DirectionalArrowIcon className="size-3.5" />
               </Link>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </main>
+          </div>
+        </section>
+
+        <section className="px-4 py-10 sm:px-6 sm:py-14">
+          <div className="mx-auto grid max-w-[1100px] gap-8 lg:grid-cols-12 lg:items-start">
+            <aside className="space-y-5 lg:sticky lg:top-24 lg:col-span-4">
+              <nav
+                aria-label={tLegal("tocLabel")}
+                className="rounded-2xl border border-border bg-white p-5 text-start shadow-xs"
+              >
+                <div className="flex items-center justify-between gap-2 border-b border-border pb-3">
+                  <h2 className="text-sm font-bold text-brand-dark-teal">
+                    {tLegal("tocTitle")}
+                  </h2>
+                  <span className="rounded-full bg-brand-light-tint px-2.5 py-0.5 text-xs font-semibold tabular-nums text-brand-mid-teal ring-1 ring-border">
+                    {tLegal("sectionCount", { count: sections.length })}
+                  </span>
+                </div>
+                <ol className="mt-3 space-y-1">
+                  {sections.map((section) => (
+                    <li key={section.id}>
+                      <a
+                        href={`#${section.id}`}
+                        className="flex items-start gap-2.5 rounded-lg px-2 py-1.5 text-sm leading-snug text-brand-text transition-colors hover:bg-brand-light-tint hover:text-brand-dark-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-mid-teal"
+                      >
+                        <span className="shrink-0 font-semibold tabular-nums text-brand-mid-teal">
+                          {section.number}.
+                        </span>
+                        <span>{section.headingText}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+
+              <div className="space-y-3 rounded-2xl border border-border bg-white p-5 text-start shadow-xs">
+                <h2 className="text-sm font-bold text-brand-dark-teal">
+                  {tLegal("needHelpHeading")}
+                </h2>
+                <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                  {tLegal("needHelpBody")}
+                </p>
+                <Link
+                  href="/help"
+                  className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-brand-mid-teal/30 bg-brand-light-tint px-3 py-1.5 text-xs font-semibold text-brand-dark-teal transition-colors hover:border-brand-mid-teal hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-mid-teal"
+                >
+                  <span>{tLegal("contactHelp")}</span>
+                  <DirectionalArrowIcon className="size-3.5" />
+                </Link>
+              </div>
+            </aside>
+
+            <div className="lg:col-span-8">
+              <Card className="overflow-hidden rounded-2xl border-border bg-white py-0 text-start shadow-xs">
+                <div
+                  aria-hidden="true"
+                  className="h-1.5 w-full bg-gradient-to-r from-brand-dark-teal via-brand-gold to-brand-dark-teal"
+                />
+                <CardContent className="p-0" data-testid="legal-document">
+                  <div className="divide-y divide-border">
+                    {sections.map((section) => (
+                      <section
+                        key={section.id}
+                        id={section.id}
+                        className="scroll-mt-24 space-y-3.5 px-5 py-6 text-start sm:px-8 sm:py-7"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span
+                            aria-hidden="true"
+                            className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-dark-teal text-xs font-bold tabular-nums text-white ring-2 ring-brand-gold/60"
+                          >
+                            {section.number}
+                          </span>
+                          <h2 className="text-lg font-bold leading-snug text-brand-dark-teal sm:text-xl">
+                            <span className="sr-only">{section.number}. </span>
+                            {section.headingText}
+                          </h2>
+                        </div>
+
+                        {section.paragraphs.map((paragraph) => (
+                          <p
+                            key={paragraph}
+                            className="text-sm leading-7 text-brand-text sm:text-base"
+                          >
+                            {paragraph}
+                          </p>
+                        ))}
+
+                        {section.items.length > 0 ? (
+                          <ul className="list-disc space-y-2.5 ps-6 text-sm leading-7 text-brand-text marker:text-brand-gold sm:text-base">
+                            {section.items.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </section>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border bg-brand-light-tint/55 px-5 py-4 text-sm sm:px-8">
+                    <div className="flex flex-wrap items-center gap-4">
+                      <Link
+                        href={otherHref}
+                        className="font-semibold text-brand-dark-teal hover:text-brand-mid-teal hover:underline"
+                      >
+                        {otherLabel}
+                      </Link>
+                      <Link
+                        href={homeHref}
+                        className="font-medium text-brand-mid-teal hover:underline"
+                      >
+                        {tLegal("backToHome")}
+                      </Link>
+                    </div>
+                    <Link
+                      href={authHref}
+                      className="font-medium text-brand-mid-teal hover:underline"
+                    >
+                      {cardAuthLabel}
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <LandingFooter
+        locale={locale}
+        brandWordmark={tApp("logoText")}
+        tagline={tLanding("footer.tagline")}
+        pilotRegions={tLanding("footer.pilotRegions")}
+        linksTitle={tLanding("footer.linksTitle")}
+        contactTitle={tLanding("footer.contactTitle")}
+        privacyLabel={tLanding("footer.privacy")}
+        termsLabel={tLanding("footer.terms")}
+        helpLabel={tLanding("footer.help")}
+        signInLabel={tLanding("footer.signIn")}
+        workspaceLabel={tLanding("header.goToWorkspace")}
+        workspaceHref={workspaceHref}
+        whatsappLabel={tLanding("footer.whatsapp")}
+        whatsappPrefilledMessage={whatsappPrefilledMessage}
+        hasWhatsApp={hasWhatsApp}
+        emailLabel={tLanding("footer.emailLabel")}
+        founderEmail={founderEmail}
+        copyright={tLanding("footer.copyright", { year: currentYear })}
+      />
+    </div>
   );
 }
