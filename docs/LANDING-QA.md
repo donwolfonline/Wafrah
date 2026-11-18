@@ -1,6 +1,6 @@
 # Wafrah Landing Page — Launch Readiness QA Report
 
-Audit and remediation report for Wafrah's public marketing pages (`/` Arabic RTL default, `/en` English LTR) ahead of pilot sign-up collection in Makkah and Jeddah.
+Audit and remediation report for Wafrah's public marketing pages (`/` Arabic RTL default, `/en` English LTR) ahead of pilot sign-up collection in Riyadh.
 
 ---
 

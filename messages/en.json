@@ -747,7 +747,7 @@
     },
     "leads": {
       "title": "Pilot sign-up leads",
-      "subtitle": "Follow up with Makkah, Jeddah, and other pilot applicants.",
+      "subtitle": "Follow up with Riyadh and other pilot applicants.",
       "countLabel": "{count} leads",
       "newBadge": "{count} new",
       "exportCsv": "Export CSV",
@@ -825,7 +825,7 @@
     "badgeDefault": "Active Pilot",
     "badgeSecondary": "Evening Shift",
     "badgeAccent": "High Priority",
-    "badgeOutline": "Makkah Branch",
+    "badgeOutline": "Riyadh Branch",
     "badgeDestructive": "Critical Spike",
     "inputsTitle": "Form Controls & Kitchen Inputs",
     "inputsDescription": "Inputs, labels, and select dropdowns aligned with logical properties",
@@ -1409,12 +1409,12 @@
   "landing": {
     "meta": {
       "title": "Wafrah — Smart Food Waste Management for Saudi Restaurants & Hotels",
-      "description": "Log kitchen waste in 10 seconds even offline, get weekly buy-and-prep recommendations, and track estimated SAR savings. Founding pilot in Makkah & Jeddah.",
+      "description": "Log kitchen waste in 10 seconds even offline, get weekly buy-and-prep recommendations, and track estimated SAR savings. Founding pilot in Riyadh.",
       "ogImageAlt": "Wafrah — Kitchen food waste logging, weekly prep guidance, and estimated SAR savings for Saudi restaurants"
     },
     "header": {
       "brandName": "Wafrah",
-      "pilotTag": "Makkah & Jeddah Pilot",
+      "pilotTag": "Riyadh Pilot",
       "signIn": "Sign in",
       "goToWorkspace": "Go to workspace",
       "requestPilot": "Request a spot in the pilot",
@@ -1431,12 +1431,12 @@
       "navFaq": "FAQ"
     },
     "hero": {
-      "eyebrow": "Founding pilot • Makkah & Jeddah",
+      "eyebrow": "Founding pilot • Riyadh",
       "title": "Stop throwing your profit in the bin.",
       "subtitle": "Wafrah logs kitchen waste in 10 seconds, tells you what to buy and prep each week, and shows your estimated savings in riyals.",
       "primaryCta": "Request a spot in the pilot",
       "secondaryCta": "Chat on WhatsApp",
-      "note": "Limited places in the first pilot in Makkah and Jeddah",
+      "note": "Limited places in the first pilot in Riyadh",
       "previewBadge": "Illustrative example • Estimates only",
       "previewHeading": "Weekly kitchen waste summary",
       "previewMetricLabel": "Estimated monthly waste reduction impact",
@@ -1577,7 +1577,7 @@
       "heading": "Simple monthly subscription",
       "subheading": "Clear plans scaled to your kitchen volume after the founding pilot.",
       "pilotOfferBadge": "Founding pilot: a free trial period for the first 15 restaurants",
-      "pilotOfferNote": "Pilot restaurants in Makkah and Jeddah receive guided onboarding for menu setup and staff accounts before choosing any paid plan.",
+      "pilotOfferNote": "Pilot restaurants in Riyadh receive guided onboarding for menu setup and staff accounts before choosing any paid plan.",
       "periodLabel": "SAR per month",
       "vatNote": "",
       "cta": "Request a spot in the pilot",
@@ -1646,7 +1646,7 @@
     },
     "leadForm": {
       "heading": "Request a spot in the pilot",
-      "subheading": "Limited to 15 restaurants and hotels in Makkah and Jeddah. Leave your details and we will follow up personally.",
+      "subheading": "Limited to 15 restaurants and hotels in Riyadh. Leave your details and we will follow up personally.",
       "fields": {
         "name": {
           "label": "Full name",
@@ -1659,6 +1659,7 @@
         "city": {
           "label": "City",
           "options": {
+            "riyadh": "Riyadh",
             "makkah": "Makkah",
             "jeddah": "Jeddah",
             "other": "Other"
@@ -1696,7 +1697,7 @@
         },
         "cityOther": {
           "label": "City name",
-          "placeholder": "e.g. Riyadh, Dammam"
+          "placeholder": "e.g. Dammam, Khobar"
         }
       },
       "submit": "Request a spot in the pilot",
@@ -1725,7 +1726,7 @@
     },
     "finalCta": {
       "badge": "Founding pilot • 15 restaurants max",
-      "highlight1": "Free trial period for the first 15 restaurants in Makkah and Jeddah",
+      "highlight1": "Free trial period for the first 15 restaurants in Riyadh",
       "highlight2": "Guided menu and kitchen PIN setup before go-live",
       "highlight3": "Import sales from any POS via CSV today"
     },
@@ -1737,7 +1738,7 @@
     },
     "footer": {
       "tagline": "Practical food waste logging, weekly prep clarity, and estimated SAR savings for Saudi kitchens.",
-      "pilotRegions": "Founding pilot region: Makkah & Jeddah",
+      "pilotRegions": "Founding pilot region: Riyadh",
       "linksTitle": "Product & Legal",
       "contactTitle": "Contact",
       "privacy": "Privacy Policy",

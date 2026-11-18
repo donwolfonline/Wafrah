@@ -38,8 +38,7 @@ export function buildLandingJsonLd(input: LandingJsonLdInput) {
     url: baseUrl,
     logo: `${baseUrl}/icon-512.png`,
     areaServed: [
-      { "@type": "City", name: isEn ? "Makkah" : "مكة المكرمة" },
-      { "@type": "City", name: isEn ? "Jeddah" : "جدة" },
+      { "@type": "City", name: isEn ? "Riyadh" : "الرياض" },
       {
         "@type": "Country",
         name: isEn ? "Saudi Arabia" : "المملكة العربية السعودية",

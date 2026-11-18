@@ -6,7 +6,7 @@
 
 ## 1. Product Positioning, Audience & Tone
 
-- **Primary Goal:** Collect pilot sign-ups from restaurant and hotel owners/managers in **Makkah and Jeddah** (founding cohort capped at **15 pilot restaurants**).
+- **Primary Goal:** Collect pilot sign-ups from restaurant and hotel owners/managers in **Riyadh** (founding cohort capped at **15 pilot restaurants**).
   - **Primary CTA:** `"احجز مكانك في التجربة"` / `"Request a spot in the pilot"` (scrolls to and focuses `#pilot-form`).
   - **Secondary CTA:** WhatsApp chat (`https://wa.me/${NEXT_PUBLIC_WHATSAPP_NUMBER}`).
 - **Target Audience:** Saudi restaurant owners, F&B directors, and hotel hospitality managers browsing primarily on **mobile phones** (**assume 80%+ mobile traffic**).
@@ -73,7 +73,7 @@ All copy keys live under `landing.*` in `messages/ar.json` and `messages/en.json
   - Title, practical subheadline mentioning 10-second logging, weekly buy/prep recommendations, and savings in SAR.
   - Primary CTA button (`Request a spot in the pilot` -> smooth-scrolls to `#pilot-form` and focuses first input).
   - Secondary CTA button (`Chat on WhatsApp` -> `https://wa.me/${NEXT_PUBLIC_WHATSAPP_NUMBER}` in new tab with `rel="noopener noreferrer"`).
-  - Urgency/scarcity note anchored to truth (`"Limited places in the first pilot in Makkah and Jeddah"`).
+  - Urgency/scarcity note anchored to truth (`"Limited places in the first pilot in Riyadh"`).
 
 ### 2. Problem (`landing.problem`)
 - **Heading:** `"الهدر يأكل هامش ربحك بصمت"` / `"Waste quietly eats your margin"`
@@ -146,7 +146,7 @@ All copy keys live under `landing.*` in `messages/ar.json` and `messages/en.json
 
 ### 9. Sources & Footer (`landing.sources`, `landing.footer`)
 - **Sources block:** Reads ordered citation items from `src/config/sources.ts` so citations stay decoupled from translation prose. Renders clearly labeled placeholder notices until verified URLs are entered.
-- **Footer:** Compact product summary for Makkah & Jeddah hospitality operators, links to `/privacy`, `/terms`, `/help`, `/login`, WhatsApp link, contact email (`FOUNDER_EMAIL` exposed only via server action/mailto if explicitly intended, or contact form/support email), and copyright.
+- **Footer:** Compact product summary for Riyadh hospitality operators, links to `/privacy`, `/terms`, `/help`, `/login`, WhatsApp link, contact email (`FOUNDER_EMAIL` exposed only via server action/mailto if explicitly intended, or contact form/support email), and copyright.
 
 ---
 
@@ -215,14 +215,14 @@ Added to `.env.example`:
 ### Proposed Meta Tags
 - **Arabic (`/`):**
   - `title`: `وفرة — نظام ذكي لإدارة هدر الطعام في المطاعم والفنادق بالسعودية`
-  - `description`: `سجّل هدر المطبخ في 10 ثوانٍ حتى بدون إنترنت، واحصل على توصيات شراء وتحضير أسبوعية وتقرير توفير تقديري بالريال. التجربة الأولى في مكة وجدة.`
+  - `description`: `سجّل هدر المطبخ في 10 ثوانٍ حتى بدون إنترنت، واحصل على توصيات شراء وتحضير أسبوعية وتقرير توفير تقديري بالريال. التجربة الأولى في الرياض.`
 - **English (`/en`):**
   - `title`: `Wafrah — Smart Food Waste Management for Saudi Restaurants & Hotels`
-  - `description`: `Log kitchen waste in 10 seconds even offline, get weekly buy-and-prep recommendations, and track estimated SAR savings. Founding pilot in Makkah & Jeddah.`
+  - `description`: `Log kitchen waste in 10 seconds even offline, get weekly buy-and-prep recommendations, and track estimated SAR savings. Founding pilot in Riyadh.`
 
 ### Target Keywords
-- **Arabic:** إدارة هدر الطعام في المطاعم، تقليل تكلفة الغذاء، نظام تتبع هدر المطبخ، برنامج حساب الهدر الغذائي، تقليل هدر الفنادق السعودية، توقع المبيعات للمطاعم، مكة، جدة، تكلفة المواد الغذائية.
-- **English:** restaurant food waste management Saudi Arabia, kitchen waste tracking app, reduce food cost Makkah Jeddah, hospitality food waste software KSA, restaurant prep forecasting, Foodics CSV waste analytics.
+- **Arabic:** إدارة هدر الطعام في المطاعم، تقليل تكلفة الغذاء، نظام تتبع هدر المطبخ، برنامج حساب الهدر الغذائي، تقليل هدر الفنادق السعودية، توقع المبيعات للمطاعم، الرياض، تكلفة المواد الغذائية.
+- **English:** restaurant food waste management Saudi Arabia, kitchen waste tracking app, reduce food cost Riyadh, hospitality food waste software KSA, restaurant prep forecasting, Foodics CSV waste analytics.
 
 ---
 
@@ -251,10 +251,10 @@ Review and sign off on every item below before deploying UI code or driving traf
 | 2 | **Problem — Stat 2** | `"26% — متوسط هدر المطاعم من مشترياتها"` | Provide the exact verified study/report citation and URL confirming `26%` of purchases applies specifically to restaurants (as opposed to household/overall sector share), or adjust copy to match the exact cited study. |
 | 3 | **Problem — Statement 3** | `"ربع فاتورة المشتريات تُرمى دون أن يلاحظ أحد"` | Confirm you want this editorial statement left live alongside Stat 2 (approx. `26%` ≈ a quarter), styled without a source citation. |
 | 4 | **Hero Speed Claim** | `"يسجّل هدر الطعام في 10 ثوانٍ"` / `"logs kitchen waste in 10 seconds"` | Confirm actual kitchen tablet logging flow matches ≤10 seconds (`<10s` per `SPEC.md`: tap item, quantity, reason, assuming staff PIN session is unlocked). |
-| 5 | **Calculator Defaults** | Default monthly purchases `50,000` SAR, default current waste `10%`, conservative reduction `20%` (slider ranges `5k–500k`, `2%–35%`, `10%–40%`) | Confirm default benchmark values reflect realistic Makkah/Jeddah restaurant economics you feel comfortable standing behind publicly. |
+| 5 | **Calculator Defaults** | Default monthly purchases `50,000` SAR, default current waste `10%`, conservative reduction `20%` (slider ranges `5k–500k`, `2%–35%`, `10%–40%`) | Confirm default benchmark values reflect realistic Riyadh restaurant economics you feel comfortable standing behind publicly. |
 | 6 | **Pricing & VAT** | Tiers: `400` / `700` / `1,200` SAR/mo (`Small` / `Medium` / `Hotel or chain`). `"vatNote"` is currently `""` (hidden) | Define exact tier limits (branch count, staff accounts, SKU count if any), confirm amounts, and specify VAT copy for `landing.pricing.vatNote` (e.g., excluding vs including 15% Saudi VAT once VAT-registered). |
 | 7 | **Pilot Duration & Terms (FAQ #6 & Pilot Box)** | `"فترة تجريبية مجانية لأول 15 مطعماً"` + neutral FAQ #6 placeholder saying pilot length & terms are agreed directly when joining | Decide exact free trial duration (e.g., 30 days / 60 days / 90 days) and post-pilot commercial commitment so both can be stated clearly. |
-| 8 | **15-Spot Cap Enforcement** | Landing promise caps first pilot cohort at `15` restaurants in Makkah & Jeddah | Decide what happens when lead #16 submits (manual screening of applicants for the 15 pilot slots vs waitlist messaging). |
+| 8 | **15-Spot Cap Enforcement** | Landing promise caps first pilot cohort at `15` restaurants in Riyadh | Decide what happens when lead #16 submits (manual screening of applicants for the 15 pilot slots vs waitlist messaging). |
 | 9 | **Response SLA in Lead Form** | `"تم استلام طلبك، سنتواصل معك خلال يوم عمل"` / `"within one business day"` | Confirm founder/team can honor a 1-business-day turnaround on incoming leads (or adjust to `"قريباً"` / `"soon"`). |
 | 10 | **Legal Pages (`/privacy`, `/terms`)** | Placeholder legal routes exist in `src/app/privacy` & `src/app/terms`; Lead form asks for consent linking to Privacy Policy | Replace placeholder legal text with Saudi PDPL-reviewed Privacy Policy and Terms & Conditions (including lead data retention & cross-border hosting disclosure) before collecting real leads. |
 | 11 | **Signed-in `/` Routing** | Proposed rendering landing page + `"Go to workspace"` header button even when signed in | Confirm whether signed-in users visiting `/` should stay on the landing page (recommended) or keep redirecting to `/dashboard` / `/log`. |

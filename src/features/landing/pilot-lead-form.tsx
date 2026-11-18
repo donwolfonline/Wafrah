@@ -32,7 +32,7 @@ interface PilotLeadFormProps {
 const INITIAL_VALUES: LeadFormFieldsState = {
   name: "",
   businessName: "",
-  city: "MAKKAH",
+  city: "RIYADH",
   cityOther: "",
   role: "",
   phone: "",
@@ -125,9 +125,20 @@ export function PilotLeadForm({
     if (submitting) return;
 
     setFormError(null);
+    const apiCity: LeadCityValue =
+      values.city === "RIYADH" ? "OTHER" : values.city;
+    const apiCityOther =
+      values.city === "RIYADH"
+        ? locale === "en"
+          ? "Riyadh"
+          : "الرياض"
+        : values.city === "OTHER"
+          ? values.cityOther
+          : "";
     const candidate = {
       ...values,
-      cityOther: values.city === "OTHER" ? values.cityOther : "",
+      city: apiCity,
+      cityOther: apiCityOther,
     };
     const parsed = pilotLeadFormSchema.safeParse(candidate);
     if (!parsed.success) {
@@ -189,7 +200,7 @@ export function PilotLeadForm({
         );
         track("lead_submit", {
           locale,
-          city: payload.city ?? values.city,
+          city: payload.city ?? apiCity,
           currentPos: payload.posSystem ?? values.posSystem,
           branchesBand:
             payload.branchesBand ??

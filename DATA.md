@@ -103,7 +103,7 @@ Because **no non-essential, marketing, or analytics cookies** exist, no tracking
 - **What is NOT stored:** Client IP addresses, user-agent strings, cookies, or tracking fingerprints are **not** stored on `Lead` records (IP addresses are used only ephemerally in server memory for per-hour sliding-window rate limiting).
 
 ### 8.2 Purpose, Legal Basis & Access Control
-- **Purpose:** Reviewing pilot applications, contacting applicants within one business day via WhatsApp/phone/email, and recording onboarding eligibility during the Makkah & Jeddah founding pilot.
+- **Purpose:** Reviewing pilot applications, contacting applicants within one business day via WhatsApp/phone/email, and recording onboarding eligibility during the Riyadh founding pilot.
 - **Legal basis:** Explicit applicant consent recorded at submission (`consent = true`, `consentAt`) via the public pilot request form (`#pilot-form` -> `POST /api/leads`) linking to `/privacy`.
 - **Access restriction:** `Lead` is classified as a platform-only table (`PLATFORM_ONLY_MODELS`). `createTenantDb` / `getTenantDb` explicitly forbid every query or mutation on `Lead` (`TenantIsolationError`), `GET /api/leads` returns `405`, and `/api/admin/leads*` enforces `PLATFORM_ADMIN` role authorization (`requireRole("admin.*")`). Status transitions are logged via `AuditLog` (`ADMIN_LEAD_STATUS_UPDATED`, `tenantId: null`) without duplicating lead PII.
 

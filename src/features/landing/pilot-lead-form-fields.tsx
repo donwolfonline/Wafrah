@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import {
-  LEAD_CITY_VALUES,
   LEAD_POS_VALUES,
   type LeadCityValue,
   type LeadFieldErrors,
@@ -11,11 +10,22 @@ import {
 } from "@/features/leads/schema";
 import { LabeledLeadInput, LeadRadioGroup } from "./lead-form-controls";
 
-const CITY_KEY: Record<LeadCityValue, "makkah" | "jeddah" | "other"> = {
-  MAKKAH: "makkah",
-  JEDDAH: "jeddah",
-  OTHER: "other",
-};
+export type LeadCityUiOption = "RIYADH" | LeadCityValue;
+
+const UI_CITY_OPTIONS: ReadonlyArray<LeadCityUiOption> = [
+  "RIYADH",
+  "JEDDAH",
+  "MAKKAH",
+  "OTHER",
+];
+
+const CITY_KEY: Record<LeadCityUiOption, "riyadh" | "makkah" | "jeddah" | "other"> =
+  {
+    RIYADH: "riyadh",
+    MAKKAH: "makkah",
+    JEDDAH: "jeddah",
+    OTHER: "other",
+  };
 
 const POS_KEY: Record<LeadPosValue, "foodics" | "marn" | "other" | "none"> = {
   FOODICS: "foodics",
@@ -27,7 +37,7 @@ const POS_KEY: Record<LeadPosValue, "foodics" | "marn" | "other" | "none"> = {
 export interface LeadFormFieldsState {
   name: string;
   businessName: string;
-  city: LeadCityValue;
+  city: LeadCityUiOption;
   cityOther: string;
   role: string;
   phone: string;
@@ -110,9 +120,9 @@ export function PilotLeadFormFields({
         labelId="lead-city-label"
         label={t("fields.city.label")}
         value={values.city}
-        columnsClassName="grid-cols-3"
+        columnsClassName="grid-cols-2 sm:grid-cols-4"
         alignClassName="text-center"
-        options={LEAD_CITY_VALUES.map((option) => ({
+        options={UI_CITY_OPTIONS.map((option) => ({
           value: option,
           label: t(`fields.city.options.${CITY_KEY[option]}`),
           testId: `lead-city-${option}`,

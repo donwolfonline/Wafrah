@@ -182,6 +182,11 @@ describe("landing SEO, structured data & content QA", () => {
     expect(entries).toHaveLength(3);
     const [org, app, faq] = entries;
     expect(org["@type"]).toBe("Organization");
+    expect(org.areaServed).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ "@type": "City", name: "Riyadh" }),
+      ]),
+    );
     expect(app["@type"]).toBe("SoftwareApplication");
     expect(app).not.toHaveProperty("aggregateRating");
     expect(app).not.toHaveProperty("review");
@@ -222,6 +227,12 @@ describe("landing SEO, structured data & content QA", () => {
     expect(arMessages.landing.hero.mock.kpiDeltaValue).toContain(
       "\u2066-16%\u2069",
     );
+    expect(arMessages.landing.hero.eyebrow).toContain("الرياض");
+    expect(arMessages.landing.header.pilotTag).toContain("الرياض");
+    expect(arMessages.landing.footer.pilotRegions).toContain("الرياض");
+    expect(enMessages.landing.hero.eyebrow).toContain("Riyadh");
+    expect(enMessages.landing.header.pilotTag).toContain("Riyadh");
+    expect(enMessages.landing.footer.pilotRegions).toContain("Riyadh");
 
     const publicDir = path.resolve(process.cwd(), "public");
     for (const file of ["og-ar.png", "og-en.png"]) {
