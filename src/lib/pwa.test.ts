@@ -219,8 +219,15 @@ describe("PWA service worker policy & next-launch update behavior", () => {
       match: vi.fn(async () => undefined),
     };
 
+    const skipWaiting = vi.fn();
+    const claim = vi.fn(async () => undefined);
+    const unregister = vi.fn(async () => true);
+
     const mockSelf = {
       location: { origin: "http://localhost:3000" },
+      skipWaiting,
+      clients: { claim },
+      registration: { unregister },
       addEventListener: (
         type: string,
         handler: (event: unknown) => void,
@@ -232,24 +239,18 @@ describe("PWA service worker policy & next-launch update behavior", () => {
     const runner = new Function("self", "caches", "fetch", script);
     runner(mockSelf, mockCaches, vi.fn());
 
+    listeners.get("install")?.({});
+    expect(skipWaiting).toHaveBeenCalledTimes(1);
+
     const activatePromises: Array<Promise<unknown>> = [];
     listeners.get("activate")?.({
       waitUntil: (p: Promise<unknown>) => activatePromises.push(p),
     });
     await Promise.all(activatePromises);
     expect(cacheEntries.has("wafrah-assets-dev")).toBe(false);
-
-    const devStaticRespondWith = vi.fn();
-    listeners.get("fetch")?.({
-      request: {
-        method: "GET",
-        mode: "no-cors",
-        url: "http://localhost:3000/_next/static/chunks/pilot-lead-form.js",
-        headers: new Headers(),
-      },
-      respondWith: devStaticRespondWith,
-    });
-    expect(devStaticRespondWith).not.toHaveBeenCalled();
+    expect(claim).toHaveBeenCalledTimes(1);
+    expect(unregister).toHaveBeenCalledTimes(1);
+    expect(listeners.has("fetch")).toBe(false);
   });
 
   it("produces installable manifest with standalone display, scope, theme, and any/maskable icons", () => {

@@ -142,17 +142,33 @@ export function isCacheableSwRequest(params: {
 
 /**
  * Generates the service worker JavaScript payload versioned with `buildId`.
- * Does NOT call `self.skipWaiting()` on install so updates activate on next launch
- * without disrupting active sessions or wiping IndexedDB queues.
+ * Production builds never call `self.skipWaiting()` on install so updates
+ * activate cleanly on next launch without disrupting IndexedDB queues.
+ * Local `dev` builds serve a self-teardown worker to evict stale dev caches.
  */
 export function generateServiceWorkerScript(buildId: string): string {
+  if (buildId === "dev") {
+    return `// Build ID: dev (service worker teardown in next dev)
+const CACHE_PREFIX = ${JSON.stringify(SW_CACHE_PREFIX)};
+self.addEventListener("install", () => {
+  if (typeof self.skipWaiting === "function") self.skipWaiting();
+});
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k.startsWith(CACHE_PREFIX)).map((k) => caches.delete(k))))
+      .then(() => (self.clients && typeof self.clients.claim === "function" ? self.clients.claim() : undefined))
+      .then(() => (self.registration && typeof self.registration.unregister === "function" ? self.registration.unregister() : undefined)),
+  );
+});
+`;
+  }
+
   const cacheName = buildSwCacheName(buildId);
-  const isDevBuild = buildId === "dev";
 
   return `// Build ID: ${buildId}
 const CACHE_NAME = ${JSON.stringify(cacheName)};
 const CACHE_PREFIX = ${JSON.stringify(SW_CACHE_PREFIX)};
-const IS_DEV_BUILD = ${JSON.stringify(isDevBuild)};
 const PRECACHE_URLS = ${JSON.stringify([...STATIC_PRECACHE_URLS])};
 const AUTH_PREFIXES = ${JSON.stringify([...AUTHENTICATED_ROUTE_PREFIXES])};
 const ASSET_EXT_REGEX = /\\.(?:png|jpg|jpeg|webp|svg|ico|woff2)$/i;
@@ -186,7 +202,7 @@ function isCacheableAsset(request) {
     }
   }
   if (url.pathname.startsWith("/_next/static/")) {
-    return !IS_DEV_BUILD;
+    return true;
   }
   if (
     url.pathname === "/manifest.webmanifest" ||
@@ -199,9 +215,6 @@ function isCacheableAsset(request) {
 }
 
 self.addEventListener("install", (event) => {
-  if (IS_DEV_BUILD) {
-    return;
-  }
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)),
   );
@@ -214,11 +227,7 @@ self.addEventListener("activate", (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter(
-              (key) =>
-                key.startsWith(CACHE_PREFIX) &&
-                (IS_DEV_BUILD || key !== CACHE_NAME),
-            )
+            .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
             .map((key) => caches.delete(key)),
         ),
       ),

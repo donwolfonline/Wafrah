@@ -3,7 +3,8 @@ import { generateServiceWorkerScript, resolveBuildId } from "@/lib/pwa";
 export const dynamic = "force-dynamic";
 
 export async function GET(): Promise<Response> {
-  const buildId = resolveBuildId();
+  const buildId =
+    process.env.NODE_ENV === "development" ? "dev" : resolveBuildId();
   const body = generateServiceWorkerScript(buildId);
 
   return new Response(body, {
