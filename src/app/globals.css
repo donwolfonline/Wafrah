@@ -91,8 +91,21 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     @apply bg-background text-foreground;
+    overflow-x: clip;
+    overscroll-behavior-y: contain;
+  }
+  button,
+  a,
+  [role="button"],
+  [role="tab"],
+  summary {
+    touch-action: manipulation;
   }
   html[dir="rtl"] body {
     font-family:

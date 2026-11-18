@@ -94,7 +94,7 @@ export async function KpiGrid({ kpis }: KpiGridProps) {
       data-testid="dashboard-kpi-grid"
       className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
     >
-      <Card data-testid="kpi-waste-cost" className="text-start">
+      <Card data-testid="kpi-waste-cost" className="min-w-0 text-start">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
             {t("kpis.wasteCostTitle")}
@@ -115,7 +115,7 @@ export async function KpiGrid({ kpis }: KpiGridProps) {
         </CardContent>
       </Card>
 
-      <Card data-testid="kpi-waste-pct-purchases" className="text-start">
+      <Card data-testid="kpi-waste-pct-purchases" className="min-w-0 text-start">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
             {t("kpis.wastePctPurchasesTitle")}
@@ -157,7 +157,7 @@ export async function KpiGrid({ kpis }: KpiGridProps) {
         </CardContent>
       </Card>
 
-      <Card data-testid="kpi-waste-entries" className="text-start">
+      <Card data-testid="kpi-waste-entries" className="min-w-0 text-start">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
             {t("kpis.entriesCountTitle")}
@@ -180,7 +180,7 @@ export async function KpiGrid({ kpis }: KpiGridProps) {
         </CardContent>
       </Card>
 
-      <Card data-testid="kpi-top-reason" className="text-start">
+      <Card data-testid="kpi-top-reason" className="min-w-0 text-start">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
             {t("kpis.topReasonTitle")}

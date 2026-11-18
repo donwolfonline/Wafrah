@@ -24,9 +24,9 @@ export async function AppShell({
   let content: ReactNode;
   if (variant === "kitchen") {
     content = (
-      <div className="flex min-h-dvh w-full min-w-0 flex-col overflow-x-hidden bg-background text-foreground">
+      <div className="flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip bg-background text-foreground">
         <AppHeader user={user} kitchenMode />
-        <main className="flex min-w-0 flex-1 flex-col p-4 sm:p-6">
+        <main className="flex min-w-0 flex-1 flex-col p-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:p-6">
           {children}
         </main>
         {user ? <FeedbackWidget kitchenMode /> : null}
@@ -34,20 +34,20 @@ export async function AppShell({
     );
   } else if (variant === "auth") {
     content = (
-      <div className="flex min-h-dvh w-full min-w-0 flex-col overflow-x-hidden bg-background text-foreground">
+      <div className="flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip bg-background text-foreground">
         <AppHeader user={null} kitchenMode hideGuestActions />
-        <main className="flex min-w-0 flex-1 items-center justify-center p-4 sm:p-6">
+        <main className="flex min-w-0 flex-1 items-start justify-center px-3 py-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:items-center sm:p-6">
           {children}
         </main>
       </div>
     );
   } else {
     content = (
-      <div className="flex min-h-dvh w-full min-w-0 flex-col overflow-x-hidden bg-background text-foreground print:block print:min-h-0 print:overflow-visible print:bg-white">
+      <div className="flex min-h-dvh w-full min-w-0 flex-col overflow-x-clip bg-background text-foreground print:block print:min-h-0 print:overflow-visible print:bg-white">
         <AppHeader user={user} />
         <div className="flex min-w-0 flex-1 print:block">
           <ManagerSidebar role={user?.role} />
-          <main className="min-w-0 flex-1 p-4 pb-24 sm:p-6 md:pb-6 print:p-0 print:pb-0">
+          <main className="min-w-0 flex-1 p-3 pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:p-6 md:pb-6 print:p-0 print:pb-0">
             {children}
           </main>
         </div>

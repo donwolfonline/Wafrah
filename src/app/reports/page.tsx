@@ -172,7 +172,7 @@ export default async function ReportsPage() {
                             : t("list.rawMethodBadge")}
                         </span>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <Button asChild variant="outline" size="sm" className="gap-1.5">
                             <a
                               href={`/api/reports/${m.yearMonth}/csv?locale=${locale}`}

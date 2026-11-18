@@ -55,46 +55,58 @@ export function LeadTableRow({
     .join(" / ");
 
   return (
-    <TableRow data-testid={`lead-row-${lead.id}`}>
-      <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
-        {formatGregorianDate(lead.createdAt, locale, {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
+    <TableRow
+      data-testid={`lead-row-${lead.id}`}
+      className="block rounded-xl border bg-card p-3.5 shadow-2xs md:table-row md:rounded-none md:border-x-0 md:border-t-0 md:p-0 md:shadow-none"
+    >
+      <TableCell className="flex items-center justify-between gap-2 px-0 py-1 whitespace-nowrap text-xs text-muted-foreground md:table-cell md:px-2 md:py-2">
+        <span className="font-medium md:hidden">{t("columns.createdAt")}</span>
+        <span>
+          {formatGregorianDate(lead.createdAt, locale, {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </span>
       </TableCell>
-      <TableCell className="min-w-[180px] text-start text-sm">
+      <TableCell className="block min-w-0 border-b border-border/60 px-0 py-2 text-start text-sm md:table-cell md:min-w-[180px] md:border-b-0 md:px-2">
         <div className="font-semibold">{lead.name}</div>
         <div className="text-xs text-muted-foreground">{lead.role}</div>
         <div dir="ltr" className="mt-0.5 text-start font-mono text-xs">
           {lead.phone}
         </div>
-        <div className="text-xs text-muted-foreground">
+        <div className="truncate text-xs text-muted-foreground">
           {lead.email ?? t("noEmail")}
         </div>
       </TableCell>
-      <TableCell className="min-w-[150px] text-start text-sm">
+      <TableCell className="block min-w-0 px-0 py-2 text-start text-sm md:table-cell md:min-w-[150px] md:px-2">
         <div className="font-medium">{lead.businessName}</div>
         <div className="text-xs text-muted-foreground">
           {t("columns.branches")}: {formatNumber(lead.branches, locale)}
         </div>
         {utm ? (
-          <div className="mt-0.5 text-[11px] text-muted-foreground">{utm}</div>
+          <div className="mt-0.5 break-all text-[11px] text-muted-foreground">{utm}</div>
         ) : null}
       </TableCell>
-      <TableCell className="whitespace-nowrap text-start text-sm">
-        {cityDisplay}
+      <TableCell className="flex items-center justify-between gap-2 px-0 py-1 whitespace-nowrap text-start text-sm md:table-cell md:px-2 md:py-2">
+        <span className="text-xs font-medium text-muted-foreground md:hidden">
+          {t("columns.city")}
+        </span>
+        <span>{cityDisplay}</span>
       </TableCell>
-      <TableCell className="whitespace-nowrap text-start text-sm">
-        {t(`posSystems.${lead.posSystem}`)}
+      <TableCell className="flex items-center justify-between gap-2 px-0 py-1 whitespace-nowrap text-start text-sm md:table-cell md:px-2 md:py-2">
+        <span className="text-xs font-medium text-muted-foreground md:hidden">
+          {t("columns.posSystem")}
+        </span>
+        <span>{t(`posSystems.${lead.posSystem}`)}</span>
       </TableCell>
-      <TableCell className="min-w-[140px]">
+      <TableCell className="block min-w-0 px-0 py-2 md:table-cell md:min-w-[140px] md:px-2">
         <Select
           value={lead.status}
           disabled={saving}
           onValueChange={(next) => onStatusChange(lead.id, next as LeadStatusValue)}
         >
           <SelectTrigger
-            className={`h-8 text-xs font-semibold ${STATUS_BADGE_CLASS[lead.status]}`}
+            className={`h-9 w-full text-xs font-semibold md:h-8 ${STATUS_BADGE_CLASS[lead.status]}`}
             data-testid={`lead-status-${lead.id}`}
           >
             <SelectValue />
@@ -108,12 +120,12 @@ export function LeadTableRow({
           </SelectContent>
         </Select>
       </TableCell>
-      <TableCell className="min-w-[220px]">
+      <TableCell className="block min-w-0 px-0 pt-1 pb-0 md:table-cell md:min-w-[220px] md:px-2 md:py-2">
         <div className="flex items-center gap-1.5">
           <Input
             value={currentNotes}
             placeholder={t("notesPlaceholder")}
-            className="h-8 text-xs"
+            className="h-9 text-base md:h-8 md:text-xs"
             disabled={saving}
             data-testid={`lead-notes-${lead.id}`}
             onChange={(e) => onNotesDraftChange(lead.id, e.target.value)}
@@ -122,7 +134,7 @@ export function LeadTableRow({
             <Button
               size="sm"
               variant="secondary"
-              className="h-8 shrink-0 px-2.5 text-xs"
+              className="h-9 shrink-0 px-2.5 text-xs md:h-8"
               disabled={saving}
               onClick={() => onSaveNotes(lead.id, currentNotes)}
             >

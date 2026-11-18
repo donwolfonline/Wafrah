@@ -203,7 +203,7 @@ export function AdminConsole({ initialOverview }: AdminConsoleProps) {
       <AdminStats overview={overview} />
 
       <Tabs defaultValue="customers" className="w-full space-y-4">
-        <TabsList className="h-auto flex-wrap">
+        <TabsList className="h-auto w-full flex-wrap justify-start gap-1 group-data-[orientation=horizontal]/tabs:h-auto sm:w-fit">
           <TabsTrigger
             value="customers"
             data-testid="tab-customers"

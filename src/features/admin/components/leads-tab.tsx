@@ -173,9 +173,9 @@ export function LeadsTab({ leads, onLeadUpdated }: LeadsTabProps) {
             {t("empty")}
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border">
-            <Table>
-              <TableHeader>
+          <div className="md:overflow-x-auto md:rounded-lg md:border">
+            <Table className="block md:table">
+              <TableHeader className="hidden md:table-header-group">
                 <TableRow>
                   <TableHead className="text-start">{t("columns.createdAt")}</TableHead>
                   <TableHead className="text-start">{t("columns.contact")}</TableHead>
@@ -186,7 +186,7 @@ export function LeadsTab({ leads, onLeadUpdated }: LeadsTabProps) {
                   <TableHead className="text-start">{t("columns.notes")}</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="block space-y-3 md:table-row-group md:space-y-0">
                 {filteredLeads.map((lead) => (
                   <LeadTableRow
                     key={lead.id}

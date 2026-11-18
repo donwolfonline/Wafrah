@@ -29,6 +29,7 @@ const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
 
 export const viewport: Viewport = {
   themeColor: "#0B4F45",
+  viewportFit: "cover",
 };
 
 export async function generateMetadata(): Promise<Metadata> {

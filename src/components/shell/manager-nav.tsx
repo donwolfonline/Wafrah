@@ -154,7 +154,7 @@ export function ManagerMobileBottomNav({ role }: ManagerNavProps) {
   return (
     <nav
       aria-label={tNav("mobileNavLabel")}
-      className="fixed inset-x-0 bottom-0 z-30 flex border-t bg-card shadow-lg print:hidden md:hidden"
+      className="fixed inset-x-0 bottom-0 z-30 flex border-t bg-card/95 pb-[env(safe-area-inset-bottom)] shadow-lg backdrop-blur-sm print:hidden md:hidden"
     >
       <div
         className={cn(
@@ -172,7 +172,7 @@ export function ManagerMobileBottomNav({ role }: ManagerNavProps) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex min-h-14 flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-center text-[11px] leading-tight font-medium transition-colors",
+                "flex min-h-14 flex-col items-center justify-center gap-0.5 px-0.5 py-1.5 text-center text-[10px] leading-tight font-medium transition-colors min-[360px]:px-1 min-[360px]:text-[11px]",
                 active
                   ? "border-t-2 border-accent bg-primary/5 text-primary font-semibold"
                   : "text-muted-foreground hover:text-foreground",

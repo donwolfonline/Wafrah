@@ -123,6 +123,7 @@ export function AdoptionTab({ rows }: AdoptionTabProps) {
             variant={flaggedOnly ? "default" : "outline"}
             data-testid="adoption-flagged-only-toggle"
             onClick={() => setFlaggedOnly((prev) => !prev)}
+            className="h-auto whitespace-normal py-1.5 text-start sm:whitespace-nowrap"
           >
             {t("flaggedOnly")}
           </Button>
@@ -135,8 +136,8 @@ export function AdoptionTab({ rows }: AdoptionTabProps) {
             {t("empty")}
           </p>
         ) : (
-          <Table>
-            <TableHeader>
+          <Table className="block md:table">
+            <TableHeader className="hidden md:table-header-group">
               <TableRow>
                 <TableHead>{t("columns.restaurant")}</TableHead>
                 <TableHead>{t("columns.sparkline")}</TableHead>
@@ -145,15 +146,16 @@ export function AdoptionTab({ rows }: AdoptionTabProps) {
                 <TableHead>{t("columns.lastLogin")}</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="block space-y-3 md:table-row-group md:space-y-0">
               {visibleRows.map((row) => {
                 const displayName = locale === "ar" ? row.nameAr : row.name;
                 return (
                   <TableRow
                     key={row.tenantId}
                     data-testid={`adoption-row-${row.code}`}
+                    className="block rounded-xl border bg-card p-3.5 md:table-row md:rounded-none md:border-x-0 md:border-t-0 md:p-0"
                   >
-                    <TableCell>
+                    <TableCell className="block border-b border-border/60 px-0 pt-0 pb-2.5 md:table-cell md:border-b-0 md:px-2 md:py-2">
                       <div className="flex flex-col gap-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="font-medium">{displayName}</span>
@@ -186,7 +188,10 @@ export function AdoptionTab({ rows }: AdoptionTabProps) {
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 md:table-cell md:px-2 md:py-2">
+                      <span className="text-xs font-medium text-muted-foreground md:hidden">
+                        {t("columns.sparkline")}
+                      </span>
                       <AdoptionSparkline
                         series={row.dailySeries}
                         ariaLabel={t("sparklineAria", {
@@ -195,24 +200,37 @@ export function AdoptionTab({ rows }: AdoptionTabProps) {
                         })}
                       />
                     </TableCell>
-                    <TableCell className="font-mono text-sm">
-                      {formatNumber(row.entries14d, locale)}
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 font-mono text-sm md:table-cell md:px-2 md:py-2">
+                      <span className="font-sans text-xs font-medium text-muted-foreground md:hidden">
+                        {t("columns.entries14d")}
+                      </span>
+                      <span>{formatNumber(row.entries14d, locale)}</span>
                     </TableCell>
-                    <TableCell className="text-xs text-muted-foreground">
-                      {row.lastEntryAt
-                        ? formatGregorianDate(row.lastEntryAt, locale, {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : t("never")}
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-xs text-muted-foreground md:table-cell md:px-2 md:py-2">
+                      <span className="font-medium md:hidden">
+                        {t("columns.lastEntry")}
+                      </span>
+                      <span>
+                        {row.lastEntryAt
+                          ? formatGregorianDate(row.lastEntryAt, locale, {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : t("never")}
+                      </span>
                     </TableCell>
-                    <TableCell className="text-xs text-muted-foreground">
-                      {row.lastLoginAt
-                        ? formatGregorianDate(row.lastLoginAt, locale, {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : t("never")}
+                    <TableCell className="flex items-center justify-between gap-2 px-0 pt-1.5 pb-0 text-xs text-muted-foreground md:table-cell md:px-2 md:py-2">
+                      <span className="font-medium md:hidden">
+                        {t("columns.lastLogin")}
+                      </span>
+                      <span>
+                        {row.lastLoginAt
+                          ? formatGregorianDate(row.lastLoginAt, locale, {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : t("never")}
+                      </span>
                     </TableCell>
                   </TableRow>
                 );

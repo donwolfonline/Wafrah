@@ -1,10 +1,9 @@
 "use client";
 
-import { FileSpreadsheet, Pencil, Plus, Power, Search } from "lucide-react";
+import { FileSpreadsheet, Plus, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,19 +13,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import type { AppLocale } from "@/i18n/request";
-import { formatCurrency } from "@/lib/format";
 import { toggleMenuItemActiveAction } from "./actions";
 import { MenuCsvDialog } from "./menu-csv-dialog";
 import { MenuItemDialog } from "./menu-item-dialog";
+import { MenuItemsTable } from "./menu-items-table";
 import type { SerializedMenuItem } from "./service";
 
 interface MenuManagerProps {
@@ -34,7 +24,6 @@ interface MenuManagerProps {
 }
 
 export function MenuManager({ initialItems }: MenuManagerProps) {
-  const locale = useLocale() as AppLocale;
   const t = useTranslations("menu");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -169,119 +158,13 @@ export function MenuManager({ initialItems }: MenuManagerProps) {
           </div>
         </CardHeader>
 
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("columns.name")}</TableHead>
-                <TableHead>{t("columns.category")}</TableHead>
-                <TableHead>{t("columns.unit")}</TableHead>
-                <TableHead className="text-end">
-                  {t("columns.unitCost")}
-                </TableHead>
-                <TableHead className="text-end">
-                  {t("columns.shortageCost")}
-                </TableHead>
-                <TableHead>{t("columns.status")}</TableHead>
-                <TableHead className="text-end">
-                  {t("columns.actions")}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredItems.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={7}
-                    className="py-8 text-center text-muted-foreground"
-                  >
-                    {t("emptyState")}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredItems.map((item) => (
-                  <TableRow
-                    key={item.id}
-                    data-testid={`menu-row-${item.id}`}
-                    className={!item.active ? "opacity-60" : undefined}
-                  >
-                    <TableCell>
-                      <div className="flex flex-col gap-0.5">
-                        <span className="font-semibold text-foreground">
-                          {item.nameAr || item.name}
-                        </span>
-                        {item.nameAr && item.name ? (
-                          <span className="text-xs text-muted-foreground">
-                            {item.name}
-                          </span>
-                        ) : null}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{item.category}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">{item.unit}</Badge>
-                    </TableCell>
-                    <TableCell className="text-end font-semibold text-primary">
-                      {formatCurrency(item.unitCost, locale)}
-                    </TableCell>
-                    <TableCell className="text-end">
-                      <div className="inline-flex flex-col items-end gap-0.5">
-                        <span className="font-medium">
-                          {formatCurrency(item.effectiveShortageCost, locale)}
-                        </span>
-                        {item.shortageCost === null ? (
-                          <span className="text-[11px] text-muted-foreground">
-                            ({t("defaultShortageTag")})
-                          </span>
-                        ) : null}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={item.active ? "default" : "outline"}
-                        data-testid={`status-badge-${item.id}`}
-                      >
-                        {item.active
-                          ? t("status.active")
-                          : t("status.inactive")}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-end">
-                      <div className="inline-flex items-center justify-end gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="xs"
-                          data-testid={`edit-item-${item.id}`}
-                          onClick={() => handleOpenEdit(item)}
-                        >
-                          <Pencil className="size-3" />
-                          <span>{t("editButton")}</span>
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={item.active ? "ghost" : "secondary"}
-                          size="xs"
-                          disabled={isPending}
-                          data-testid={`toggle-active-${item.id}`}
-                          onClick={() => handleToggleActive(item)}
-                        >
-                          <Power className="size-3" />
-                          <span>
-                            {item.active
-                              ? t("status.deactivate")
-                              : t("status.activate")}
-                          </span>
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+        <CardContent className="px-3 sm:px-6">
+          <MenuItemsTable
+            items={filteredItems}
+            isPending={isPending}
+            onEdit={handleOpenEdit}
+            onToggleActive={handleToggleActive}
+          />
         </CardContent>
       </Card>
 

@@ -58,186 +58,213 @@ export function CustomersTable({
   const locale = useLocale() as SupportedLocale;
 
   return (
-    <Card>
+    <Card className="min-w-0">
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <Table data-testid="admin-customers-table">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="px-3 text-start">
-                  {t("table.restaurant")}
-                </TableHead>
-                <TableHead className="px-2.5 text-start">
-                  {t("table.city")}
-                </TableHead>
-                <TableHead className="px-2.5 text-start">
-                  {t("table.plan")}
-                </TableHead>
-                <TableHead className="px-2.5 text-start">
-                  {t("table.status")}
-                </TableHead>
-                <TableHead className="px-2.5 text-start whitespace-nowrap">
-                  {t("table.renewsAt")}
-                </TableHead>
-                <TableHead className="px-2.5 text-start whitespace-nowrap">
-                  {t("table.users")}
-                </TableHead>
-                <TableHead className="px-2.5 text-start whitespace-nowrap">
-                  {t("table.lastActivity")}
-                </TableHead>
-                <TableHead className="px-2.5 text-start whitespace-nowrap">
-                  {t("table.entries7d")}
-                </TableHead>
-                <TableHead className="px-3 text-end">
-                  {t("table.actions")}
-                </TableHead>
+        <Table
+          data-testid="admin-customers-table"
+          className="block md:table"
+        >
+          <TableHeader className="hidden md:table-header-group">
+            <TableRow>
+              <TableHead className="px-3 text-start">
+                {t("table.restaurant")}
+              </TableHead>
+              <TableHead className="px-2.5 text-start">
+                {t("table.city")}
+              </TableHead>
+              <TableHead className="px-2.5 text-start">
+                {t("table.plan")}
+              </TableHead>
+              <TableHead className="px-2.5 text-start">
+                {t("table.status")}
+              </TableHead>
+              <TableHead className="px-2.5 text-start whitespace-nowrap">
+                {t("table.renewsAt")}
+              </TableHead>
+              <TableHead className="px-2.5 text-start whitespace-nowrap">
+                {t("table.users")}
+              </TableHead>
+              <TableHead className="px-2.5 text-start whitespace-nowrap">
+                {t("table.lastActivity")}
+              </TableHead>
+              <TableHead className="px-2.5 text-start whitespace-nowrap">
+                {t("table.entries7d")}
+              </TableHead>
+              <TableHead className="px-3 text-end">
+                {t("table.actions")}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="block space-y-3 p-3 md:table-row-group md:space-y-0 md:p-0">
+            {customers.length === 0 ? (
+              <TableRow className="block md:table-row">
+                <TableCell
+                  colSpan={9}
+                  className="block py-8 text-center text-sm text-muted-foreground md:table-cell"
+                >
+                  {t("table.empty")}
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {customers.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={9}
-                    className="py-8 text-center text-sm text-muted-foreground"
+            ) : (
+              customers.map((customer) => {
+                const isSuspended = customer.status === "SUSPENDED";
+                return (
+                  <TableRow
+                    key={customer.id}
+                    data-testid={`customer-row-${customer.code}`}
+                    data-status={customer.status ?? ""}
+                    className="block rounded-xl border bg-card p-3.5 shadow-2xs md:table-row md:rounded-none md:border-x-0 md:border-t-0 md:p-0 md:shadow-none"
                   >
-                    {t("table.empty")}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                customers.map((customer) => {
-                  const isSuspended = customer.status === "SUSPENDED";
-                  return (
-                    <TableRow
-                      key={customer.id}
-                      data-testid={`customer-row-${customer.code}`}
-                      data-status={customer.status ?? ""}
-                    >
-                      <TableCell className="max-w-[210px] px-3 py-3 text-start">
-                        <div className="truncate font-semibold text-foreground">
-                          {locale === "ar" ? customer.nameAr : customer.name}
-                        </div>
-                        <div className="truncate text-xs text-muted-foreground">
-                          {locale === "ar" ? customer.name : customer.nameAr}
-                        </div>
-                        <div
-                          dir="ltr"
-                          className="mt-0.5 truncate font-mono text-[11px] text-secondary text-start"
-                        >
-                          {customer.code} · {customer.type}
-                        </div>
-                      </TableCell>
+                    <TableCell className="block max-w-none border-b border-border/60 px-0 pt-0 pb-2.5 text-start md:table-cell md:max-w-[210px] md:border-b-0 md:px-3 md:py-3">
+                      <div className="truncate font-semibold text-foreground">
+                        {locale === "ar" ? customer.nameAr : customer.name}
+                      </div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {locale === "ar" ? customer.name : customer.nameAr}
+                      </div>
+                      <div
+                        dir="ltr"
+                        className="mt-0.5 truncate font-mono text-[11px] text-secondary text-start"
+                      >
+                        {customer.code} · {customer.type}
+                      </div>
+                    </TableCell>
 
-                      <TableCell className="px-2.5 py-3 text-xs whitespace-nowrap text-start">
-                        {customer.city}
-                      </TableCell>
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-xs whitespace-nowrap text-start md:table-cell md:px-2.5 md:py-3">
+                      <span className="font-medium text-muted-foreground md:hidden">
+                        {t("table.city")}
+                      </span>
+                      <span>{customer.city}</span>
+                    </TableCell>
 
-                      <TableCell className="px-2.5 py-3 text-start whitespace-nowrap">
-                        {customer.plan ? (
-                          <Badge variant="outline">
-                            {t(`plans.${customer.plan}`)}
-                          </Badge>
-                        ) : (
-                          t("table.none")
-                        )}
-                      </TableCell>
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-start whitespace-nowrap md:table-cell md:px-2.5 md:py-3">
+                      <span className="text-xs font-medium text-muted-foreground md:hidden">
+                        {t("table.plan")}
+                      </span>
+                      {customer.plan ? (
+                        <Badge variant="outline">
+                          {t(`plans.${customer.plan}`)}
+                        </Badge>
+                      ) : (
+                        t("table.none")
+                      )}
+                    </TableCell>
 
-                      <TableCell className="px-2.5 py-3 text-start whitespace-nowrap">
-                        {customer.status ? (
-                          <Badge variant={getStatusBadgeVariant(customer.status)}>
-                            {t(`statuses.${customer.status}`)}
-                          </Badge>
-                        ) : (
-                          t("table.none")
-                        )}
-                      </TableCell>
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-start whitespace-nowrap md:table-cell md:px-2.5 md:py-3">
+                      <span className="text-xs font-medium text-muted-foreground md:hidden">
+                        {t("table.status")}
+                      </span>
+                      {customer.status ? (
+                        <Badge variant={getStatusBadgeVariant(customer.status)}>
+                          {t(`statuses.${customer.status}`)}
+                        </Badge>
+                      ) : (
+                        t("table.none")
+                      )}
+                    </TableCell>
 
-                      <TableCell className="px-2.5 py-3 text-xs whitespace-nowrap text-muted-foreground text-start">
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-xs whitespace-nowrap text-muted-foreground text-start md:table-cell md:px-2.5 md:py-3">
+                      <span className="font-medium md:hidden">
+                        {t("table.renewsAt")}
+                      </span>
+                      <span>
                         {customer.renewsAt
                           ? formatGregorianDate(customer.renewsAt, locale)
                           : t("table.none")}
-                      </TableCell>
+                      </span>
+                    </TableCell>
 
-                      <TableCell className="px-2.5 py-3 text-xs whitespace-nowrap text-start">
-                        {formatNumber(customer.userCount, locale)}
-                      </TableCell>
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-xs whitespace-nowrap text-start md:table-cell md:px-2.5 md:py-3">
+                      <span className="font-medium text-muted-foreground md:hidden">
+                        {t("table.users")}
+                      </span>
+                      <span>{formatNumber(customer.userCount, locale)}</span>
+                    </TableCell>
 
-                      <TableCell className="px-2.5 py-3 text-xs whitespace-nowrap text-muted-foreground text-start">
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-xs whitespace-nowrap text-muted-foreground text-start md:table-cell md:px-2.5 md:py-3">
+                      <span className="font-medium md:hidden">
+                        {t("table.lastActivity")}
+                      </span>
+                      <span>
                         {customer.lastActivityAt
                           ? formatGregorianDate(customer.lastActivityAt, locale)
                           : t("table.never")}
-                      </TableCell>
+                      </span>
+                    </TableCell>
 
-                      <TableCell className="px-2.5 py-3 text-xs font-medium whitespace-nowrap text-start">
-                        {formatNumber(customer.entriesLast7Days, locale)}
-                      </TableCell>
+                    <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-xs font-medium whitespace-nowrap text-start md:table-cell md:px-2.5 md:py-3">
+                      <span className="text-muted-foreground md:hidden">
+                        {t("table.entries7d")}
+                      </span>
+                      <span>{formatNumber(customer.entriesLast7Days, locale)}</span>
+                    </TableCell>
 
-                      <TableCell className="px-3 py-3 text-end">
-                        <div className="flex flex-wrap justify-end gap-1">
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={() => onEditSubscription(customer)}
-                            data-testid={`edit-sub-${customer.code}`}
-                            className="h-7 gap-1 px-2 text-xs"
-                          >
-                            <Pencil className="size-3" />
-                            <span>{t("actions.editSubscription")}</span>
-                          </Button>
+                    <TableCell className="block border-t border-border/60 px-0 pt-2.5 pb-0 text-end md:table-cell md:border-t-0 md:px-3 md:py-3">
+                      <div className="grid grid-cols-2 gap-1.5 md:flex md:flex-wrap md:justify-end md:gap-1">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => onEditSubscription(customer)}
+                          data-testid={`edit-sub-${customer.code}`}
+                          className="h-8 gap-1 px-2 text-xs md:h-7"
+                        >
+                          <Pencil className="size-3 shrink-0" />
+                          <span className="truncate">{t("actions.editSubscription")}</span>
+                        </Button>
 
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant={isSuspended ? "secondary" : "destructive"}
-                            disabled={pendingSuspendId === customer.id}
-                            onClick={() => onToggleSuspension(customer)}
-                            data-testid={`suspend-toggle-${customer.code}`}
-                            className="h-7 gap-1 px-2 text-xs"
-                          >
-                            {isSuspended ? (
-                              <RotateCcw className="size-3" />
-                            ) : (
-                              <Ban className="size-3" />
-                            )}
-                            <span>
-                              {isSuspended
-                                ? t("actions.reactivate")
-                                : t("actions.suspend")}
-                            </span>
-                          </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={isSuspended ? "secondary" : "destructive"}
+                          disabled={pendingSuspendId === customer.id}
+                          onClick={() => onToggleSuspension(customer)}
+                          data-testid={`suspend-toggle-${customer.code}`}
+                          className="h-8 gap-1 px-2 text-xs md:h-7"
+                        >
+                          {isSuspended ? (
+                            <RotateCcw className="size-3 shrink-0" />
+                          ) : (
+                            <Ban className="size-3 shrink-0" />
+                          )}
+                          <span className="truncate">
+                            {isSuspended
+                              ? t("actions.reactivate")
+                              : t("actions.suspend")}
+                          </span>
+                        </Button>
 
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => onOpenDiagnostics(customer)}
-                            data-testid={`diagnostics-${customer.code}`}
-                            className="h-7 gap-1 px-2 text-xs"
-                          >
-                            <Stethoscope className="size-3" />
-                            <span>{t("actions.diagnostics")}</span>
-                          </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => onOpenDiagnostics(customer)}
+                          data-testid={`diagnostics-${customer.code}`}
+                          className="h-8 gap-1 px-2 text-xs md:h-7 md:border-transparent md:bg-transparent md:shadow-none"
+                        >
+                          <Stethoscope className="size-3 shrink-0" />
+                          <span className="truncate">{t("actions.diagnostics")}</span>
+                        </Button>
 
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => onRequestDelete(customer)}
-                            data-testid={`delete-${customer.code}`}
-                            className="h-7 gap-1 px-2 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-                          >
-                            <Trash2 className="size-3" />
-                            <span>{t("actions.delete")}</span>
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
-        </div>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => onRequestDelete(customer)}
+                          data-testid={`delete-${customer.code}`}
+                          className="h-8 gap-1 px-2 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive md:h-7"
+                        >
+                          <Trash2 className="size-3 shrink-0" />
+                          <span className="truncate">{t("actions.delete")}</span>
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );

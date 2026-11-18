@@ -93,8 +93,10 @@ export function FeedbackWidget({ kitchenMode = false }: FeedbackWidgetProps) {
   return (
     <div
       className={cn(
-        "fixed end-4 z-40 print:hidden",
-        kitchenMode ? "bottom-4 md:bottom-6 md:end-6" : "bottom-20 md:bottom-6 md:end-6",
+        "fixed end-3 z-40 print:hidden sm:end-4 md:bottom-6 md:end-6",
+        kitchenMode
+          ? "bottom-[calc(1rem+env(safe-area-inset-bottom))]"
+          : "bottom-[calc(4.5rem+env(safe-area-inset-bottom))]",
       )}
     >
       <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -103,11 +105,17 @@ export function FeedbackWidget({ kitchenMode = false }: FeedbackWidgetProps) {
             type="button"
             size={kitchenMode ? "lg" : "default"}
             variant="secondary"
+            aria-label={t("triggerLabel")}
             data-testid="floating-feedback-trigger"
-            className="gap-2 rounded-full border border-border/80 bg-card text-foreground shadow-lg hover:bg-accent"
+            className={cn(
+              "gap-2 rounded-full border border-border/80 bg-card text-foreground shadow-lg hover:bg-accent",
+              kitchenMode
+                ? "size-11 px-0 sm:h-10 sm:w-auto sm:px-5"
+                : "size-10 px-0 sm:h-9 sm:w-auto sm:px-4",
+            )}
           >
-            <MessageSquarePlus className="size-4 text-primary" />
-            <span>{t("triggerLabel")}</span>
+            <MessageSquarePlus className="size-4 shrink-0 text-primary" />
+            <span className="sr-only sm:not-sr-only">{t("triggerLabel")}</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
@@ -163,7 +171,7 @@ export function FeedbackWidget({ kitchenMode = false }: FeedbackWidgetProps) {
                 rows={4}
                 maxLength={2000}
                 placeholder={t("messagePlaceholder")}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-base shadow-xs outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm"
               />
             </div>
 

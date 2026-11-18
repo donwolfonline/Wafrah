@@ -39,10 +39,10 @@ export async function HeatmapReasonsGrid({
     <div className="grid gap-6 lg:grid-cols-12">
       <Card
         data-testid="dashboard-heatmap"
-        className="lg:col-span-7 text-start"
+        className="min-w-0 lg:col-span-7 text-start"
       >
-        <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-1">
+        <CardHeader className="flex flex-col gap-2 px-4 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+          <div className="min-w-0 space-y-1">
             <CardTitle className="text-lg text-primary">
               {t("heatmap.title")}
             </CardTitle>
@@ -50,7 +50,7 @@ export async function HeatmapReasonsGrid({
           </div>
           <div
             aria-label={t("heatmap.title")}
-            className="flex shrink-0 items-center gap-1.5 pt-1 text-xs text-muted-foreground"
+            className="flex shrink-0 flex-wrap items-center gap-1.5 pt-1 text-xs text-muted-foreground"
           >
             <span>{t("heatmap.legendLow")}</span>
             {([0, 1, 2, 3, 4] as const).map((level) => (
@@ -66,7 +66,7 @@ export async function HeatmapReasonsGrid({
             <span>{t("heatmap.legendHigh")}</span>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-3 sm:px-6">
           <div
             role="grid"
             aria-label={t("heatmap.title")}
@@ -74,16 +74,16 @@ export async function HeatmapReasonsGrid({
           >
             <div
               role="row"
-              className="grid grid-cols-[minmax(3.75rem,0.9fr)_1fr_1fr_1fr] gap-1.5 text-xs font-semibold text-muted-foreground"
+              className="grid grid-cols-[minmax(2.75rem,0.8fr)_1fr_1fr_1fr] gap-1 text-[11px] font-semibold text-muted-foreground sm:grid-cols-[minmax(3.75rem,0.9fr)_1fr_1fr_1fr] sm:gap-1.5 sm:text-xs"
             >
-              <div role="columnheader" className="px-1 py-1 text-start">
+              <div role="columnheader" className="px-0.5 py-1 text-start sm:px-1">
                 {t("heatmap.weekdayHeader")}
               </div>
               {SHIFTS.map((shift) => (
                 <div
                   key={shift}
                   role="columnheader"
-                  className="px-1 py-1 text-center"
+                  className="truncate px-0.5 py-1 text-center sm:px-1"
                 >
                   {t(`heatmap.shifts.${shift}`)}
                 </div>
@@ -96,11 +96,11 @@ export async function HeatmapReasonsGrid({
                 <div
                   key={weekday}
                   role="row"
-                  className="grid grid-cols-[minmax(3.75rem,0.9fr)_1fr_1fr_1fr] items-center gap-1.5"
+                  className="grid grid-cols-[minmax(2.75rem,0.8fr)_1fr_1fr_1fr] items-center gap-1 sm:grid-cols-[minmax(3.75rem,0.9fr)_1fr_1fr_1fr] sm:gap-1.5"
                 >
                   <div
                     role="rowheader"
-                    className="truncate px-1 text-xs font-semibold text-foreground sm:text-sm"
+                    className="truncate px-0.5 text-[11px] font-semibold text-foreground sm:px-1 sm:text-sm"
                   >
                     {weekdayLabel}
                   </div>
@@ -134,7 +134,7 @@ export async function HeatmapReasonsGrid({
                         })}
                         title={`${formattedFull} (${t("reasons.entriesCount", { count: cell.entryCount })})`}
                         className={cn(
-                          "flex min-h-10 items-center justify-center rounded-md border px-1.5 py-1.5 text-xs tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-ring",
+                          "flex min-h-10 min-w-0 items-center justify-center rounded-md border px-1 py-1 text-[11px] tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-ring sm:px-1.5 sm:py-1.5 sm:text-xs",
                           HEATMAP_CELL_TONES[cell.intensity],
                         )}
                       >
@@ -151,15 +151,15 @@ export async function HeatmapReasonsGrid({
 
       <Card
         data-testid="dashboard-reasons-card"
-        className="lg:col-span-5 text-start"
+        className="min-w-0 lg:col-span-5 text-start"
       >
-        <CardHeader>
+        <CardHeader className="px-4 sm:px-6">
           <CardTitle className="text-lg text-primary">
             {t("reasons.title")}
           </CardTitle>
           <CardDescription>{t("reasons.description")}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           {reasons.length === 0 ? (
             <div className="flex h-48 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
               {t("reasons.empty")}
@@ -174,13 +174,13 @@ export async function HeatmapReasonsGrid({
                 return (
                   <li key={item.reason} className="space-y-1.5">
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2 text-sm">
-                      <div className="flex items-center gap-2 font-medium text-foreground">
+                      <div className="flex min-w-0 items-center gap-2 font-medium text-foreground">
                         <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-bold text-primary tabular-nums">
                           {idx + 1}
                         </span>
-                        <span>{tWaste(`reasons.${item.reason}`)}</span>
+                        <span className="truncate">{tWaste(`reasons.${item.reason}`)}</span>
                       </div>
-                      <div className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-xs tabular-nums">
+                      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs tabular-nums">
                         <span className="text-muted-foreground">
                           {t("reasons.entriesCount", { count: item.entryCount })}
                         </span>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   Bar,
@@ -40,10 +41,29 @@ interface WasteChartsProps {
   itemBars: ItemWasteBarDatum[];
 }
 
+const COMPACT_MEDIA_QUERY = "(max-width: 639px)";
+
+function subscribeCompactViewport(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const media = window.matchMedia(COMPACT_MEDIA_QUERY);
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+
+function getCompactSnapshot() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia(COMPACT_MEDIA_QUERY).matches;
+}
+
 export function WasteCharts({ dailyTrend, itemBars }: WasteChartsProps) {
   const locale = useLocale() as SupportedLocale;
   const t = useTranslations("dashboard");
   const isRtl = locale === "ar";
+  const isCompact = useSyncExternalStore(
+    subscribeCompactViewport,
+    getCompactSnapshot,
+    () => false,
+  );
 
   const hasTrendWaste = dailyTrend.some(
     (d) => toNumericValue(d.wasteSar) > 0,
@@ -68,7 +88,7 @@ export function WasteCharts({ dailyTrend, itemBars }: WasteChartsProps) {
     <div className="grid gap-6 lg:grid-cols-12">
       <Card
         data-testid="dashboard-trend-chart"
-        className="lg:col-span-7 text-start"
+        className="min-w-0 lg:col-span-7 text-start"
       >
         <CardHeader>
           <CardTitle className="text-lg text-primary">
@@ -145,7 +165,7 @@ export function WasteCharts({ dailyTrend, itemBars }: WasteChartsProps) {
 
       <Card
         data-testid="dashboard-items-chart"
-        className="lg:col-span-5 text-start"
+        className="min-w-0 lg:col-span-5 text-start"
       >
         <CardHeader>
           <CardTitle className="text-lg text-primary">
@@ -183,12 +203,12 @@ export function WasteCharts({ dailyTrend, itemBars }: WasteChartsProps) {
                   {t("itemsChart.tierLow")}
                 </span>
               </div>
-              <div className="h-64 w-full min-w-0" dir="ltr">
+              <div className="h-64 w-full min-w-0 sm:h-72" dir="ltr">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={barData}
                     layout="vertical"
-                    margin={{ top: 4, right: 16, left: 8, bottom: 4 }}
+                    margin={{ top: 4, right: isCompact ? 10 : 16, left: 4, bottom: 4 }}
                   >
                     <CartesianGrid
                       strokeDasharray="3 3"
@@ -205,11 +225,14 @@ export function WasteCharts({ dailyTrend, itemBars }: WasteChartsProps) {
                     <YAxis
                       type="category"
                       dataKey="label"
-                      width={148}
-                      tick={{ fontSize: 11, fill: "#1a1a1a" }}
-                      tickFormatter={(label: string) =>
-                        label.length > 24 ? `${label.slice(0, 23)}…` : label
-                      }
+                      width={isCompact ? 104 : 148}
+                      tick={{ fontSize: isCompact ? 10 : 11, fill: "#1a1a1a" }}
+                      tickFormatter={(label: string) => {
+                        const maxChars = isCompact ? 15 : 24;
+                        return label.length > maxChars
+                          ? `${label.slice(0, maxChars - 1)}…`
+                          : label;
+                      }}
                     />
                     <Tooltip
                       wrapperStyle={{ direction: isRtl ? "rtl" : "ltr" }}

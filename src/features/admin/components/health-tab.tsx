@@ -125,7 +125,7 @@ export function HealthTab({ health }: HealthTabProps) {
                 return (
                   <div
                     key={day.dateKey}
-                    className="grid grid-cols-[96px_1fr_auto] items-center gap-3 text-xs"
+                    className="grid grid-cols-[68px_1fr_auto] items-center gap-2 text-xs sm:grid-cols-[96px_1fr_auto] sm:gap-3"
                   >
                     <span className="text-muted-foreground">
                       {formatGregorianDate(`${day.dateKey}T12:00:00.000Z`, locale, {
@@ -176,9 +176,9 @@ export function HealthTab({ health }: HealthTabProps) {
               {t("health.wapeEmpty")}
             </p>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
+            <div className="md:overflow-x-auto">
+              <Table className="block md:table">
+                <TableHeader className="hidden md:table-header-group">
                   <TableRow>
                     <TableHead className="text-start">
                       {t("table.restaurant")}
@@ -195,14 +195,15 @@ export function HealthTab({ health }: HealthTabProps) {
                     </TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="block space-y-3 md:table-row-group md:space-y-0">
                   {health.forecastAccuracy.map((row) => (
                     <TableRow
                       key={row.tenantId}
                       data-testid={`wape-row-${row.code}`}
                       data-flagged={row.flaggedHighWape ? "true" : "false"}
+                      className="block rounded-xl border bg-card p-3.5 md:table-row md:rounded-none md:border-x-0 md:border-t-0 md:p-0"
                     >
-                      <TableCell>
+                      <TableCell className="block border-b border-border/60 px-0 pt-0 pb-2 md:table-cell md:border-b-0 md:px-2 md:py-2">
                         <div className="font-medium text-foreground">
                           {locale === "ar" ? row.nameAr : row.name}
                         </div>
@@ -210,23 +211,39 @@ export function HealthTab({ health }: HealthTabProps) {
                           {row.code}
                         </div>
                       </TableCell>
-                      <TableCell>
-                        {formatNumber(row.evaluationCount, locale)}
+                      <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-sm md:table-cell md:px-2 md:py-2">
+                        <span className="text-xs font-medium text-muted-foreground md:hidden">
+                          {t("health.evaluationsCount")}
+                        </span>
+                        <span>{formatNumber(row.evaluationCount, locale)}</span>
                       </TableCell>
-                      <TableCell className="font-semibold">
-                        {row.averageWapePct !== null
-                          ? `${formatNumber(row.averageWapePct, locale, {
-                              minimumFractionDigits: 1,
-                              maximumFractionDigits: 1,
-                            })}%`
-                          : t("table.none")}
+                      <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 font-semibold md:table-cell md:px-2 md:py-2">
+                        <span className="text-xs font-medium text-muted-foreground md:hidden">
+                          WAPE
+                        </span>
+                        <span>
+                          {row.averageWapePct !== null
+                            ? `${formatNumber(row.averageWapePct, locale, {
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 1,
+                              })}%`
+                            : t("table.none")}
+                        </span>
                       </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
-                        {row.latestEvaluatedAt
-                          ? formatGregorianDate(row.latestEvaluatedAt, locale)
-                          : t("table.none")}
+                      <TableCell className="flex items-center justify-between gap-2 px-0 py-1.5 text-xs text-muted-foreground md:table-cell md:px-2 md:py-2">
+                        <span className="font-medium md:hidden">
+                          {t("health.latestEvaluation")}
+                        </span>
+                        <span>
+                          {row.latestEvaluatedAt
+                            ? formatGregorianDate(row.latestEvaluatedAt, locale)
+                            : t("table.none")}
+                        </span>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="flex items-center justify-between gap-2 px-0 pt-1.5 pb-0 md:table-cell md:px-2 md:py-2">
+                        <span className="text-xs font-medium text-muted-foreground md:hidden">
+                          {t("table.status")}
+                        </span>
                         {row.averageWapePct === null ? (
                           <Badge variant="outline">{t("health.wapeNoData")}</Badge>
                         ) : row.flaggedHighWape ? (

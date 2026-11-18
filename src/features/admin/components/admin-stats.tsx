@@ -57,16 +57,19 @@ export function AdminStats({ overview }: AdminStatsProps) {
   ];
 
   return (
-    <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-      {cards.map((card) => (
-        <Card key={card.label} className="text-start">
-          <CardHeader className="pb-2">
+    <section className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5">
+      {cards.map((card, index) => (
+        <Card
+          key={card.label}
+          className={`min-w-0 text-start ${index === cards.length - 1 ? "col-span-2 sm:col-span-1" : ""}`}
+        >
+          <CardHeader className="px-3.5 pb-1.5 sm:px-6 sm:pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground">
               {card.label}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${card.colorClass}`}>
+          <CardContent className="px-3.5 sm:px-6">
+            <div className={`text-xl font-bold tabular-nums sm:text-2xl ${card.colorClass}`}>
               {card.value}
             </div>
           </CardContent>

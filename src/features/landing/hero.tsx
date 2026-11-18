@@ -33,18 +33,18 @@ export function Hero({
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_end,rgba(201,162,39,0.14),transparent_48%),radial-gradient(circle_at_bottom_start,rgba(14,107,92,0.55),transparent_55%)]"
       />
-      <div className="relative mx-auto grid max-w-[1100px] items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-8 lg:py-20">
-        <div className="space-y-6 text-start lg:col-span-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand-gold/60 bg-brand-mid-teal px-3.5 py-1.5 text-xs font-semibold text-white sm:text-sm">
-            <span className="size-2 rounded-full bg-brand-gold" aria-hidden="true" />
+      <div className="relative mx-auto grid max-w-[1100px] items-center gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-16 lg:grid-cols-12 lg:gap-8 lg:py-20">
+        <div className="min-w-0 space-y-6 text-start lg:col-span-6">
+          <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-brand-gold/60 bg-brand-mid-teal px-3 py-1.5 text-xs font-semibold text-white sm:px-3.5 sm:text-sm">
+            <span className="size-2 shrink-0 rounded-full bg-brand-gold" aria-hidden="true" />
             <span>{eyebrow}</span>
           </div>
 
-          <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h1 className="text-2xl font-bold leading-tight tracking-tight text-white min-[360px]:text-3xl sm:text-4xl lg:text-5xl">
             {title}
           </h1>
 
-          <p className="max-w-xl text-base leading-relaxed text-[#E4F2EE] sm:text-lg">
+          <p className="max-w-xl text-sm leading-relaxed text-[#E4F2EE] min-[360px]:text-base sm:text-lg">
             {subtitle}
           </p>
 
@@ -52,7 +52,7 @@ export function Hero({
             <PilotCtaLink
               locale={locale}
               location="hero"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-brand-gold px-6 py-3 text-base font-bold text-brand-text shadow-md transition-colors hover:bg-[#d8b136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-brand-gold px-4 py-3 text-center text-sm font-bold text-brand-text shadow-md transition-colors hover:bg-[#d8b136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white min-[360px]:px-6 min-[360px]:text-base sm:w-auto"
             >
               <span>{primaryCta}</span>
               <DirectionalArrowIcon />
@@ -67,12 +67,12 @@ export function Hero({
             />
           </div>
 
-          <p className="text-sm font-medium text-[#DDECE8]">
+          <p className="text-xs font-medium text-[#DDECE8] min-[360px]:text-sm">
             {note}
           </p>
         </div>
 
-        <div className="lg:col-span-6">
+        <div className="min-w-0 lg:col-span-6">
           <HeroProductMock copy={mock} />
         </div>
       </div>

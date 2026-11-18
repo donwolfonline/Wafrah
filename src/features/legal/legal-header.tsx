@@ -53,10 +53,10 @@ export function LegalHeader({
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/15 bg-brand-dark-teal/95 text-white backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-[1100px] items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-[1100px] items-center justify-between gap-1.5 px-3 sm:gap-4 sm:px-6">
         <Link
           href={homeHref}
-          className="shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+          className="min-w-0 shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
         >
           <BrandLogo
             wordmark={brandWordmark}
@@ -85,8 +85,8 @@ export function LegalHeader({
           ))}
         </nav>
 
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <LanguageSwitcher className="rounded-md border-white/25 bg-white/10 px-2.5 text-xs font-medium text-white shadow-none hover:bg-white/20 hover:text-white sm:px-3 sm:text-sm [&_svg]:text-brand-gold" />
+        <div className="flex min-w-0 shrink-0 items-center gap-1.5 sm:gap-3">
+          <LanguageSwitcher className="rounded-md border-white/25 bg-white/10 px-2 text-xs font-medium text-white shadow-none hover:bg-white/20 hover:text-white sm:px-3 sm:text-sm [&_svg]:hidden min-[360px]:[&_svg]:inline-block [&_svg]:text-brand-gold" />
 
           <Link
             href={authHref}
@@ -99,7 +99,7 @@ export function LegalHeader({
             href={`${homeHref}#join`}
             locale={locale}
             location="header"
-            className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-brand-gold px-3 py-2 text-xs font-semibold text-brand-text shadow-xs transition-colors hover:bg-[#d8b136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:min-h-10 sm:px-4 sm:text-sm"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-brand-gold px-2.5 py-2 text-xs font-semibold text-brand-text shadow-xs transition-colors hover:bg-[#d8b136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:min-h-10 sm:px-4 sm:text-sm"
           >
             <span className="sm:hidden">{shortCtaLabel}</span>
             <span className="hidden sm:inline">{requestPilotLabel}</span>

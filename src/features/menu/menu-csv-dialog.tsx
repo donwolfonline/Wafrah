@@ -110,7 +110,7 @@ export function MenuCsvDialog({
 
             <div className="space-y-1.5">
               <Label htmlFor="menu-csv-paste">{t("csv.pasteLabel")}</Label>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <textarea
                   id="menu-csv-paste"
                   data-testid="menu-csv-textarea"
@@ -119,7 +119,7 @@ export function MenuCsvDialog({
                   value={csvText}
                   onChange={(e) => setCsvText(e.target.value)}
                   placeholder={t("csv.pastePlaceholder")}
-                  className="flex-1 rounded-md border border-input bg-card px-3 py-2 font-mono text-xs text-start focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none"
+                  className="flex-1 rounded-md border border-input bg-card px-3 py-2 font-mono text-base text-start focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none md:text-xs"
                 />
                 <Button
                   type="button"

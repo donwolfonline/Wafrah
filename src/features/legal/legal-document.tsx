@@ -13,6 +13,7 @@ import {
   type LegalDocumentNamespace,
   parseLegalSections,
 } from "./legal-sections";
+import { LegalTocCard } from "./legal-toc-card";
 
 export async function LegalDocument({
   namespace,
@@ -107,57 +108,25 @@ export async function LegalDocument({
           </div>
         </section>
 
-        <section className="px-4 py-10 sm:px-6 sm:py-14">
-          <div className="mx-auto grid max-w-[1100px] gap-8 lg:grid-cols-12 lg:items-start">
-            <aside className="space-y-5 lg:sticky lg:top-24 lg:col-span-4">
-              <nav
-                aria-label={tLegal("tocLabel")}
-                className="rounded-2xl border border-border bg-white p-5 text-start shadow-xs"
-              >
-                <div className="flex items-center justify-between gap-2 border-b border-border pb-3">
-                  <h2 className="text-sm font-bold text-brand-dark-teal">
-                    {tLegal("tocTitle")}
-                  </h2>
-                  <span className="rounded-full bg-brand-light-tint px-2.5 py-0.5 text-xs font-semibold tabular-nums text-brand-mid-teal ring-1 ring-border">
-                    {tLegal("sectionCount", { count: sections.length })}
-                  </span>
-                </div>
-                <ol className="mt-3 space-y-1">
-                  {sections.map((section) => (
-                    <li key={section.id}>
-                      <a
-                        href={`#${section.id}`}
-                        className="flex items-start gap-2.5 rounded-lg px-2 py-1.5 text-sm leading-snug text-brand-text transition-colors hover:bg-brand-light-tint hover:text-brand-dark-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-mid-teal"
-                      >
-                        <span className="shrink-0 font-semibold tabular-nums text-brand-mid-teal">
-                          {section.number}.
-                        </span>
-                        <span>{section.headingText}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
+        <section className="px-3.5 py-8 sm:px-6 sm:py-14">
+          <div className="mx-auto grid max-w-[1100px] gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
+            <div className="min-w-0 lg:col-span-4 lg:col-start-1 lg:row-start-1">
+              <LegalTocCard
+                tocLabel={tLegal("tocLabel")}
+                tocTitle={tLegal("tocTitle")}
+                sectionCountLabel={tLegal("sectionCount", {
+                  count: sections.length,
+                })}
+                sections={sections.map((s) => ({
+                  id: s.id,
+                  number: s.number,
+                  headingText: s.headingText,
+                }))}
+              />
+            </div>
 
-              <div className="space-y-3 rounded-2xl border border-border bg-white p-5 text-start shadow-xs">
-                <h2 className="text-sm font-bold text-brand-dark-teal">
-                  {tLegal("needHelpHeading")}
-                </h2>
-                <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
-                  {tLegal("needHelpBody")}
-                </p>
-                <Link
-                  href="/help"
-                  className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-brand-mid-teal/30 bg-brand-light-tint px-3 py-1.5 text-xs font-semibold text-brand-dark-teal transition-colors hover:border-brand-mid-teal hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-mid-teal"
-                >
-                  <span>{tLegal("contactHelp")}</span>
-                  <DirectionalArrowIcon className="size-3.5" />
-                </Link>
-              </div>
-            </aside>
-
-            <div className="lg:col-span-8">
-              <Card className="overflow-hidden rounded-2xl border-border bg-white py-0 text-start shadow-xs">
+            <div className="min-w-0 lg:col-span-8 lg:col-start-5 lg:row-span-2 lg:row-start-1">
+              <Card className="min-w-0 overflow-hidden rounded-2xl border-border bg-white py-0 text-start shadow-xs">
                 <div
                   aria-hidden="true"
                   className="h-1.5 w-full bg-gradient-to-r from-brand-dark-teal via-brand-gold to-brand-dark-teal"
@@ -168,7 +137,7 @@ export async function LegalDocument({
                       <section
                         key={section.id}
                         id={section.id}
-                        className="scroll-mt-24 space-y-3.5 px-5 py-6 text-start sm:px-8 sm:py-7"
+                        className="scroll-mt-24 space-y-3.5 px-4 py-5 text-start sm:px-8 sm:py-7"
                       >
                         <div className="flex items-center gap-3">
                           <span
@@ -177,7 +146,7 @@ export async function LegalDocument({
                           >
                             {section.number}
                           </span>
-                          <h2 className="text-lg font-bold leading-snug text-brand-dark-teal sm:text-xl">
+                          <h2 className="text-base font-bold leading-snug text-brand-dark-teal sm:text-xl">
                             <span className="sr-only">{section.number}. </span>
                             {section.headingText}
                           </h2>
@@ -193,7 +162,7 @@ export async function LegalDocument({
                         ))}
 
                         {section.items.length > 0 ? (
-                          <ul className="list-disc space-y-2.5 ps-6 text-sm leading-7 text-brand-text marker:text-brand-gold sm:text-base">
+                          <ul className="list-disc space-y-2.5 ps-5 text-sm leading-7 text-brand-text marker:text-brand-gold sm:ps-6 sm:text-base">
                             {section.items.map((item) => (
                               <li key={item}>{item}</li>
                             ))}
@@ -203,7 +172,7 @@ export async function LegalDocument({
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border bg-brand-light-tint/55 px-5 py-4 text-sm sm:px-8">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-brand-light-tint/55 px-4 py-4 text-sm sm:px-8">
                     <div className="flex flex-wrap items-center gap-4">
                       <Link
                         href={otherHref}
@@ -227,6 +196,22 @@ export async function LegalDocument({
                   </div>
                 </CardContent>
               </Card>
+            </div>
+
+            <div className="min-w-0 space-y-3 rounded-2xl border border-border bg-white p-5 text-start shadow-xs lg:col-span-4 lg:col-start-1 lg:row-start-2">
+              <h2 className="text-sm font-bold text-brand-dark-teal">
+                {tLegal("needHelpHeading")}
+              </h2>
+              <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                {tLegal("needHelpBody")}
+              </p>
+              <Link
+                href="/help"
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-brand-mid-teal/30 bg-brand-light-tint px-3 py-1.5 text-xs font-semibold text-brand-dark-teal transition-colors hover:border-brand-mid-teal hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-mid-teal"
+              >
+                <span>{tLegal("contactHelp")}</span>
+                <DirectionalArrowIcon className="size-3.5" />
+              </Link>
             </div>
           </div>
         </section>

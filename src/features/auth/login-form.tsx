@@ -118,14 +118,14 @@ export function LoginForm({
   }
 
   return (
-    <Card className="w-full max-w-md border-primary/15 shadow-md">
-      <CardHeader className="text-start">
-        <CardTitle className="text-2xl font-bold text-primary">
+    <Card className="my-auto w-full max-w-md border-primary/15 shadow-md">
+      <CardHeader className="px-4 text-start sm:px-6">
+        <CardTitle className="text-xl font-bold text-primary sm:text-2xl">
           {t("loginTitle")}
         </CardTitle>
         <CardDescription>{t("loginSubtitle")}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4 sm:px-6">
         <Tabs
           value={activeTab}
           onValueChange={(val) => {
@@ -134,7 +134,7 @@ export function LoginForm({
           }}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-2 mb-5 h-12 p-1">
+          <TabsList className="mb-5 grid h-auto min-h-12 w-full grid-cols-2 items-stretch p-1 group-data-[orientation=horizontal]/tabs:h-auto">
             <TabsTrigger value="manager" className="min-h-10 font-semibold">
               {t("tabs.manager")}
             </TabsTrigger>

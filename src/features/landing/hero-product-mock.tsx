@@ -49,23 +49,23 @@ export function HeroProductMock({ copy }: HeroProductMockProps) {
     <div
       role="group"
       aria-label={copy.frameRegionLabel}
-      className="relative mx-auto w-full max-w-[540px] lg:max-w-none"
+      className="relative mx-auto w-full min-w-0 max-w-[540px] lg:max-w-none"
     >
       {/* Browser dashboard frame */}
-      <div className="overflow-hidden rounded-2xl border border-white/20 bg-white text-brand-text shadow-2xl">
-        <div className="flex items-center justify-between gap-2 border-b border-border bg-brand-light-tint px-3.5 py-2.5">
-          <div className="flex items-center gap-1.5" aria-hidden="true">
+      <div className="min-w-0 overflow-hidden rounded-2xl border border-white/20 bg-white text-brand-text shadow-2xl">
+        <div className="flex items-center justify-between gap-2 border-b border-border bg-brand-light-tint px-3 py-2.5 sm:px-3.5">
+          <div className="flex shrink-0 items-center gap-1.5" aria-hidden="true">
             <span className="size-2.5 rounded-full bg-[#D97757]" />
             <span className="size-2.5 rounded-full bg-brand-gold" />
             <span className="size-2.5 rounded-full bg-brand-mid-teal" />
           </div>
           <span
             dir="ltr"
-            className="truncate rounded border border-border bg-white px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"
+            className="min-w-0 truncate rounded border border-border bg-white px-2 py-0.5 text-[11px] font-medium text-muted-foreground sm:px-2.5"
           >
             {copy.urlLabel}
           </span>
-          <Badge variant="accent" className="text-[11px] font-semibold">
+          <Badge variant="accent" className="shrink-0 text-[11px] font-semibold">
             {copy.demoBadge}
           </Badge>
         </div>

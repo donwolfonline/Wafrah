@@ -40,10 +40,10 @@ export function LandingHeader({
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/15 bg-brand-dark-teal/95 text-white backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-[1100px] items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-[1100px] items-center justify-between gap-1.5 px-3 sm:gap-4 sm:px-6">
         <Link
           href={homeHref}
-          className="shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+          className="min-w-0 shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
         >
           <BrandLogo wordmark={brandWordmark} subtitle={pilotTag} variant="onDark" />
         </Link>

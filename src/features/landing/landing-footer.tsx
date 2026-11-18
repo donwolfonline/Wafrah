@@ -47,7 +47,7 @@ export function LandingFooter({
   const homeHref = locale === "en" ? "/en" : "/";
 
   return (
-    <footer className="bg-[#072621] px-4 pt-12 pb-24 text-white sm:px-6 sm:pb-12">
+    <footer className="bg-[#072621] px-4 pt-12 pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-white sm:px-6 sm:pb-12">
       <div className="mx-auto max-w-[1100px] space-y-10">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12">
           <div className="space-y-3 text-start lg:col-span-5">
