@@ -249,7 +249,7 @@ export function buildWebManifest(locale: "ar" | "en") {
     name: isAr
       ? "وفرة — Wafrah لإدارة الهدر الغذائي"
       : "Wafrah — وفرة Food Waste Management",
-    short_name: "وفرة / Wafrah",
+    short_name: "Wafrah وفرة",
     description: isAr
       ? "منصة ذكية لتسجيل الهدر الغذائي في المطبخ في أقل من 10 ثوانٍ للمطاعم والفنادق في المملكة العربية السعودية"
       : "Fast offline-first kitchen food waste logging and analytics for restaurants and hotels in Saudi Arabia",

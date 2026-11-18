@@ -113,14 +113,14 @@ describe("landing route access and config helpers", () => {
   it("renders matching BrandLogo SVG emblem for both landing dark and app light headers", () => {
     const landingHtml = renderToStaticMarkup(
       BrandLogo({
-        wordmark: "وفرة / Wafrah",
+        wordmark: "Wafrah وفرة",
         subtitle: "برنامج تجريبي",
         variant: "onDark",
       }),
     );
     const appHtml = renderToStaticMarkup(
       BrandLogo({
-        wordmark: "وفرة / Wafrah",
+        wordmark: "Wafrah وفرة",
         subtitle: "منصة ذكية للحد من الهدر الغذائي",
         variant: "onLight",
       }),
@@ -130,7 +130,7 @@ describe("landing route access and config helpers", () => {
       expect(html).toContain('data-brand-mark="wafrah"');
       expect(html).toContain('stroke="#C9A227"');
       expect(html).toContain("M18 8.5C13.6 11.4");
-      expect(html).toContain("وفرة / Wafrah");
+      expect(html).toContain("Wafrah وفرة");
     }
     expect(landingHtml).toContain("#0E6B5C");
     expect(appHtml).toContain("#0B4F45");

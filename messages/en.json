@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "Wafrah",
-    "logoText": "وفرة / Wafrah",
+    "logoText": "Wafrah وفرة",
     "tagline": "AI-Powered Food Waste Management",
     "metaTitle": "Wafrah — Food Waste Management",
     "metaDescription": "Food waste analytics, demand forecasting, and SAR savings tracking for restaurants and hotels in Saudi Arabia."
@@ -1012,7 +1012,7 @@
       }
     },
     "emails": {
-      "brandHeader": "Wafrah / وفرة",
+      "brandHeader": "Wafrah وفرة",
       "brandTagline": "AI-Powered Food Waste Management",
       "footerNote": "You received this email based on your Wafrah notification preferences.",
       "managePreferencesLabel": "Manage notification preferences",

@@ -68,7 +68,7 @@ Keep **all authenticated app routes unprefixed and cookie/profile driven** (`/lo
 All copy keys live under `landing.*` in `messages/ar.json` and `messages/en.json`.
 
 ### 1. Header & Hero
-- **Header:** Brand mark (`وفرة / Wafrah`), language link (`English` / `العربية`), `"Sign in"` (`/login`) or `"Go to workspace"` when authenticated, compact pilot jump link on desktop/tablet.
+- **Header:** Brand mark (`Wafrah وفرة`), language link (`English` / `العربية`), `"Sign in"` (`/login`) or `"Go to workspace"` when authenticated, compact pilot jump link on desktop/tablet.
 - **Hero:**
   - Title, practical subheadline mentioning 10-second logging, weekly buy/prep recommendations, and savings in SAR.
   - Primary CTA button (`Request a spot in the pilot` -> smooth-scrolls to `#pilot-form` and focuses first input).
