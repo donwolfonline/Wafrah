@@ -1,6 +1,7 @@
 import { env as runtimeEnv } from "@/env";
+import { SW_CACHE_PREFIX } from "./pwa-constants";
 
-export const SW_CACHE_PREFIX = "wafrah-assets-";
+export { SW_CACHE_PREFIX };
 
 export const STATIC_PRECACHE_URLS = [
   "/manifest.webmanifest",
@@ -78,6 +79,7 @@ export function isCacheableSwRequest(params: {
   mode?: string;
   acceptHeader?: string;
   hasRscHeader?: boolean;
+  buildId?: string;
 }): boolean {
   if (params.method.toUpperCase() !== "GET") {
     return false;
@@ -124,7 +126,7 @@ export function isCacheableSwRequest(params: {
   }
 
   if (pathname.startsWith("/_next/static/")) {
-    return true;
+    return params.buildId !== "dev";
   }
 
   if (
@@ -145,10 +147,12 @@ export function isCacheableSwRequest(params: {
  */
 export function generateServiceWorkerScript(buildId: string): string {
   const cacheName = buildSwCacheName(buildId);
+  const isDevBuild = buildId === "dev";
 
   return `// Build ID: ${buildId}
 const CACHE_NAME = ${JSON.stringify(cacheName)};
 const CACHE_PREFIX = ${JSON.stringify(SW_CACHE_PREFIX)};
+const IS_DEV_BUILD = ${JSON.stringify(isDevBuild)};
 const PRECACHE_URLS = ${JSON.stringify([...STATIC_PRECACHE_URLS])};
 const AUTH_PREFIXES = ${JSON.stringify([...AUTHENTICATED_ROUTE_PREFIXES])};
 const ASSET_EXT_REGEX = /\\.(?:png|jpg|jpeg|webp|svg|ico|woff2)$/i;
@@ -182,7 +186,7 @@ function isCacheableAsset(request) {
     }
   }
   if (url.pathname.startsWith("/_next/static/")) {
-    return true;
+    return !IS_DEV_BUILD;
   }
   if (
     url.pathname === "/manifest.webmanifest" ||
@@ -195,6 +199,9 @@ function isCacheableAsset(request) {
 }
 
 self.addEventListener("install", (event) => {
+  if (IS_DEV_BUILD) {
+    return;
+  }
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)),
   );
@@ -207,7 +214,11 @@ self.addEventListener("activate", (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+            .filter(
+              (key) =>
+                key.startsWith(CACHE_PREFIX) &&
+                (IS_DEV_BUILD || key !== CACHE_NAME),
+            )
             .map((key) => caches.delete(key)),
         ),
       ),

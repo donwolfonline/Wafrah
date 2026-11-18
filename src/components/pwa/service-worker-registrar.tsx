@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { SW_CACHE_PREFIX } from "@/lib/pwa-constants";
 
 /**
  * Registers `/sw.js` with `updateViaCache: "none"` and shows a non-disruptive
@@ -17,6 +18,30 @@ export function ServiceWorkerRegistrar() {
       typeof window === "undefined" ||
       !("serviceWorker" in navigator)
     ) {
+      return;
+    }
+
+    if (process.env.NODE_ENV !== "production") {
+      // Un-hashed /_next/static/chunks/* URLs in next dev cause hydration mismatches
+      // when served from Cache-First SW storage. Remove dev SWs and asset caches cleanly.
+      void navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) =>
+          Promise.all(registrations.map((reg) => reg.unregister())),
+        )
+        .catch(() => {});
+      if ("caches" in window) {
+        void window.caches
+          .keys()
+          .then((keys) =>
+            Promise.all(
+              keys
+                .filter((key) => key.startsWith(SW_CACHE_PREFIX))
+                .map((key) => window.caches.delete(key)),
+            ),
+          )
+          .catch(() => {});
+      }
       return;
     }
 

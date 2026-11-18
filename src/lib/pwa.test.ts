@@ -77,6 +77,15 @@ describe("PWA service worker policy & next-launch update behavior", () => {
         isCacheableSwRequest({ method: "GET", origin, requestUrl }),
       ).toBe(true);
     }
+
+    expect(
+      isCacheableSwRequest({
+        method: "GET",
+        origin,
+        requestUrl: `${origin}/_next/static/chunks/main-123.js`,
+        buildId: "dev",
+      }),
+    ).toBe(false);
   });
 
   it("deletes old SW caches on activate without calling skipWaiting or touching IndexedDB", async () => {
@@ -183,6 +192,64 @@ describe("PWA service worker policy & next-launch update behavior", () => {
       respondWith: staticRespondWith,
     });
     expect(staticRespondWith).toHaveBeenCalledTimes(1);
+  });
+
+  it("never caches /_next/static/* chunks and clears dev SW caches in dev mode", async () => {
+    const script = generateServiceWorkerScript("dev");
+    const listeners = new Map<string, (event: unknown) => void>();
+    const cacheEntries = new Map<string, Map<string, unknown>>([
+      ["wafrah-assets-dev", new Map([["/_next/static/chunks/old.js", { ok: true }]])],
+    ]);
+
+    const mockCaches = {
+      open: vi.fn(async (name: string) => {
+        if (!cacheEntries.has(name)) cacheEntries.set(name, new Map());
+        const map = cacheEntries.get(name)!;
+        return {
+          addAll: vi.fn(async (urls: string[]) => {
+            for (const u of urls) map.set(u, { ok: true });
+          }),
+          put: vi.fn(async (req: { url: string }, res: unknown) => {
+            map.set(req.url, res);
+          }),
+        };
+      }),
+      keys: vi.fn(async () => Array.from(cacheEntries.keys())),
+      delete: vi.fn(async (name: string) => cacheEntries.delete(name)),
+      match: vi.fn(async () => undefined),
+    };
+
+    const mockSelf = {
+      location: { origin: "http://localhost:3000" },
+      addEventListener: (
+        type: string,
+        handler: (event: unknown) => void,
+      ) => {
+        listeners.set(type, handler);
+      },
+    };
+
+    const runner = new Function("self", "caches", "fetch", script);
+    runner(mockSelf, mockCaches, vi.fn());
+
+    const activatePromises: Array<Promise<unknown>> = [];
+    listeners.get("activate")?.({
+      waitUntil: (p: Promise<unknown>) => activatePromises.push(p),
+    });
+    await Promise.all(activatePromises);
+    expect(cacheEntries.has("wafrah-assets-dev")).toBe(false);
+
+    const devStaticRespondWith = vi.fn();
+    listeners.get("fetch")?.({
+      request: {
+        method: "GET",
+        mode: "no-cors",
+        url: "http://localhost:3000/_next/static/chunks/pilot-lead-form.js",
+        headers: new Headers(),
+      },
+      respondWith: devStaticRespondWith,
+    });
+    expect(devStaticRespondWith).not.toHaveBeenCalled();
   });
 
   it("produces installable manifest with standalone display, scope, theme, and any/maskable icons", () => {
