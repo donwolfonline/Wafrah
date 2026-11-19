@@ -1428,7 +1428,9 @@
       "navFeatures": "Features",
       "navCalculator": "Calculator",
       "navPricing": "Pricing",
-      "navFaq": "FAQ"
+      "navFaq": "FAQ",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
     },
     "hero": {
       "eyebrow": "Founding pilot • Riyadh",

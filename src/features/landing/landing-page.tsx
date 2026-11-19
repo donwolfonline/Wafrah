@@ -66,6 +66,8 @@ export async function LandingPage({ locale }: LandingPageProps) {
         primaryCtaLabel={t("header.requestPilot")}
         shortCtaLabel={t("header.shortCta")}
         navLabel={t("header.navLabel")}
+        openMenuLabel={t("header.openMenu")}
+        closeMenuLabel={t("header.closeMenu")}
         navItems={view.navItems}
         workspaceHref={workspaceHref}
       />

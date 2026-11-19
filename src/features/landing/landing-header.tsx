@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { AppLocale } from "@/i18n/request";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { DirectionalArrowIcon } from "./landing-icons";
+import { LandingMobileMenu } from "./landing-mobile-menu";
 import { PilotCtaLink } from "./pilot-cta-link";
 
 interface LandingHeaderProps {
@@ -15,6 +16,8 @@ interface LandingHeaderProps {
   primaryCtaLabel: string;
   shortCtaLabel: string;
   navLabel: string;
+  openMenuLabel: string;
+  closeMenuLabel: string;
   navItems: ReadonlyArray<{ href: string; label: string }>;
   workspaceHref: string | null;
 }
@@ -30,6 +33,8 @@ export function LandingHeader({
   primaryCtaLabel,
   shortCtaLabel,
   navLabel,
+  openMenuLabel,
+  closeMenuLabel,
   navItems,
   workspaceHref,
 }: LandingHeaderProps) {
@@ -39,8 +44,8 @@ export function LandingHeader({
   const authLabel = workspaceHref ? workspaceLabel : signInLabel;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/15 bg-brand-dark-teal/95 text-white backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-[1100px] items-center justify-between gap-1.5 px-3 sm:gap-4 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-white/15 bg-brand-dark-teal/95 text-white backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-[1100px] items-center justify-between gap-1.5 px-2.5 sm:gap-4 sm:px-6">
         <Link
           href={homeHref}
           className="min-w-0 shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
@@ -63,12 +68,12 @@ export function LandingHeader({
           ))}
         </nav>
 
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
           <a
             href={switchHref}
             aria-label={switchAriaLabel}
             hrefLang={locale === "en" ? "ar-SA" : "en"}
-            className="inline-flex min-h-9 items-center rounded-md border border-white/25 bg-white/10 px-2.5 text-xs font-medium text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold sm:px-3 sm:text-sm"
+            className="inline-flex min-h-9 items-center rounded-md border border-white/25 bg-white/10 px-2 text-xs font-medium text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold sm:px-3 sm:text-sm"
           >
             {switchLabel}
           </a>
@@ -83,12 +88,24 @@ export function LandingHeader({
           <PilotCtaLink
             locale={locale}
             location="header"
-            className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-brand-gold px-3 py-2 text-xs font-semibold text-brand-text shadow-xs transition-colors hover:bg-[#d8b136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:min-h-10 sm:px-4 sm:text-sm"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-brand-gold px-2.5 py-2 text-xs font-semibold text-brand-text shadow-xs transition-colors hover:bg-[#d8b136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:min-h-10 sm:px-4 sm:text-sm"
           >
             <span className="sm:hidden">{shortCtaLabel}</span>
             <span className="hidden sm:inline">{primaryCtaLabel}</span>
             <DirectionalArrowIcon className="hidden sm:block" />
           </PilotCtaLink>
+
+          <LandingMobileMenu
+            locale={locale}
+            pilotTag={pilotTag}
+            navLabel={navLabel}
+            openMenuLabel={openMenuLabel}
+            closeMenuLabel={closeMenuLabel}
+            authHref={authHref}
+            authLabel={authLabel}
+            primaryCtaLabel={primaryCtaLabel}
+            navItems={navItems}
+          />
         </div>
       </div>
     </header>

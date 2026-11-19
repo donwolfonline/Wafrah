@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { BrandLogo } from "@/components/ui/brand-logo";
@@ -7,6 +8,7 @@ import {
   getWhatsAppHref,
   isExternalHref,
 } from "@/features/landing/landing-config";
+import { LandingMobileMenu } from "@/features/landing/landing-mobile-menu";
 import { WhatsAppButton } from "@/features/landing/whatsapp-button";
 import {
   evaluateMiddlewareDecision,
@@ -135,5 +137,31 @@ describe("landing route access and config helpers", () => {
     expect(landingHtml).toContain("#0E6B5C");
     expect(appHtml).toContain("#0B4F45");
     expect(appHtml).toContain("text-brand-dark-teal");
+  });
+
+  it("renders LandingMobileMenu trigger hidden on lg+ desktop and closed by default", () => {
+    const html = renderToStaticMarkup(
+      createElement(LandingMobileMenu, {
+        locale: "ar",
+        pilotTag: "تجربة الرياض",
+        navLabel: "أقسام الصفحة",
+        openMenuLabel: "فتح القائمة",
+        closeMenuLabel: "إغلاق القائمة",
+        authHref: "/login",
+        authLabel: "تسجيل الدخول",
+        primaryCtaLabel: "احجز مكانك في التجربة",
+        navItems: [
+          { href: "#problem", label: "المشكلة" },
+          { href: "#pricing", label: "الأسعار" },
+        ],
+      }),
+    );
+
+    expect(html).toContain("lg:hidden");
+    expect(html).toContain('data-testid="landing-mobile-menu-trigger"');
+    expect(html).toContain('aria-expanded="false"');
+    expect(html).toContain('aria-controls="landing-mobile-menu"');
+    expect(html).toContain('aria-label="فتح القائمة"');
+    expect(html).not.toContain('data-testid="landing-mobile-menu-panel"');
   });
 });

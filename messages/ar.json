@@ -1428,7 +1428,9 @@
       "navFeatures": "المزايا",
       "navCalculator": "حاسبة التوفير",
       "navPricing": "الأسعار",
-      "navFaq": "الأسئلة الشائعة"
+      "navFaq": "الأسئلة الشائعة",
+      "openMenu": "فتح القائمة",
+      "closeMenu": "إغلاق القائمة"
     },
     "hero": {
       "eyebrow": "التجربة الأولى • الرياض",

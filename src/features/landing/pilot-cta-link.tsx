@@ -16,6 +16,7 @@ interface PilotCtaLinkProps {
   locale: AppLocale;
   location: PilotCtaLocation;
   className: string;
+  onClick?: () => void;
   children: ReactNode;
 }
 
@@ -24,18 +25,20 @@ export function PilotCtaLink({
   locale,
   location,
   className,
+  onClick,
   children,
 }: PilotCtaLinkProps) {
   return (
     <a
       href={href}
-      onClick={() =>
+      onClick={() => {
         track("cta_click", {
           locale,
           location,
           target: "pilot_form",
-        })
-      }
+        });
+        onClick?.();
+      }}
       className={className}
     >
       {children}
